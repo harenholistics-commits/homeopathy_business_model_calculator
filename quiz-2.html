@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Alignment Quiz — Haren Holistics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0a0b09;--white:#ffffff;--cream:#efe9db;--tan:#cfc1ab;--gray:#6a6b65;--slate:#354449;--warm-gray:#a89985;--gold:#c2a540;--gold-dark:#9a8030;--gold-lite:#f5edcf;--border:#cfc1ab;--radius:8px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--black);min-height:100vh;}
+  .site-header{background:var(--black);padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gold);}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--gold);letter-spacing:0.06em;}
+  .header-right{font-size:0.7rem;color:var(--warm-gray);text-align:right;letter-spacing:0.09em;text-transform:uppercase;line-height:1.6;}
+  .page-wrap{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem 4rem;}
+  .progress-wrap{margin-bottom:2rem;}
+  .progress-meta{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--warm-gray);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:8px;}
+  .progress-track{height:3px;background:var(--tan);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease;}
+  .question-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 2rem 1.75rem;margin-bottom:1.5rem;animation:fadeIn 0.3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:0.6rem;}
+  .q-text{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:500;color:var(--black);line-height:1.45;margin-bottom:0.4rem;}
+  .q-sub{font-size:0.82rem;color:var(--gray);margin-bottom:1.5rem;line-height:1.55;}
+  .options-list{display:flex;flex-direction:column;gap:10px;}
+  .option-btn{display:flex;align-items:flex-start;gap:12px;padding:0.9rem 1rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--white);cursor:pointer;text-align:left;transition:all 0.15s;width:100%;font-family:'Inter',sans-serif;}
+  .option-btn:hover{border-color:var(--gold);background:var(--gold-lite);}
+  .option-btn.selected{border-color:var(--gold);background:var(--gold-lite);border-left:3px solid var(--gold);}
+  .option-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--tan);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+  .option-btn.selected .option-dot{border-color:var(--gold);background:var(--gold);}
+  .option-dot-inner{width:6px;height:6px;border-radius:50%;background:var(--white);opacity:0;transition:opacity 0.15s;}
+  .option-btn.selected .option-dot-inner{opacity:1;}
+  .option-text{font-size:0.9rem;color:var(--black);line-height:1.45;}
+  .option-text em{display:block;font-size:0.78rem;color:var(--gray);font-style:normal;margin-top:2px;}
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;}
+  .btn-back{font-size:0.82rem;font-family:'Inter',sans-serif;padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--gray);cursor:pointer;}
+  .btn-back:hover{border-color:var(--black);color:var(--black);}
+  .btn-next{font-size:0.88rem;font-family:'Inter',sans-serif;padding:10px 28px;border-radius:20px;border:1px solid var(--gold);background:var(--gold);color:var(--black);cursor:pointer;font-weight:500;transition:all 0.15s;opacity:0.4;pointer-events:none;}
+  .btn-next.enabled{opacity:1;pointer-events:all;}
+  .btn-next.enabled:hover{background:var(--gold-dark);border-color:var(--gold-dark);color:var(--white);}
+  .intro-card{background:var(--black);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;margin-bottom:1.5rem;}
+  .intro-eyebrow{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+  .intro-title{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1rem;}
+  .intro-title span{color:var(--gold);}
+  .intro-body{font-size:0.88rem;color:var(--warm-gray);line-height:1.7;max-width:480px;margin:0 auto 1.75rem;}
+  .btn-start{font-size:0.95rem;font-family:'Inter',sans-serif;padding:12px 36px;border-radius:20px;border:1px solid var(--gold);background:var(--gold);color:var(--black);cursor:pointer;font-weight:500;transition:all 0.15s;}
+  .btn-start:hover{background:var(--gold-dark);border-color:var(--gold-dark);color:var(--white);}
+  .intro-meta{font-size:0.75rem;color:var(--warm-gray);margin-top:0.75rem;}
+  .results-wrap{animation:fadeIn 0.4s ease;}
+  .results-header{background:var(--black);border-radius:var(--radius);padding:2rem;text-align:center;margin-bottom:1.5rem;border-bottom:2px solid var(--gold);}
+  .results-eyebrow{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+  .results-title{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:600;color:var(--white);margin-bottom:0.5rem;}
+  .results-sub{font-size:0.83rem;color:var(--warm-gray);line-height:1.6;}
+  .result-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;}
+  .result-card.primary{border-color:var(--gold);border-left:4px solid var(--gold);}
+  .result-rank{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:0.4rem;}
+  .result-rank.secondary{color:var(--warm-gray);}
+  .result-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--black);margin-bottom:0.2rem;}
+  .result-tagline{font-size:0.8rem;color:var(--gray);font-style:italic;margin-bottom:1rem;}
+  .match-bar-wrap{margin-bottom:1rem;}
+  .match-bar-label{display:flex;justify-content:space-between;font-size:0.72rem;color:var(--gray);margin-bottom:5px;}
+  .match-pct{font-weight:500;color:var(--gold-dark);}
+  .match-track{height:6px;background:var(--cream);border-radius:3px;overflow:hidden;}
+  .match-fill{height:100%;background:var(--gold);border-radius:3px;transition:width 0.8s ease;}
+  .result-card:not(.primary) .match-fill{background:var(--warm-gray);}
+  .result-body{font-size:0.86rem;color:var(--black);line-height:1.65;margin-bottom:1rem;}
+  .result-strengths{display:flex;flex-wrap:wrap;gap:6px;}
+  .strength-tag{font-size:0.72rem;padding:3px 10px;border-radius:20px;background:var(--gold-lite);color:var(--gold-dark);border:1px solid #e8d89a;}
+  .result-card:not(.primary) .strength-tag{background:var(--cream);color:var(--gray);border-color:var(--tan);}
+  .retake-btn{display:block;text-align:center;margin:1.5rem auto 0;font-size:0.82rem;font-family:'Inter',sans-serif;padding:9px 24px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--gray);cursor:pointer;width:fit-content;}
+  .retake-btn:hover{border-color:var(--black);color:var(--black);}
+  .calc-link{display:block;text-align:center;margin-top:0.75rem;font-size:0.8rem;color:var(--gold-dark);text-decoration:none;}
+  .calc-link:hover{text-decoration:underline;}
+  .page-footer{text-align:center;margin-top:3rem;font-size:0.73rem;color:var(--warm-gray);line-height:1.8;}
+  .page-footer a{color:var(--gold-dark);text-decoration:none;}
+  hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+  @media(max-width:560px){.page-wrap{padding:1.5rem 1rem 3rem;}.q-text{font-size:1.2rem;}.intro-title{font-size:1.6rem;}.result-name{font-size:1.25rem;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">Haren Holistics</div>
+  <div class="header-right">Practitioner Blueprint<br>Alignment Quiz</div>
+</header>
+<div class="page-wrap">
+  <div id="app"></div>
+  <div class="page-footer">
+    Part of the <a href="https://www.skool.com/harenholistics/about" target="_blank">Practitioner Blueprint course</a> &nbsp;·&nbsp; <a href="https://harenholistics.com" target="_blank">harenholistics.com</a>
+  </div>
+</div>
+<script>
+const OUTCOMES = {
+  vet: {
+    name: "Veterinary Homeopath",
+    tagline: "Your people have four legs. Your practice should reflect that.",
+    body: "This is not a preference for you. It's a pull. Animals don't perform for you & they don't lie to you. That directness is part of why you trust this work more when it's applied to them. You do well in dynamic, unpredictable environments: emergency calls, farm visits, the kind of cases that keep you sharp. Your practice is built around animal cases, acute response & the relationships you build with owners who are just as devoted as you are.",
+    strengths: ["Animal cases", "Emergency response", "Rural outreach", "Hands-on care", "Farmer relationships"],
+  },
+  agro: {
+    name: "Agrohomeopath",
+    tagline: "Plants, soil & seasons. You work where most practitioners never look.",
+    body: "The living world doesn't stop at human skin & neither do you. Farms, gardens, ecosystems. This is where homeopathy gets interesting to you. Agrohomeopathy is one of the least crowded niches in this field, which means the practitioners who go there tend to become the go-to fast. You're comfortable working independently, observing slowly & building trust with farmers & growers who are skeptical of everything until it works.",
+    strengths: ["Field observation", "Systems thinking", "Farmer education", "Niche positioning", "Nature connection"],
+  },
+  clinic: {
+    name: "In-Person Clinic Practitioner",
+    tagline: "In the room, in the community. This is where you do your best work.",
+    body: "You read people differently when you're physically present & you know it. Body language, energy, the pause before the answer. You pick up on all of it. You want a space that's yours, a community that trusts you by name & clients who keep showing up because the work is that good. You thrive on consistency & real relationship. Not a full inbox of strangers.",
+    strengths: ["Deep rapport", "Community presence", "Tactile intuition", "Local reputation", "Consistent routine"],
+  },
+  virtual: {
+    name: "Virtual Practice Specialist",
+    tagline: "Borderless, flexible & completely in your zone.",
+    body: "You don't need to be in the room to do powerful work & you've probably always known that. A virtual practice gives you the geographic reach to work with clients you'd never otherwise find, lower overhead & the kind of schedule autonomy that makes the work sustainable long-term. You're self-directed, tech-comfortable & you thrive when you're not tied to anyone else's building or schedule.",
+    strengths: ["Schedule flexibility", "Geographic reach", "Tech fluency", "Client diversity", "Low overhead"],
+  },
+  dispensary: {
+    name: "Remedy Creator & Dispensary Owner",
+    tagline: "The remedy is your medium. Building around it is your business.",
+    body: "You're drawn to the material side of this work: the remedies themselves, the craft of dispensing, the satisfaction of curating something tangible that gets into the right hands. Building a dispensary, a kit line, a product presence. That's not a side hustle for you. It's a whole model. You're systematic & detail-oriented. The operational side feels satisfying to you, not draining.",
+    strengths: ["Remedy knowledge", "Product curation", "Logistics systems", "E-commerce", "Craft & detail"],
+  },
+  education: {
+    name: "Course Creator & Workshop Leader",
+    tagline: "One-to-many is your natural leverage. Teaching is where you come alive.",
+    body: "You love the moment something clicks for someone & you're good at making that happen. Distilling complex ideas, building frameworks, holding a room. This is where your energy doesn't just hold, it builds. Whether it's an online course, a workshop or a Skool community, you do your best work when you're serving a group rather than a single case file. The leverage of one-to-many doesn't just make business sense to you. It feels right.",
+    strengths: ["Curriculum design", "Group facilitation", "Content creation", "Community building", "One-to-many leverage"],
+  },
+  acute: {
+    name: "Acute Care Specialist",
+    tagline: "Fast, decisive & exactly who they need when something is happening right now.",
+    body: "You don't freeze under pressure. You focus. Acute cases, first aid situations, urgent calls. This is where your prescribing sharpens & your confidence shows up fast. You're built for a practice that's responsive & decisive: a custom acute service, first aid kits, quick consults & the reputation of being the practitioner people call when it can't wait. Constitutional depth is valuable. The acute moment is where you're most alive.",
+    strengths: ["Acute prescribing", "Fast decision-making", "Emergency protocols", "First aid kits", "High-volume service"],
+  },
+  educator: {
+    name: "Practitioner Educator & Mentor",
+    tagline: "Your biggest impact is not the cases you take. It's the practitioners you shape.",
+    body: "Practicing homeopathy matters to you. Multiplying it matters more. You want to be in the room with other practitioners: watching them find their confidence, sharpening their clinical reasoning, building something they couldn't have built without you. Mentorship, case supervision, training programs. This is the work that keeps you up at night in the best way. You're not just building a practice. You're building a lineage.",
+    strengths: ["Clinical mentorship", "Practitioner training", "Case supervision", "Leadership", "Community stewardship"],
+  },
+  hybrid: {
+    name: "Hybrid Portfolio Practitioner",
+    tagline: "You were never going to fit one box. Stop trying.",
+    body: "One stream was never going to be enough for you & that's not a problem. It's a pattern. Clients, products, community, content. You move across all of it & you do it well. The key isn't picking one thing. It's making sure every stream you run points back to the same core: same audience, same expertise, same vision. Strong systems are what make this model sustainable rather than chaotic. You don't just want a practice. You want a whole ecosystem.",
+    strengths: ["Multiple streams", "Adaptability", "Big vision", "Systems thinking", "Community leadership"],
+  }
+};
+const QUESTIONS = [
+  {
+    text: "Full day of client sessions. How do you feel when it's over?",
+    sub: "Answer for your actual energy. Not the version of yourself you wish you were.",
+    options: [
+      { text: "Energized. I could honestly keep going", em: "People don't drain me, they fuel me", weights: {"clinic":3,"virtual":2,"educator":2,"hybrid":1} },
+      { text: "Satisfied, but I need to decompress", em: "I love the work & I also need quiet after", weights: {"virtual":3,"dispensary":2,"agro":2,"acute":2} },
+      { text: "Pretty depleted. I need real alone time to recover", em: "1:1 intensity takes a lot from me", weights: {"dispensary":3,"agro":3,"education":2} },
+      { text: "Depends entirely on the case. Type matters more than volume", em: "", weights: {"hybrid":3,"acute":2,"vet":2} }
+    ]
+  },
+  {
+    text: "Where do you feel most like yourself?",
+    sub: "Not most productive. Most like you.",
+    options: [
+      { text: "A treatment room with a client across from me, present & in it", em: "In-person, intimate, fully there", weights: {"clinic":4,"vet":2,"educator":1} },
+      { text: "My home office or wherever I happen to be working that day", em: "Location-free & I like it that way", weights: {"virtual":4,"education":2,"hybrid":2} },
+      { text: "Outside: farms, fields, gardens", em: "I do my clearest thinking outdoors", weights: {"agro":5,"vet":2} },
+      { text: "A room full of people who want to learn something", em: "Teaching energy is my energy", weights: {"education":4,"educator":4,"hybrid":2} },
+      { text: "My workspace: creating, organizing, making something tangible", em: "Hands-on & methodical", weights: {"dispensary":5,"acute":2} }
+    ]
+  },
+  {
+    text: "Animals. Where do they fit in your practice?",
+    sub: "Be straight with yourself here. Not everyone is built for animal cases & that's fine.",
+    options: [
+      { text: "They're my passion. I would choose animal cases over human cases any day", em: "", weights: {"vet":5,"agro":2} },
+      { text: "I love animals & would happily build them into my practice", em: "", weights: {"vet":3,"hybrid":2,"clinic":1} },
+      { text: "I don't mind them, but it's not where my focus lives", em: "", weights: {"virtual":2,"education":2,"dispensary":1} },
+      { text: "My work is with humans. I want to stay there", em: "", weights: {"clinic":3,"virtual":3,"educator":2,"education":2} }
+    ]
+  },
+  {
+    text: "Plants, soil, farming. What's your honest relationship with that world?",
+    sub: "",
+    options: [
+      { text: "Deep & genuine. I could talk regenerative agriculture for hours", em: "", weights: {"agro":5,"vet":2} },
+      { text: "I find it genuinely interesting & want to know more", em: "", weights: {"agro":2,"hybrid":2} },
+      { text: "Not really my world. I'm more drawn to people or systems", em: "", weights: {"clinic":2,"virtual":2,"dispensary":2,"education":2} },
+      { text: "I appreciate it, but I don't see myself working in it professionally", em: "", weights: {"educator":2,"acute":2,"hybrid":1} }
+    ]
+  },
+  {
+    text: "A client texts you. Something acute is happening right now. What's your gut reaction?",
+    sub: "",
+    options: [
+      { text: "I light up. This is my favorite kind of case: fast thinking, clear action", em: "", weights: {"acute":5,"vet":3,"hybrid":2} },
+      { text: "I handle it well. Constitutional depth is where I really come alive", em: "", weights: {"clinic":3,"virtual":3,"educator":2} },
+      { text: "I'd rather have a structured system for acute cases than field them ad hoc", em: "", weights: {"acute":3,"dispensary":3,"hybrid":2} },
+      { text: "Acute situations put me on edge more than I'd like to admit", em: "", weights: {"education":3,"agro":3,"dispensary":2} }
+    ]
+  },
+  {
+    text: "Social media & marketing. What's your real relationship with it?",
+    sub: "",
+    options: [
+      { text: "I enjoy it. I have a lot to say & I like building an audience around this work", em: "", weights: {"education":4,"educator":3,"hybrid":3,"virtual":2} },
+      { text: "I can do it. It's just not the part I look forward to", em: "", weights: {"clinic":3,"virtual":2,"acute":2} },
+      { text: "I'd rather let the work speak & grow through referrals", em: "", weights: {"clinic":3,"vet":3,"agro":2} },
+      { text: "I actively dislike it & want to do as little of it as possible", em: "", weights: {"dispensary":3,"agro":3,"vet":2} }
+    ]
+  },
+  {
+    text: "How do you want your income to flow?",
+    sub: "",
+    options: [
+      { text: "Predictable & appointment-based. I want to know what's coming each week", em: "", weights: {"clinic":4,"virtual":3,"acute":2} },
+      { text: "A mix: some steady baseline plus product or leveraged revenue on top", em: "", weights: {"hybrid":4,"dispensary":3,"virtual":2} },
+      { text: "Mostly leveraged: income that doesn't require me to show up every single time", em: "", weights: {"education":4,"dispensary":4,"hybrid":3} },
+      { text: "Seasonal or project-based. I like the energy of launches & intensive bursts", em: "", weights: {"education":3,"educator":3,"agro":2} }
+    ]
+  },
+  {
+    text: "Teaching other practitioners. Where does that land for you?",
+    sub: "",
+    options: [
+      { text: "It's one of the most meaningful things I can imagine doing with this career", em: "", weights: {"educator":5,"education":3,"hybrid":2} },
+      { text: "I'd love to weave some teaching into my clinical work", em: "", weights: {"education":3,"hybrid":3,"educator":2} },
+      { text: "My focus is on clients. Teaching would pull me away from what I'm here to do", em: "", weights: {"clinic":3,"virtual":3,"acute":3,"vet":2} },
+      { text: "Maybe eventually. I want more clinical depth under my belt first", em: "", weights: {"clinic":2,"virtual":2,"acute":2,"dispensary":1} }
+    ]
+  },
+  {
+    text: "Inventory, fulfillment, logistics. The operational side. What's your take?",
+    sub: "",
+    options: [
+      { text: "I genuinely enjoy this. Systems & logistics satisfy something in me", em: "", weights: {"dispensary":5,"acute":3,"hybrid":2} },
+      { text: "I can handle it, I just don't want it to be the main event", em: "", weights: {"virtual":3,"clinic":3,"hybrid":2} },
+      { text: "I want to outsource or minimize it as much as humanly possible", em: "", weights: {"education":3,"educator":3,"virtual":2} },
+      { text: "I like creating things. The admin side is where I lose steam", em: "", weights: {"agro":3,"vet":2,"hybrid":2} }
+    ]
+  },
+  {
+    text: "What kind of relationship with your clients actually fills you up?",
+    sub: "",
+    options: [
+      { text: "Long-term constitutional work: watching someone shift over months or years", em: "", weights: {"clinic":4,"virtual":3,"educator":2} },
+      { text: "Acute cases: fast, decisive & you can see results almost immediately", em: "", weights: {"acute":5,"vet":3} },
+      { text: "One-to-many: a community or classroom, not a case file", em: "", weights: {"education":5,"educator":4,"hybrid":2} },
+      { text: "Ongoing advisory relationships with farmers, animal owners & growers who trust your eye", em: "", weights: {"agro":4,"vet":3,"hybrid":2} }
+    ]
+  },
+  {
+    text: "Paint your ideal workweek. What does it actually look like?",
+    sub: "",
+    options: [
+      { text: "Focused client schedule: appointments blocked, then I'm done for the day", em: "", weights: {"clinic":4,"virtual":3} },
+      { text: "A mix: some client time, some creating, some breathing room in between", em: "", weights: {"hybrid":5,"education":3,"virtual":2} },
+      { text: "Mostly independent: a lab, a field, or deep in my own work on a screen", em: "", weights: {"dispensary":4,"agro":4,"education":2} },
+      { text: "Teaching, leading calls, building community. Always in service of a group", em: "", weights: {"education":4,"educator":5,"hybrid":2} }
+    ]
+  },
+  {
+    text: "Remedy kits, curated formulas, product lines. Does that excite you?",
+    sub: "",
+    options: [
+      { text: "Yes. I could spend hours on this. It feels like craft to me", em: "", weights: {"dispensary":5,"acute":3,"hybrid":2} },
+      { text: "I'd enjoy building some products alongside my clinical work", em: "", weights: {"hybrid":3,"clinic":2,"virtual":2,"acute":2} },
+      { text: "Not really. I'm here for the relationship, not the product", em: "", weights: {"clinic":3,"educator":3,"education":2} },
+      { text: "I'm open to it if the logistics aren't landing on me", em: "", weights: {"virtual":3,"agro":2,"hybrid":2} }
+    ]
+  },
+  {
+    text: "Does location matter to you? If so, what kind?",
+    sub: "",
+    options: [
+      { text: "Yes. I want a real space that's mine, rooted in my community", em: "", weights: {"clinic":5,"vet":2} },
+      { text: "Not at all. I want total location freedom & I mean it", em: "", weights: {"virtual":5,"education":3,"hybrid":2} },
+      { text: "Nature & rural settings matter. Not a clinic, but somewhere with land", em: "", weights: {"agro":5,"vet":3} },
+      { text: "Somewhere in between: a home base, but not tied to it daily", em: "", weights: {"hybrid":4,"virtual":2,"dispensary":2} }
+    ]
+  },
+  {
+    text: "What pulled you into homeopathy? What keeps you here?",
+    sub: "",
+    options: [
+      { text: "The depth of the case: reading a whole person & finding the simillimum", em: "", weights: {"clinic":4,"virtual":3,"educator":3} },
+      { text: "The remedy itself: the intelligence of the materia medica & the art of it", em: "", weights: {"dispensary":4,"acute":3,"education":2} },
+      { text: "The reach. This medicine doesn't just exist in human cases. It moves through animals, plants & whole ecosystems", em: "", weights: {"agro":4,"vet":3,"hybrid":3} },
+      { text: "The mission: getting this medicine into more hands & more minds", em: "", weights: {"education":4,"educator":5,"hybrid":3} }
+    ]
+  },
+  {
+    text: "Five years from now. What's the version of your practice that genuinely excites you?",
+    sub: "Not the responsible answer. The one that makes you feel something.",
+    options: [
+      { text: "A full client roster, a local reputation & a practice that's rooted somewhere real", em: "", weights: {"clinic":5,"vet":3} },
+      { text: "Fully remote: clients everywhere, working from wherever I want", em: "", weights: {"virtual":5,"education":2,"hybrid":2} },
+      { text: "A recognized name in homeopathy education: courses, a community, practitioners I've trained out in the world", em: "", weights: {"educator":5,"education":4,"hybrid":2} },
+      { text: "A multi-stream practice that's entirely mine: clients, products, content & community all in alignment", em: "", weights: {"hybrid":6,"education":2,"virtual":2} },
+      { text: "Deep in a niche. Animals, plants, or acute care. The person people find when nothing else has worked", em: "", weights: {"vet":4,"agro":4,"acute":4} }
+    ]
+  }
+];
+const RANK_LABELS = ["Your strongest alignment", "Also a strong fit", "Worth exploring"];
+let currentQ = -1;
+let answers = {};
+function getScores(){const s={};Object.keys(OUTCOMES).forEach(k=>s[k]=0);Object.entries(answers).forEach(([qi,oi])=>{const w=QUESTIONS[parseInt(qi)].options[oi].weights;Object.entries(w).forEach(([k,v])=>{s[k]=(s[k]||0)+v;});});return s;}
+function getTopResults(n=3){const s=getScores();const t=Object.values(s).reduce((a,b)=>a+b,0)||1;return Object.entries(s).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([key,score])=>({key,score,pct:Math.round((score/t)*100)}));}
+function fmt(n){return'$'+Math.round(n).toLocaleString();}
+function render(){
+  const app=document.getElementById('app');
+  if(currentQ===-1){
+    app.innerHTML=`<div class="intro-card"><div class="intro-eyebrow">Practitioner Blueprint</div><div class="intro-title">Find Your Practice <span>Alignment</span></div><p class="intro-body">There's no one right way to build this. Anyone who tells you otherwise is selling a template. This quiz cuts through the noise & points you toward the version of practice that's actually built for how you're wired. No fluff. No generic advice. Just a clearer picture of where your energy, instincts & strengths naturally want to go. Answer from your gut. Your first instinct is usually the honest one.</p><button class="btn-start" onclick="startQuiz()">Let's find out →</button><p class="intro-meta">${QUESTIONS.length} questions &nbsp;&middot;&nbsp; About 4 minutes</p></div>`;
+    return;
+  }
+  if(currentQ>=QUESTIONS.length){renderResults();return;}
+  const q=QUESTIONS[currentQ];
+  const pct=Math.round((currentQ/QUESTIONS.length)*100);
+  const sel=answers[currentQ];
+  app.innerHTML=`<div class="progress-wrap"><div class="progress-meta"><span>Question ${currentQ+1} of ${QUESTIONS.length}</span><span>${pct}% complete</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div><div class="question-card"><div class="q-number">Question ${currentQ+1}</div><div class="q-text">${q.text}</div>${q.sub?`<div class="q-sub">${q.sub}</div>`:''}<div class="options-list">${q.options.map((o,i)=>`<button class="option-btn ${sel===i?'selected':''}" onclick="selectOption(${i})"><div class="option-dot"><div class="option-dot-inner"></div></div><div class="option-text">${o.text}${o.em?`<em>${o.em}</em>`:''}</div></button>`).join('')}</div></div><div class="nav-row"><button class="btn-back" onclick="goBack()" ${currentQ===0?'style="visibility:hidden"':''}>← Back</button><button class="btn-next ${sel!==undefined?'enabled':''}" onclick="goNext()">${currentQ===QUESTIONS.length-1?'See my results →':'Next →'}</button></div>`;
+}
+function renderResults(){
+  const top=getTopResults(3);
+  const app=document.getElementById('app');
+  const cards=top.map((r,i)=>{const o=OUTCOMES[r.key];const isPrimary=i===0;return`<div class="result-card ${isPrimary?'primary':''}"><div class="result-rank ${isPrimary?'':'secondary'}">${RANK_LABELS[i]||''}</div><div class="result-name">${o.name}</div><div class="result-tagline">${o.tagline}</div><div class="match-bar-wrap"><div class="match-bar-label"><span>Alignment match</span><span class="match-pct">${r.pct}%</span></div><div class="match-track"><div class="match-fill" style="width:${r.pct}%"></div></div></div><div class="result-body">${o.body}</div><div class="result-strengths">${o.strengths.map(s=>`<span class="strength-tag">${s}</span>`).join('')}</div></div>`;}).join('');
+  app.innerHTML=`<div class="results-wrap"><div class="results-header"><div class="results-eyebrow">Your results</div><div class="results-title">Your Practice Alignment</div><p class="results-sub">Here's where your energy, instincts & strengths naturally point. This is not a prescription. It's a mirror. Use it as a starting place & build from there. The pattern knows.</p></div>${cards}<button class="retake-btn" onclick="retake()">← Start over</button><a class="calc-link" href="https://harenholistics-commits.github.io/homeopathy_business_model_calculator" target="_blank">Model what these practice types could generate →</a></div>`;
+}
+function startQuiz(){currentQ=0;render();}
+function selectOption(i){answers[currentQ]=i;render();}
+function goNext(){if(answers[currentQ]!==undefined){currentQ++;render();window.scrollTo({top:0,behavior:'smooth'});}}
+function goBack(){if(currentQ>0){currentQ--;render();window.scrollTo({top:0,behavior:'smooth'});}}
+function retake(){currentQ=-1;answers={};render();window.scrollTo({top:0,behavior:'smooth'});}
+render();
+</script>
+</body>
+</html>
