@@ -219,6 +219,7 @@
     align-items: center;
     justify-content: space-between;
   }
+  .stream-hint { font-size: 0.82rem; color: var(--gray, #6a6b65); line-height: 1.5; margin: 0 0 0.9rem; font-style: italic; }
   .stream-name {
     font-size: 0.9rem;
     font-weight: 500;
@@ -548,14 +549,22 @@ const streamDefs = [
     ],
     calc: f => f.qty * f.rate
   },
+  {
+    id: 'other', name: 'Other income streams', icon: 'ti-sparkles',
+    hint: 'Pop-ups, workshops, wholesale orders, digital downloads, speaking, mentoring . . . anything from Module 5 that isn\'t listed above.',
+    fields: [
+      { key: 'monthly', label: 'Est. monthly earnings, all other streams', min: 0, max: 10000, step: 50, default: 0, format: v => `$${v.toLocaleString()}` },
+    ],
+    calc: f => f.monthly * 12
+  },
 ];
 
 const presets = {
-  blank:      { initial:{qty:0}, followup:{qty:0}, acute:{qty:0}, dispensary:{qty:0,price:12}, kits:{qty:0}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:0}, vet:{qty:0} },
-  clinic:     { initial:{qty:75,rate:200}, followup:{qty:200,rate:110}, acute:{qty:60,rate:55}, dispensary:{qty:80,price:12}, kits:{qty:0}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:0}, vet:{qty:0} },
-  virtual:    { initial:{qty:90,rate:225}, followup:{qty:240,rate:120}, acute:{qty:80,rate:55}, dispensary:{qty:50,price:12}, kits:{qty:0}, membership:{members:30,rate:37}, courses:{students:0}, affiliate:{monthly:200}, vet:{qty:0} },
-  dispensary: { initial:{qty:20,rate:200}, followup:{qty:50,rate:110}, acute:{qty:0}, dispensary:{qty:250,price:14}, kits:{qty:300,rate:65}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:400}, vet:{qty:0} },
-  hybrid:     { initial:{qty:80,rate:225}, followup:{qty:150,rate:120}, acute:{qty:80,rate:75}, dispensary:{qty:180,price:14}, kits:{qty:150,rate:75}, membership:{members:60,rate:47}, courses:{students:80,rate:297}, affiliate:{monthly:350}, vet:{qty:30,rate:175} },
+  blank:      { initial:{qty:0}, followup:{qty:0}, acute:{qty:0}, dispensary:{qty:0,price:12}, kits:{qty:0}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:0}, vet:{qty:0}, other:{monthly:0} },
+  clinic:     { initial:{qty:75,rate:200}, followup:{qty:200,rate:110}, acute:{qty:60,rate:55}, dispensary:{qty:80,price:12}, kits:{qty:0}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:0}, vet:{qty:0}, other:{monthly:0} },
+  virtual:    { initial:{qty:90,rate:225}, followup:{qty:240,rate:120}, acute:{qty:80,rate:55}, dispensary:{qty:50,price:12}, kits:{qty:0}, membership:{members:30,rate:37}, courses:{students:0}, affiliate:{monthly:200}, vet:{qty:0}, other:{monthly:0} },
+  dispensary: { initial:{qty:20,rate:200}, followup:{qty:50,rate:110}, acute:{qty:0}, dispensary:{qty:250,price:14}, kits:{qty:300,rate:65}, membership:{members:0}, courses:{students:0}, affiliate:{monthly:400}, vet:{qty:0}, other:{monthly:0} },
+  hybrid:     { initial:{qty:80,rate:225}, followup:{qty:150,rate:120}, acute:{qty:80,rate:75}, dispensary:{qty:180,price:14}, kits:{qty:150,rate:75}, membership:{members:60,rate:47}, courses:{students:80,rate:297}, affiliate:{monthly:350}, vet:{qty:30,rate:175}, other:{monthly:0} },
 };
 
 let state = {};
@@ -649,6 +658,7 @@ function renderStreams() {
         </div>
       </div>
       <div class="${enabled ? '' : 'disabled-overlay'}" id="controls-${s.id}">
+        ${s.hint ? `<div class="stream-hint">${s.hint}</div>` : ''}
         <div class="stream-controls${isSingle ? ' single' : ''}">
           ${s.fields.map(f => `
             <div class="control-group">
