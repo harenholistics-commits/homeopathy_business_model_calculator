@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remedy Dispensary Preference Checklist — Haren Holistics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--black:#0a0b09;--white:#fff;--cream:#efe9db;--tan:#cfc1ab;--gray:#6a6b65;--slate:#354449;--warm-gray:#a89985;--gold:#c2a540;--gold-dark:#9a8030;--gold-lite:#f5edcf;--clay:#b26e42;--border:#cfc1ab;--radius:8px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--cream);color:var(--black)}
+.site-header{background:var(--black);padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gold)}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--gold);letter-spacing:.06em}
+.tag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tan)}
+main{max-width:1040px;margin:0 auto;padding:2rem 1.25rem 4rem}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;margin:0 0 .4rem;line-height:1.15}
+.lead{color:var(--gray);font-size:.95rem;line-height:1.55;max-width:760px;margin:0 0 1.6rem}
+.sheet{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem 1rem}
+.cat{display:grid;grid-template-columns:200px 1fr;gap:0 1.4rem;padding:.9rem 0;border-top:1px solid var(--border)}
+.cat:first-child{border-top:0;padding-top:.2rem}
+.cat h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;margin:0 0 .2rem;line-height:1.2}
+.cat .hint{font-size:.74rem;color:var(--gray);line-height:1.45}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.4rem .9rem;align-content:start}
+label.opt{display:flex;align-items:flex-start;gap:.55rem;font-size:.86rem;line-height:1.35;cursor:pointer;padding:.35rem .45rem;border-radius:6px;border:1px solid transparent}
+label.opt:hover{background:var(--gold-lite);border-color:var(--gold)}
+label.opt input{appearance:none;width:20px;height:20px;min-width:20px;border:1.5px solid var(--gold-dark);border-radius:4px;background:#fff;margin-top:1px;display:grid;place-content:center;cursor:pointer}
+label.opt input:checked{background:var(--gold);border-color:var(--gold-dark)}
+label.opt input:checked::after{content:"";width:10px;height:6px;border-left:2.5px solid #0a0b09;border-bottom:2.5px solid #0a0b09;transform:rotate(-45deg) translate(1px,-1px)}
+label.opt img.thumb{display:block;width:120px;height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);margin-top:.45rem;background:#fff}
+label.opt .mine{display:block;font-size:.7rem;color:var(--gold-dark);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.submit-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.4rem}
+button.go{background:var(--black);color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:.85rem 1.7rem;font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+button.go:hover{background:var(--slate)}
+button.ghost{background:transparent;color:var(--gray);border:1px solid var(--border);border-radius:999px;padding:.7rem 1.2rem;font-size:.78rem;cursor:pointer}
+.note{font-size:.76rem;color:var(--gray);line-height:1.5}
+.name{display:flex;gap:.6rem;align-items:center;font-size:.82rem;color:var(--gray)}
+.name input{font-family:'Inter',sans-serif;font-size:.9rem;padding:.5rem .7rem;border:1px solid var(--border);border-radius:6px;min-width:220px}
+#msg{font-size:.82rem;color:var(--clay);min-height:1.2em;margin-top:.6rem}
+footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1rem;letter-spacing:.06em}
+@media(max-width:700px){.cat{grid-template-columns:1fr}.cat h2{margin-top:.2rem}}
+</style>
+</head>
+<body>
+<header class="site-header"><span class="brand">HAREN HOLISTICS</span><span class="tag">The Practitioner Blueprint · Module 3</span></header>
+<main>
+<h1>My remedy dispensary preferences</h1>
+<p class="lead">Simple questions, yet important decisions! Tick what you're leaning toward in each category (as many as you like), then hit submit & you'll get a one-page PDF with direct links to the suppliers I actually use, so you can set up your dispensary without the back-&-forth. Choose what works best for you now in this season.</p>
+
+<div class="sheet" id="sheet"></div>
+
+<div class="submit-row">
+  <div class="name"><span>Your name (for the PDF, optional)</span><input id="who" type="text" placeholder="e.g. Lexie"></div>
+  <button class="go" id="go">Submit &amp; download my supplier list (PDF)</button>
+  <button class="ghost" id="clear">Clear</button>
+</div>
+<div id="msg"></div>
+<p class="note">US links for now. If you're outside the US, ask in the community space & I'll point you to pharmacies & dispensaries in your region. Some links are affiliate links; none of that changes what I'd actually tell you to buy.</p>
+</main>
+<footer>HAREN HOLISTICS · CHEERS TO A THRIVING PRACTICE</footer>
+
+<script>
+// ===== EDIT HERE. Every option: label, optional "mine" tag (what Lexie uses), and one or more links [text, url].
+// A link url of "" shows as "link coming" in the PDF. Add img:"img/filename.jpg" to any option to show a photo under it (photos live in the img folder next to this file). Keep the tone yours; this is the only place the words live.
+const CATEGORIES = [
+ {id:"form", title:"How I'll dispense my remedies", hint:"Liquid, sugar pillules or both", opts:[
+   {label:"Sugar pillules", img:"img/sugar-pillules.jpg", links:[["Unmedicated pills 500g, Simillimum","https://simillimum.co.nz/products/remedies/homeopathy/dispensing-supplies/unmedicated-pills-500g"]]},
+   {label:"Liquids"},
+   {label:"Both"},
+ ]},
+ {id:"bottles", title:"Bottles & caps", hint:"Dripolators have the flat cap; squishy droppers have the rubber top.", opts:[
+   {label:"Dripolators (flat caps)", img:"img/dripolator.jpg", links:[["Bulk Apothecary amber dripolators","https://www.bulkapothecary.com/glass-amber-essential-oil-bottles/"],["Specialty Bottle euro droppers","https://www.specialtybottle.com/glass-bottles/european-dropper"],["UPC Bottles, wholesale amber bottles","https://www.upc-bottles.com/empty-essential-oil-bottles-wholesale/"]]},
+   {label:"Squishy dropper bottles", img:"img/squishy-dropper.jpg", links:[["Uline amber glass dropper bottles","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"],["UPC Bottles, wholesale amber bottles","https://www.upc-bottles.com/empty-essential-oil-bottles-wholesale/"]]},
+   {label:"Pillule containers", links:[["Uline 5 ml amber glass vials","https://www.uline.com/Product/Detail/S-25275A/Labware/Glass-Vials-5-mL-Amber"],["Specialty Bottle 2 dram vials","https://www.specialtybottle.com/glass-bottles/vials/2dram-va2"],["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
+ ]},
+ {id:"size", title:"Size", hint:"Pick what fits the way you'll dispense.", opts:[
+   {label:"15 ml", img:"img/15ml.jpg", links:[["Uline 15 ml","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"],["Bulk Apothecary 15 ml","https://www.bulkapothecary.com/glass-amber-essential-oil-bottles/"]]},
+   {label:"30 ml", img:"img/30ml.jpg", links:[["Uline 30 ml","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"]]},
+   {label:"Sugar pillule containers", links:[["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
+ ]},
+ {id:"alcohol", title:"Alcohol", hint:"Comes down to personal preference & your clients' taste.", opts:[
+   {label:"Organic alcohol", img:"img/organic-alcohol.jpg", links:[["Organic alcohol (my link)","https://go.refrl.co/r/cXXIjLzVRZ6Z"]]},
+   {label:"Brandy", img:"img/brandy.jpg", links:[["E&J VSOP brandy, Total Wine","https://www.totalwine.com/spirits/brandy-cognac/brandy/e-j-brandy-vsop/p/8915175?s=1408&igrules=true"]]},
+   {label:"Vodka", img:"img/vodka.jpg", links:[["Tito's Handmade Vodka, Total Wine","https://www.totalwine.com/spirits/vodka/vodka/titos-handmade-vodka/p/96260175"]]},
+ ]},
+ {id:"water", title:"Water", hint:"Distilled, either way.", opts:[
+   {label:"Distilled water, already made", img:"img/distilled-water.jpg", links:[["Distilled water","https://amzn.to/4yUaqFq"]]},
+   {label:"Buy my own distiller", img:"img/distiller.jpg", links:[["Water distiller","https://amzn.to/4ybQ7Do"]]},
+ ]},
+ {id:"filling", title:"Filling equipment", hint:"Decide for the volume you have right now, not the volume you hope for.", opts:[
+   {label:"A pump filling machine (peristaltic)", img:"img/pump.jpg", links:[["Moonshan peristaltic filling machine (my Amazon link)","https://amzn.to/4jhaN8m"],["Hanchen peristaltic filling machine, backup if the first is out of stock (my Amazon link)","https://amzn.to/4zUf5rt"]]},
+   {label:"Small funnels, by hand", img:"img/funnels.jpg", links:[["Small funnels","https://go.shopmy.us/p-42490230"]]},
+   {label:"A manual filling machine (5 to 100 ml, w/ a hopper)", img:"img/manual-filler.jpg", links:[["VEVOR manual liquid filling machine (my Amazon link)","https://amzn.to/4e9V9bm"]]},
+   {label:"Glass measuring cups for mixing", img:"img/measuring-cups.jpg", links:[["Pyrex measuring cups (my ShopMy link)","https://go.shopmy.us/p-42489995"]]},
+ ]},
+ {id:"labels", title:"Labels", hint:"Remedy & potency, directions, your business name & contact at minimum. See the label slides.", opts:[
+   {label:"I'll design my own labels (a template)", links:[["Canva","https://www.canva.com"]]},
+   {label:"A label printer + blank labels", links:[["DYMO LabelManager (my Amazon link)","https://amzn.to/4dGrDdj"],["Brother P-touch PTD210 bundle (my Amazon link)","https://amzn.to/4imxHKt"]]},
+   {label:"A label printing service", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"Hire a designer & get a quote", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"]]},
+   {label:"I just want to buy small quantities of labels at a time", links:[["Sheet Labels","https://www.sheetlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"I want to buy labels in bulk", links:[["Wizard Labels","https://www.wizardlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"A label applicator tool, so labels go on straight", img:"img/label-applicator.jpg", links:[["The Label Ledge (my ShopMy link)","https://go.shopmy.us/p-42489870"]]},
+ ]},
+ {id:"dispensing", title:"Dispensing & shipping supplies", hint:"The stuff that gets a remedy from your hands to theirs.", opts:[
+   {label:"Eco-friendly mailers, boxes, tissue, bags & shipping labels", img:"img/ecoenclose.jpg", links:[["EcoEnclose: my referral link gets you $20 off","http://refs.ecoenclose.com/0TZFUpQI"]]},
+   {label:"A shipping scale & a way to print postage", img:"img/shipping-scale.jpg", links:[["Rollo shipping scale (my ShopMy link)","https://go.shopmy.us/p-42489581"],["Amazon Basics digital postal scale (my Amazon link)","https://amzn.to/4s9Ount"]]},
+   {label:"Remedy info cards or a little finishing touch", links:[["Staples","https://www.staples.com"],["Canva","https://www.canva.com"]]},
+   {label:"Stickers for sealing", links:[["Sticker Mule deals","https://www.stickermule.com/deals"],["Canva","https://www.canva.com"]]},
+ ]},
+ {id:"organize", title:"Remedy organization", hint:"How you'll find a remedy fast. Pick what matches how your brain works.", opts:[
+   {label:"Alphabetical, A to Z"},
+   {label:"By category (acutes, polychrests, organ remedies, Narayani, flower essences)"},
+   {label:"By potency"},
+   {label:"Drawers w/dividers", links:[["HAN SHENG expandable drawer organizers (my Amazon link)","https://amzn.to/4sprf9f"],["TINAMO wood drawer organizer (my Amazon link)","https://amzn.to/4zz10iT"]]},
+   {label:"Open shelving", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
+   {label:"A hard-shell organizer case (holds 120 bottles)", img:"img/organizer-case-120.jpg", links:[["120-bottle storage case (my ShopMy link)","https://go.shopmy.us/p-39888628"]]},
+   {label:"A remedy organization case (great for 30ml bottles!)", img:"img/organization-case.jpg", links:[["Remedy organization case (my ShopMy link)","https://go.shopmy.us/p-39888931"]]},
+   {label:"A spreadsheet or app to track inventory"},
+ ]},
+ {id:"storage", title:"Storage, organization & travel", hint:"Faraday cases when applicable, away from wifi routers & big EMF sources.", opts:[
+   {label:"Shelving, drawers or a cabinet for stock", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
+   {label:"Faraday cases", links:[["Faraday Defense triple-layer fabric bag (my Amazon link)","https://amzn.to/4ylFPj4"],["Faraday duffel bag (my Amazon link)","https://amzn.to/47hdRu3"]]},
+   {label:"Customized luxury cases in bulk", img:"img/travel-case.jpg", links:[["Royal Case","https://royalcase.com"]]},
+   {label:"Travel pouches for remedies", img:"img/travel-pouches.jpg", links:[["Travel pouches (my ShopMy link)","https://go.shopmy.us/p-39888855"]]},
+   {label:"Small storage bags for a handful of remedies", img:"img/storage-bags.jpg", links:[["Essential oil storage bags (my ShopMy link)","https://go.shopmy.us/p-39888944"]]},
+   {label:"A backup set of stock in a second location"},
+ ]},
+];
+// Extra resources: always printed at the end of the PDF, whatever they tick. Add a line per resource: [title, url, your note].
+const EXTRA_RESOURCES = [
+ ["Remedy Wraps by Inner Knowing Homeopathy","https://innerknowinghomeopathy.com/remedy-wraps","a great resource to help you get labels dialed as you set up your practice (she also can help make cap labels too!)"],
+ ["Sheet Labels","https://www.sheetlabels.com","for cap labels, can be a good website too."],
+ ["Lexie's Amazon storefront","https://a.co/d/07Lk3aMW","see additional dispensing supplies here."],
+ ["Lexie's ShopMy shop","https://shopmy.us/shop/harenholistics?Section_id=1716425&tab=collections","& more dispensing supplies in my ShopMy collections."],
+];
+// =====
+
+const sheet=document.getElementById('sheet');
+CATEGORIES.forEach(c=>{
+  const d=document.createElement('div'); d.className='cat';
+  d.innerHTML=`<div><h2>${c.title}</h2><div class="hint">${c.hint||''}</div></div><div class="opts">${c.opts.map((o,i)=>`<label class="opt"><input type="checkbox" data-cat="${c.id}" data-i="${i}"><span>${o.label}${o.mine?`<span class="mine">${o.mine}</span>`:''}${o.img?`<img class="thumb" src="${o.img}" alt="" onerror="this.remove()">`:''}</span></label>`).join('')}</div>`;
+  sheet.appendChild(d);
+});
+document.getElementById('clear').onclick=()=>{document.querySelectorAll('input[type=checkbox]').forEach(b=>b.checked=false);document.getElementById('msg').textContent='';};
+
+document.getElementById('go').onclick=()=>{
+  const picked=CATEGORIES.map(c=>({cat:c,opts:c.opts.filter((o,i)=>document.querySelector(`input[data-cat="${c.id}"][data-i="${i}"]`).checked)})).filter(x=>x.opts.length);
+  const msg=document.getElementById('msg');
+  if(!picked.length){msg.textContent='Tick at least one thing first!';return;}
+  msg.textContent='';
+  if(!window.jspdf){window.print();return;}
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'letter'});
+  const W=612,M=54; let y=M;
+  const who=document.getElementById('who').value.trim();
+  doc.setFillColor(10,11,9); doc.rect(0,0,W,70,'F');
+  doc.setTextColor(194,165,64); doc.setFont('times','normal'); doc.setFontSize(18); doc.text('HAREN HOLISTICS',M,42);
+  doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(207,193,171); doc.text('THE PRACTITIONER BLUEPRINT  ·  MODULE 3',W-M,42,{align:'right'});
+  y=104; doc.setTextColor(10,11,9); doc.setFont('times','bold'); doc.setFontSize(22); doc.text((who?who+"'s":'My')+' remedy dispensary supplier list',M,y); y+=18;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(106,107,101);
+  doc.text(new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'  ·  Your picks from the Module 3 checklist, with direct links to the suppliers I actually use.',M,y); y+=24;
+  const line=()=>{doc.setDrawColor(207,193,171); doc.line(M,y,W-M,y); y+=14;};
+  const need=(h)=>{ if(y+h>792-M){doc.addPage(); y=M;} };
+  picked.forEach(({cat,opts})=>{
+    need(90); line();
+    doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text(cat.title,M,y); y+=16;
+    opts.forEach(o=>{
+      need(30);
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(10,11,9);
+      doc.setDrawColor(154,128,48); doc.rect(M,y-8,9,9); doc.setDrawColor(10,11,9); doc.line(M+2,y-3.5,M+4,y-1.5); doc.line(M+4,y-1.5,M+7.5,y-6.5);
+      const lab=doc.splitTextToSize(o.label+(o.mine?'   ('+o.mine+')':''),W-2*M-18); doc.text(lab,M+16,y); y+=lab.length*12;
+      (o.links||[]).forEach(([t,u])=>{
+        need(14); doc.setFontSize(9.5);
+        if(u){doc.setTextColor(154,128,48); doc.textWithLink('> '+t,M+16,y,{url:u}); doc.setTextColor(106,107,101); const ut=doc.splitTextToSize(u,W-2*M-16-doc.getTextWidth('> '+t)-10); doc.text(ut[0],M+16+doc.getTextWidth('> '+t)+8,y); if(ut.length>1){y+=11; doc.text(ut.slice(1),M+16,y); y+=(ut.length-2)*11;}}
+        else{doc.setTextColor(178,110,66); doc.text('> '+t+': link coming, ask in the community space',M+16,y);}
+        y+=13;
+      });
+      y+=4;
+    });
+    y+=4;
+  });
+  if(EXTRA_RESOURCES.length){
+    need(90); line();
+    doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text('Additional resources for setting up your remedy dispensary',M,y); y+=16;
+    EXTRA_RESOURCES.forEach(([t,u,n])=>{
+      need(40); doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(154,128,48); doc.textWithLink(t,M,y,{url:u}); y+=12;
+      doc.setFontSize(9.5); doc.setTextColor(10,11,9); const nt=doc.splitTextToSize(n,W-2*M); doc.text(nt,M,y); y+=nt.length*11;
+      doc.setTextColor(106,107,101); const ut=doc.splitTextToSize(u,W-2*M); doc.text(ut,M,y); y+=ut.length*11+6;
+    });
+    y+=4;
+  }
+  need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(106,107,101);
+  doc.text(doc.splitTextToSize('US links for now. Outside the US, ask in the community space & I will point you to pharmacies & dispensaries in your region. Some links are affiliate links. If you dispense, check product liability with your insurer. Choose what works for you now in this season & adjust as you go. Cheers to a thriving practice, Lexie',W-2*M),M,y);
+  doc.save('My remedy dispensary supplier list.pdf');
+};
+</script>
+</body>
+</html>
