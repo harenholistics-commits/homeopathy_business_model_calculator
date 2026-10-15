@@ -192,6 +192,14 @@ document.getElementById('go').onclick=()=>{
     });
     y+=4;
   }
+  // Notes section: a titled block of ruled lines for their own thoughts, products & considerations.
+  need(200); line();
+  doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text('My notes',M,y); y+=14;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(106,107,101);
+  doc.text('Your own thoughts, additional products you want to look into & anything else to consider as you set up.',M,y); y+=18;
+  doc.setDrawColor(207,193,171);
+  for(let i=0;i<10;i++){ need(22); doc.line(M,y,W-M,y); y+=22; }
+  y+=6;
   need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(106,107,101);
   doc.text(doc.splitTextToSize('Some links are affiliate links. If you dispense, check product liability with your insurer. Choose what works for you now in this season & adjust as you go.',W-2*M),M,y);
   doc.save('My remedy dispensary supplier list.pdf');
