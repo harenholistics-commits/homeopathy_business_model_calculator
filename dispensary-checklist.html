@@ -55,7 +55,7 @@ footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1r
   <button class="ghost" id="clear">Clear</button>
 </div>
 <div id="msg"></div>
-<p class="note">US links for now. If you're outside the US, ask in the community space & I'll point you to pharmacies & dispensaries in your region. Some links are affiliate links; none of that changes what I'd actually tell you to buy.</p>
+<p class="note">Some links are affiliate links; none of that changes what I'd actually tell you to buy.</p>
 </main>
 <footer>HAREN HOLISTICS · CHEERS TO A THRIVING PRACTICE</footer>
 
@@ -71,12 +71,12 @@ const CATEGORIES = [
  {id:"bottles", title:"Bottles & caps", hint:"Dripolators have the flat cap; squishy droppers have the rubber top.", opts:[
    {label:"Dripolators (flat caps)", img:"img/dripolator.jpg", links:[["Bulk Apothecary amber dripolators","https://www.bulkapothecary.com/glass-amber-essential-oil-bottles/"],["Specialty Bottle euro droppers","https://www.specialtybottle.com/glass-bottles/european-dropper"],["UPC Bottles, wholesale amber bottles","https://www.upc-bottles.com/empty-essential-oil-bottles-wholesale/"]]},
    {label:"Squishy dropper bottles", img:"img/squishy-dropper.jpg", links:[["Uline amber glass dropper bottles","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"],["UPC Bottles, wholesale amber bottles","https://www.upc-bottles.com/empty-essential-oil-bottles-wholesale/"]]},
-   {label:"Pillule containers", links:[["Uline 5 ml amber glass vials","https://www.uline.com/Product/Detail/S-25275A/Labware/Glass-Vials-5-mL-Amber"],["Specialty Bottle 2 dram vials","https://www.specialtybottle.com/glass-bottles/vials/2dram-va2"],["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
+   {label:"Pillule containers", img:"img/pillule-vials-uline.jpg", links:[["Uline 5 ml amber glass vials","https://www.uline.com/Product/Detail/S-25275A/Labware/Glass-Vials-5-mL-Amber"],["Specialty Bottle 2 dram vials","https://www.specialtybottle.com/glass-bottles/vials/2dram-va2"],["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
  ]},
  {id:"size", title:"Size", hint:"Pick what fits the way you'll dispense.", opts:[
    {label:"15 ml", img:"img/15ml.jpg", links:[["Uline 15 ml","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"],["Bulk Apothecary 15 ml","https://www.bulkapothecary.com/glass-amber-essential-oil-bottles/"]]},
    {label:"30 ml", img:"img/30ml.jpg", links:[["Uline 30 ml","https://www.uline.com/BL_510/Glass-Dropper-Bottles?keywords=amber+glass+bottle"]]},
-   {label:"Sugar pillule containers", links:[["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
+   {label:"Sugar pillule containers", img:"img/pillule-vials-vialstore.jpg", links:[["The Vial Store 16 dram amber vials, reversible cap (box of 230)","https://thevialstore.com/products/16-dram-reversible-cap-vials-amber-230-units-box"]]},
  ]},
  {id:"alcohol", title:"Alcohol", hint:"Comes down to personal preference & your clients' taste.", opts:[
    {label:"Organic alcohol", img:"img/organic-alcohol.jpg", links:[["Organic alcohol (my link)","https://go.refrl.co/r/cXXIjLzVRZ6Z"]]},
@@ -91,15 +91,18 @@ const CATEGORIES = [
    {label:"A pump filling machine (peristaltic)", img:"img/pump.jpg", links:[["Moonshan peristaltic filling machine (my Amazon link)","https://amzn.to/4jhaN8m"],["Hanchen peristaltic filling machine, backup if the first is out of stock (my Amazon link)","https://amzn.to/4zUf5rt"]]},
    {label:"Small funnels, by hand", img:"img/funnels.jpg", links:[["Small funnels","https://go.shopmy.us/p-42490230"]]},
    {label:"A manual filling machine (5 to 100 ml, w/ a hopper)", img:"img/manual-filler.jpg", links:[["VEVOR manual liquid filling machine (my Amazon link)","https://amzn.to/4e9V9bm"]]},
+   {label:"Nitrile gloves", img:"img/nitrile-gloves.jpg", links:[["Supmedic nitrile gloves, powder-free (my Amazon link)","https://amzn.to/4yWwJuA"]]},
    {label:"Glass measuring cups for mixing", img:"img/measuring-cups.jpg", links:[["Pyrex measuring cups (my ShopMy link)","https://go.shopmy.us/p-42489995"]]},
  ]},
  {id:"labels", title:"Labels", hint:"Remedy & potency, directions, your business name & contact at minimum. See the label slides.", opts:[
    {label:"I'll design my own labels (a template)", links:[["Canva","https://www.canva.com"]]},
-   {label:"A label printer + blank labels", links:[["DYMO LabelManager (my Amazon link)","https://amzn.to/4dGrDdj"],["Brother P-touch PTD210 bundle (my Amazon link)","https://amzn.to/4imxHKt"]]},
-   {label:"A label printing service", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
-   {label:"Hire a designer & get a quote", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"]]},
-   {label:"I just want to buy small quantities of labels at a time", links:[["Sheet Labels","https://www.sheetlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
-   {label:"I want to buy labels in bulk", links:[["Wizard Labels","https://www.wizardlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"A label printer + blank labels", img:"img/label-printer.jpg", links:[["DYMO LabelManager (my Amazon link)","https://amzn.to/4dGrDdj"],["Brother P-touch PTD210 bundle (my Amazon link)","https://amzn.to/4imxHKt"]]},
+   {label:"A label printing service", img:"img/remedy-wraps.jpg", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"Hire a designer & get a quote", img:"img/wizard-labels.jpg", links:[["Wizard Labels design services","https://www.wizardlabels.com/design-services/"]]},
+   {label:"I just want to buy small quantities of labels at a time", img:"img/sheet-labels.jpg", links:[["Sheet Labels","https://www.sheetlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"I want to buy labels in bulk", img:"img/wizard-labels.jpg", links:[["Wizard Labels","https://www.wizardlabels.com"],["Remedy Wraps (Instagram)","https://www.instagram.com/remedywraps/"]]},
+   {label:"Dripolator cap labels (remedy name on the top of the cap)", img:"img/remedy-wraps.jpg", links:[["Sheet Labels (round cap labels)","https://www.sheetlabels.com"],["Remedy Wraps, she can make cap labels too","https://innerknowinghomeopathy.com/remedy-wraps"]]},
+   {label:"Label organization (a way to keep printed labels sorted A to Z)", img:"img/label-organizer.jpg", links:[["A to Z accordion file organizer, 21 pockets (my Amazon link)","https://amzn.to/4jhfoYa"],["BALEINE hanging file organizer box w/ lid (my Amazon link)","https://amzn.to/4zpTBSI"]]},
    {label:"A label applicator tool, so labels go on straight", img:"img/label-applicator.jpg", links:[["The Label Ledge (my ShopMy link)","https://go.shopmy.us/p-42489870"]]},
  ]},
  {id:"dispensing", title:"Dispensing & shipping supplies", hint:"The stuff that gets a remedy from your hands to theirs.", opts:[
@@ -112,15 +115,15 @@ const CATEGORIES = [
    {label:"Alphabetical, A to Z"},
    {label:"By category (acutes, polychrests, organ remedies, Narayani, flower essences)"},
    {label:"By potency"},
-   {label:"Drawers w/dividers", links:[["HAN SHENG expandable drawer organizers (my Amazon link)","https://amzn.to/4sprf9f"],["TINAMO wood drawer organizer (my Amazon link)","https://amzn.to/4zz10iT"]]},
-   {label:"Open shelving", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
+   {label:"Drawers w/dividers", img:"img/drawer-organizers.jpg", links:[["HAN SHENG expandable drawer organizers (my Amazon link)","https://amzn.to/4sprf9f"],["TINAMO wood drawer organizer (my Amazon link)","https://amzn.to/4zz10iT"]]},
+   {label:"Open shelving", img:"img/wire-shelving.jpg", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
    {label:"A hard-shell organizer case (holds 120 bottles)", img:"img/organizer-case-120.jpg", links:[["120-bottle storage case (my ShopMy link)","https://go.shopmy.us/p-39888628"]]},
    {label:"A remedy organization case (great for 30ml bottles!)", img:"img/organization-case.jpg", links:[["Remedy organization case (my ShopMy link)","https://go.shopmy.us/p-39888931"]]},
    {label:"A spreadsheet or app to track inventory"},
  ]},
- {id:"storage", title:"Storage, organization & travel", hint:"Faraday cases when applicable, away from wifi routers & big EMF sources.", opts:[
-   {label:"Shelving, drawers or a cabinet for stock", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
-   {label:"Faraday cases", links:[["Faraday Defense triple-layer fabric bag (my Amazon link)","https://amzn.to/4ylFPj4"],["Faraday duffel bag (my Amazon link)","https://amzn.to/47hdRu3"]]},
+ {id:"storage", title:"Storage, organization & travel", hint:"", opts:[
+   {label:"Shelving, drawers or a cabinet for stock", img:"img/wire-shelving.jpg", links:[["Uline black wire shelving unit, 36 x 18 x 54","https://www.uline.com/Product/Detail/H-1748-54/Black-Wire-Shelving/Black-Wire-Shelving-Unit-36-x-18-x-54"]]},
+   {label:"Faraday cases", img:"img/faraday-bag.jpg", links:[["Faraday Defense triple-layer fabric bag (my Amazon link)","https://amzn.to/4ylFPj4"],["Faraday duffel bag (my Amazon link)","https://amzn.to/47hdRu3"]]},
    {label:"Customized luxury cases in bulk", img:"img/travel-case.jpg", links:[["Royal Case","https://royalcase.com"]]},
    {label:"Travel pouches for remedies", img:"img/travel-pouches.jpg", links:[["Travel pouches (my ShopMy link)","https://go.shopmy.us/p-39888855"]]},
    {label:"Small storage bags for a handful of remedies", img:"img/storage-bags.jpg", links:[["Essential oil storage bags (my ShopMy link)","https://go.shopmy.us/p-39888944"]]},
@@ -190,7 +193,7 @@ document.getElementById('go').onclick=()=>{
     y+=4;
   }
   need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(106,107,101);
-  doc.text(doc.splitTextToSize('US links for now. Outside the US, ask in the community space & I will point you to pharmacies & dispensaries in your region. Some links are affiliate links. If you dispense, check product liability with your insurer. Choose what works for you now in this season & adjust as you go. Cheers to a thriving practice, Lexie',W-2*M),M,y);
+  doc.text(doc.splitTextToSize('Some links are affiliate links. If you dispense, check product liability with your insurer. Choose what works for you now in this season & adjust as you go. Cheers to a thriving practice, Lexie',W-2*M),M,y);
   doc.save('My remedy dispensary supplier list.pdf');
 };
 </script>
