@@ -161,7 +161,7 @@ document.getElementById('go').onclick=()=>{
   doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(207,193,171); doc.text('THE PRACTITIONER BLUEPRINT  ·  MODULE 3',W-M,42,{align:'right'});
   y=104; doc.setTextColor(10,11,9); doc.setFont('times','bold'); doc.setFontSize(22); doc.text((who?who+"'s":'My')+' remedy dispensary supplier list',M,y); y+=18;
   doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(106,107,101);
-  doc.text(new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'  ·  Your picks from the Module 3 checklist, with direct links to the suppliers I actually use.',M,y); y+=24;
+  doc.text(new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'  ·  Your picks from the Module 3 checklist, with direct links Haren Holistics uses & recommends.',M,y); y+=24;
   const line=()=>{doc.setDrawColor(207,193,171); doc.line(M,y,W-M,y); y+=14;};
   const need=(h)=>{ if(y+h>792-M){doc.addPage(); y=M;} };
   picked.forEach(({cat,opts})=>{
