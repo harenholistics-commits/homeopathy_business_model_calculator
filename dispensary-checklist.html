@@ -156,6 +156,9 @@ document.getElementById('go').onclick=()=>{
   if(!picked.length){msg.textContent='Tick at least one thing first!';return;}
   msg.textContent='';
   if(!window.jspdf){window.print();return;}
+  // Open the new tab right away (inside the click, so browsers allow it); the PDF is loaded into it below.
+  const tab=window.open('','_blank');
+  if(tab){ tab.document.write('<title>My remedy dispensary supplier list</title><p style="font-family:sans-serif;padding:2rem">Building your list . . .</p>'); }
   const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'letter'});
   const W=612,M=54; let y=M;
   const who=document.getElementById('who').value.trim();
@@ -205,7 +208,10 @@ document.getElementById('go').onclick=()=>{
   y+=6;
   need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(106,107,101);
   doc.text(doc.splitTextToSize('Some links are affiliate links. If you dispense, check product liability with your insurer. Choose what works for you now in this season & adjust as you go.',W-2*M),M,y);
-  doc.save('My remedy dispensary supplier list.pdf');
+  // Show the PDF in the new tab (no download prompt; the viewer has its own download button) & offer a download link here.
+  const blob=doc.output('blob'); const url=URL.createObjectURL(blob);
+  if(tab){ tab.location.href=url; }
+  msg.innerHTML='Your list opened in a new tab. '+(tab?'':'(If it did not, allow pop-ups for this page & submit again.) ')+'<a href="'+url+'" download="My remedy dispensary supplier list.pdf">Download the PDF</a> to keep it.';
 };
 </script>
 </body>
