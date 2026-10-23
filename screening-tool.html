@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build My Screening Tool — Haren Holistics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--black:#0a0b09;--white:#fff;--cream:#efe9db;--tan:#cfc1ab;--gray:#6a6b65;--slate:#354449;--warm-gray:#a89985;--gold:#c2a540;--gold-dark:#9a8030;--gold-lite:#f5edcf;--clay:#b26e42;--border:#cfc1ab;--radius:8px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--cream);color:var(--black)}
+.site-header{background:var(--black);padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gold)}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--gold);letter-spacing:.06em}
+.tag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tan)}
+main{max-width:1040px;margin:0 auto;padding:2rem 1.25rem 4rem}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;margin:0 0 .4rem;line-height:1.15}
+.lead{color:var(--gray);font-size:.95rem;line-height:1.55;max-width:760px;margin:0 0 1.2rem}
+.quote{border-left:3px solid var(--gold);padding:.4rem .9rem;margin:0 0 1.6rem;font-size:.9rem;line-height:1.55;color:var(--black);max-width:760px;background:var(--white);border-radius:0 6px 6px 0}
+.sheet{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem 1rem;margin-bottom:1.2rem}
+.sheet h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;margin:0 0 .2rem;line-height:1.2}
+.sheet .hint{font-size:.8rem;color:var(--gray);line-height:1.5;margin:0 0 1rem;max-width:760px}
+.field{margin:0 0 .9rem}
+.field label.t{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem}
+input[type=text],textarea,select{font-family:'Inter',sans-serif;font-size:.88rem;padding:.5rem .65rem;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--black)}
+textarea{min-height:78px;line-height:1.45;resize:vertical}
+.q{display:grid;grid-template-columns:28px 1fr;gap:.6rem;padding:.9rem 0;border-top:1px solid var(--border)}
+.q:first-of-type{border-top:0}
+.q.off .body{opacity:.45}
+.q input.on{appearance:none;width:20px;height:20px;min-width:20px;border:1.5px solid var(--gold-dark);border-radius:4px;background:#fff;margin-top:6px;display:grid;place-content:center;cursor:pointer}
+.q input.on:checked{background:var(--gold);border-color:var(--gold-dark)}
+.q input.on:checked::after{content:"";width:10px;height:6px;border-left:2.5px solid #0a0b09;border-bottom:2.5px solid #0a0b09;transform:rotate(-45deg) translate(1px,-1px)}
+.q textarea.qt{min-height:52px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin-top:.45rem;font-size:.8rem;color:var(--gray)}
+.row select{width:auto;font-size:.8rem;padding:.35rem .5rem}
+.row label{display:flex;align-items:center;gap:.35rem;cursor:pointer}
+.row input[type=checkbox]{accent-color:var(--gold-dark);width:15px;height:15px}
+.choices{margin-top:.45rem}
+.choices textarea{min-height:56px;font-size:.82rem}
+.why{font-size:.78rem;color:var(--gray);line-height:1.5;margin-top:.5rem;padding:.45rem .7rem;background:var(--gold-lite);border-radius:6px}
+.why b{color:var(--gold-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.68rem;margin-right:.3rem}
+.q .del{background:none;border:0;color:var(--clay);font-size:.75rem;cursor:pointer;padding:0;margin-left:auto}
+button.add{background:transparent;color:var(--gold-dark);border:1px dashed var(--gold-dark);border-radius:6px;padding:.6rem 1rem;font-family:'Inter',sans-serif;font-size:.82rem;cursor:pointer;margin-top:.4rem}
+button.add:hover{background:var(--gold-lite)}
+.submit-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.2rem}
+button.go{background:var(--black);color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:.85rem 1.7rem;font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+button.go:hover{background:var(--slate)}
+button.ghost{background:transparent;color:var(--gray);border:1px solid var(--border);border-radius:999px;padding:.7rem 1.2rem;font-size:.78rem;cursor:pointer}
+.note{font-size:.76rem;color:var(--gray);line-height:1.5}
+#msg{font-size:.82rem;color:var(--clay);min-height:1.2em;margin-top:.6rem}
+#count{font-size:.76rem;color:var(--gray)}
+#count.over{color:var(--clay);font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1rem;letter-spacing:.06em}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header"><span class="brand">HAREN HOLISTICS</span><span class="tag">The Practitioner Blueprint · Module 4</span></header>
+<main>
+<h1>Build my screening tool</h1>
+<p class="lead">This is my exact screening form, the one you watched me walk through in the Loom, laid out so you can make it yours. Keep the questions you want, reword any of them, switch off the ones that don't fit how you practice &amp; add your own. Hit the button at the bottom &amp; you'll get a copy-&amp;-paste block that Typeform turns into a form for you, plus the steps to do it.</p>
+<div class="quote">This is my screening tool. This is to make sure that all the clients that apply to work with me are really in alignment with who I want to work with, that we're going to be a good fit for each other. I used to offer full-blown discovery calls. Here's the thing, people would not show up to these discovery calls. So I just had a lot of wasted time when I was doing discovery calls &amp; that's why I don't do that anymore. So I put this screening tool in here in place of it.</div>
+
+<div class="sheet">
+  <h2>1. The basics</h2>
+  <p class="hint">Used for the form title &amp; the booking screen at the end. Both optional.</p>
+  <div class="two">
+    <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. Haren Holistics"></div>
+    <div class="field"><label class="t">Your booking link (where they go after they pass)</label><input type="text" id="book" placeholder="e.g. your Practice Better booking page"></div>
+  </div>
+</div>
+
+<div class="sheet">
+  <h2>2. What they read before the questions</h2>
+  <p class="hint">Mine, with my numbers in [brackets] for you to swap. Say it your way. Delete anything you don't offer.</p>
+  <div class="field"><label class="t">Welcome screen</label><textarea id="welcome">Hi there,
+
+Thank you for your interest in having your chronic case taken via homeopathy.</textarea></div>
+  <div class="field"><label class="t">Statement 1: what this is &amp; isn't</label><textarea id="intro1" style="min-height:120px">You must be here because you are interested in having your case taken for homeopathy!
+
+A few things before we get started:
+
+If this is an emergency, please seek local medical care.
+
+At [Your practice name], we do not offer medical advice, we simply offer homeopathic insight &amp; options that you can take at your discretion to support your body in achieving balance.
+
+All consults are done virtually via Zoom.</textarea></div>
+  <div class="field"><label class="t">Statement 2: the investment</label><textarea id="intro2" style="min-height:120px">[Your name]'s initial consultations are currently $[price] &amp; include:
+
+A [length]-min virtual consultation &amp; chat support through the [your client portal] portal.
+
+Prescribed remedies are $[low]-$[high] each - you can expect a typical initial prescription of 1-3 remedies.
+
+A first initial follow-up is required at the 6-8 week mark. Additional follow ups are recommended to be booked at 8 week intervals beyond that &amp; are $[follow-up price]</textarea></div>
+</div>
+
+<div class="sheet">
+  <h2>3. My screening questions</h2>
+  <p class="hint">Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the form before they can book (you add that one logic jump inside Typeform after the import, the steps are on your results page).</p>
+  <div id="mine"></div>
+</div>
+
+<div class="sheet">
+  <h2>4. Your own screening questions</h2>
+  <p class="hint">What do you need to know before someone sits in front of you? Pets only? Kids? A certain condition you focus on? Budget? Timezone? Add as many as you like. Nobody but you sees this page.</p>
+  <div id="own"></div>
+  <button class="add" id="addq">+ Add a question</button>
+</div>
+
+<div class="sheet">
+  <h2>5. What they see at the end</h2>
+  <p class="hint">Two endings: one for the people who pass &amp; one for the people who don't.</p>
+  <div class="field"><label class="t">They passed</label><textarea id="pass">If you've made it this far, it seems like it will be great a fit for us to work together!
+
+Book your initial consultation below!</textarea></div>
+  <div class="field"><label class="t">Not a fit (shown when a "not a fit" answer is picked)</label><textarea id="fail" placeholder="What they see if they're not a fit right now. Leave blank &amp; Typeform's default ending is used."></textarea></div>
+</div>
+
+<div class="submit-row">
+  <button class="go" id="go">Build my screening tool</button>
+  <button class="ghost" id="clear">Reset to my original</button>
+  <span id="count"></span>
+</div>
+<div id="msg"></div>
+<p class="note">Typeform's "Import questions" box takes up to 6,000 characters. The counter above tells you where you're at. A free Typeform account allows 10 questions per form &amp; 10 responses a month, so if you keep every question &amp; add your own, you may need a paid plan (or trim).</p>
+</main>
+<footer>HAREN HOLISTICS</footer>
+
+<script>
+// ===== EDIT HERE. Lexie's questions in her order. why = her words from the Module 4 Loom. kick = the answer that ends the form.
+const TYPES={yn:'Yes / No',short:'Short answer',long:'Long answer',mc:'Multiple choice',contact:'Phone & email',email:'Email only',number:'Number',date:'Date'};
+const MINE=[
+ {t:'yn',q:'Please be honest with us & yourself, if you were prescribed 1-3 remedies for a 6-8 week period - do you believe you could be at least 80% consistent in taking them on a regular basis, per protocol?',kick:'No',why:'This is one of my most important questions. I really want people to answer this honestly. I can see the people that have started this form & then stopped at this exact page because they don\'t actually think they can be consistent with this. And that\'s perfect. That means the tool is working & doing exactly what I want it to do. If they answer no, it automatically kicks them out of the Typeform. They can\'t book with me.'},
+ {t:'short',q:'Please confirm your full name, and if this is for a child (or pet), please include both your name (caregiver) & the child (or pet\'s) name (& pet type i.e. dog or horse, etc). Example: Lexie Haren (adult) - Motsie (pet), Dog',req:true},
+ {t:'contact',q:'Confirm phone number (with country code) & email.',req:true},
+ {t:'short',q:'Are you located in the US, Canada or Australia?',req:true,kick:'No',why:'I know I have homeopaths in all of these places that I can get remedies shipped directly to my clients that way. I have had clients in other countries before, like in Greece, for example. They never got their homeopathic remedies. So I just don\'t work with people in other countries outside of the U.S., Canada & Australia because I just can\'t guarantee that I\'m going to be able to get them remedies. If they were to enter no on that one, it would kick them out. Not a good fit right now. Refer on.'},
+ {t:'short',q:'What is the patient\'s age & date of birth?',req:true},
+ {t:'long',q:'Please explain your main health conditions & concerns below.',req:true},
+ {t:'long',q:'How did you hear about us and find our services?',req:true},
+ {t:'yn',q:'Do you have access to reliable internet connection, video & audio?',req:true,kick:'No'}
+];
+// =====
+
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function qRow(d,own,idx){
+  const el=document.createElement('div'); el.className='q'+(d.on===false?' off':'');
+  const typeOpts=Object.entries(TYPES).map(([k,v])=>`<option value="${k}"${d.t===k?' selected':''}>${v}</option>`).join('');
+  el.innerHTML=`<input type="checkbox" class="on"${d.on===false?'':' checked'} title="Include this question">
+  <div class="body">
+    <textarea class="qt" placeholder="${own?'Type your question':''}">${esc(d.q||'')}</textarea>
+    <div class="row">
+      <label>Type <select class="type">${typeOpts}</select></label>
+      <label><input type="checkbox" class="req"${d.req?' checked':''}> Required</label>
+      <label class="kickwrap">Not a fit if they answer <select class="kick"><option value="">(no kick-out)</option><option${d.kick==='No'?' selected':''}>No</option><option${d.kick==='Yes'?' selected':''}>Yes</option></select></label>
+      ${own?'<button class="del" type="button">remove</button>':''}
+    </div>
+    <div class="choices" style="display:${d.t==='mc'?'block':'none'}"><textarea class="ch" placeholder="One answer choice per line">${esc(d.choices||'')}</textarea></div>
+    ${d.why?`<div class="why"><b>Why I ask this</b>${esc(d.why)}</div>`:''}
+  </div>`;
+  const on=el.querySelector('.on'); on.onchange=()=>el.classList.toggle('off',!on.checked);
+  const type=el.querySelector('.type'); const ch=el.querySelector('.choices'); const kw=el.querySelector('.kickwrap');
+  const sync=()=>{ ch.style.display=type.value==='mc'?'block':'none'; kw.style.display=(type.value==='yn'||type.value==='mc'||type.value==='short')?'flex':'none'; };
+  type.onchange=sync; sync();
+  if(own){ el.querySelector('.del').onclick=()=>{ el.remove(); update(); }; }
+  el.addEventListener('input',update); el.addEventListener('change',update);
+  return el;
+}
+function build(){
+  const mine=document.getElementById('mine'); mine.innerHTML=''; MINE.forEach((d,i)=>mine.appendChild(qRow(d,false,i)));
+  const own=document.getElementById('own'); own.innerHTML=''; own.appendChild(qRow({t:'yn',q:''},true)); own.appendChild(qRow({t:'short',q:''},true));
+}
+document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to my original form?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('book').value=''; build(); update(); } };
+
+function collect(){
+  const v=id=>document.getElementById(id).value.trim();
+  const qs=[];
+  document.querySelectorAll('#mine .q, #own .q').forEach(el=>{
+    if(!el.querySelector('.on').checked) return;
+    const q=el.querySelector('.qt').value.trim(); if(!q) return;
+    const t=el.querySelector('.type').value;
+    const kick=(t==='yn'||t==='mc'||t==='short')?el.querySelector('.kick').value:'';
+    const choices=t==='mc'?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
+    qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
+  });
+  return {who:v('who'),book:v('book'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+}
+function pasteText(s){
+  const title=(s.who?s.who+' ':'')+'Homeopathic Case Taking Application';
+  let out='Form title: '+title+'\n\n';
+  if(s.welcome) out+='Welcome screen:\n'+s.welcome+'\n\n';
+  if(s.intro1) out+='Statement (no answer needed):\n'+s.intro1+'\n\n';
+  if(s.intro2) out+='Statement (no answer needed):\n'+s.intro2+'\n\n';
+  s.qs.forEach((x,i)=>{
+    let line=(i+1)+'. '+x.q;
+    const tl=x.t==='contact'?'Contact info: phone number & email':TYPES[x.t];
+    line+='  ['+tl+(x.req?', required':'')+']';
+    out+=line+'\n';
+    if(x.t==='yn') out+='- Yes\n- No\n';
+    if(x.t==='mc') x.choices.forEach(c=>out+='- '+c+'\n');
+    out+='\n';
+  });
+  out+='Ending screen (they passed):\n'+(s.pass||'')+(s.book?'\n\nBooking link: '+s.book:'')+'\n';
+  if(s.fail) out+='\nEnding screen (not a fit):\n'+s.fail+'\n';
+  return out.replace(/&amp;/g,'&');
+}
+function update(){
+  const txt=pasteText(collect()); const c=document.getElementById('count'); c.textContent=txt.length.toLocaleString()+' / 6,000 characters'; c.classList.toggle('over',txt.length>6000);
+}
+['who','book','welcome','intro1','intro2','pass','fail'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+build(); update();
+
+document.getElementById('go').onclick=()=>{
+  const s=collect(); const msg=document.getElementById('msg');
+  if(!s.qs.length){ msg.textContent='Keep or add at least one question first!'; return; }
+  msg.textContent='';
+  const txt=pasteText(s);
+  const kicks=s.qs.map((x,i)=>x.kick?{n:i+1,q:x.q,a:x.kick}:null).filter(Boolean);
+  const title=(s.who?s.who+"'s":'My')+' screening tool';
+  const tab=window.open('','_blank');
+  if(tab){ tab.document.write('<title>'+esc(title)+'</title><p style="font-family:sans-serif;padding:2rem">Building your screening tool . . .</p>'); }
+  // ---- PDF (plan + paste block) ----
+  let url='';
+  if(window.jspdf){
+    const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'letter'}); const W=612,M=54; let y=M;
+    doc.setFillColor(10,11,9); doc.rect(0,0,W,70,'F'); doc.setTextColor(194,165,64); doc.setFont('times','normal'); doc.setFontSize(18); doc.text('HAREN HOLISTICS',M,42);
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(207,193,171); doc.text('THE PRACTITIONER BLUEPRINT  ·  MODULE 4',W-M,42,{align:'right'});
+    y=104; doc.setTextColor(10,11,9); doc.setFont('times','bold'); doc.setFontSize(22); doc.text(title,M,y); y+=18;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(106,107,101); doc.text(new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'  ·  '+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s'),M,y); y+=22;
+    const need=h=>{ if(y+h>792-M){doc.addPage(); y=M;} };
+    const line=()=>{doc.setDrawColor(207,193,171); doc.line(M,y,W-M,y); y+=14;};
+    const H=t=>{need(40); line(); doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text(t,M,y); y+=16;};
+    const P=(t,sz,col)=>{ doc.setFont('helvetica','normal'); doc.setFontSize(sz||10); doc.setTextColor.apply(doc,col||[10,11,9]); const ls=doc.splitTextToSize(t,W-2*M); ls.forEach(l=>{need(14); doc.text(l,M,y); y+=(sz||10)*1.3;}); y+=4; };
+    H('How to turn this into your Typeform');
+    ['1. Log in to Typeform & click + Create a new form.','2. Choose Import questions.','3. Copy everything in the "paste block" below & paste it into the box. Click Import questions & give the AI a moment.','4. Check each question\'s type & answer choices. Fix anything it guessed wrong.','5. Add the kick-out logic (next section), then your two endings & your booking link.','6. Fill it out yourself as a fake client, start to finish, before you put it on your website.'].forEach(t=>P(t,10));
+    if(kicks.length){ H('Kick-out logic to add in Typeform'); P('In Typeform, open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues to the next question.',9.5,[106,107,101]); kicks.forEach(k=>P('Q'+k.n+'  if they answer "'+k.a+'"  ->  not a fit ending.   '+k.q,10)); }
+    H('Paste block (copy all of this into Typeform\'s Import questions box)');
+    doc.setFont('courier','normal'); doc.setFontSize(8.5); doc.setTextColor(10,11,9);
+    txt.split('\n').forEach(raw=>{ const ls=raw===''?['']:doc.splitTextToSize(raw,W-2*M); ls.forEach(l=>{need(12); doc.text(l,M,y); y+=11;}); });
+    y+=10; need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(10,11,9);
+    P('I have found once I set up the screening tool & then this onboarding course that all of my clients I\'ve been getting in my pipeline have been far, far more aligned, & they are really understanding of what\'s involved with the process. Bring any questions you have to the community space.',10);
+    url=URL.createObjectURL(doc.output('blob'));
+  }
+  const fname=title+'.pdf';
+  let html='<!doctype html><html><head><meta charset="utf-8"><title>'+esc(title)+'</title><meta name="viewport" content="width=device-width,initial-scale=1">'+
+   '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'+
+   '<style>body{margin:0;font-family:Inter,Helvetica,Arial,sans-serif;background:#efe9db;color:#0a0b09}.bar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.2rem;background:#0a0b09;color:#cfc1ab;font-size:14px;border-bottom:1px solid #c2a540}.brand{color:#c2a540;font-family:Georgia,serif;font-size:16px;letter-spacing:.06em}.dl{background:#c2a540;color:#0a0b09;text-decoration:none;font-weight:700;padding:.55rem 1.1rem;border-radius:999px}main{max-width:800px;margin:0 auto;padding:1.6rem 1.2rem 4rem}h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:2rem;font-weight:600;margin:0 0 .2rem}.sub{color:#6a6b65;font-size:.9rem;margin:0 0 1.4rem}.card{background:#fff;border:1px solid #cfc1ab;border-radius:8px;padding:1rem 1.2rem;margin-bottom:.9rem}h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;font-weight:600;margin:0 0 .5rem}ol,ul{margin:.2rem 0 0 1.1rem;padding:0;font-size:.92rem}li{margin:.3rem 0}pre{white-space:pre-wrap;font-family:Menlo,Consolas,monospace;font-size:.8rem;line-height:1.45;background:#faf7ef;border:1px solid #cfc1ab;border-radius:6px;padding:.9rem;max-height:60vh;overflow:auto}button.cp{background:#0a0b09;color:#c2a540;border:1px solid #c2a540;border-radius:999px;padding:.6rem 1.2rem;font:inherit;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin:0 0 .6rem}.ok{color:#9a8030;font-size:.85rem;margin-left:.6rem}.k{font-size:.9rem;margin:.3rem 0}.k b{color:#b26e42}a{color:#9a8030}.tip{font-size:.8rem;color:#6a6b65}</style></head><body>'+
+   '<div class="bar"><span class="brand">HAREN HOLISTICS</span>'+(url?'<a class="dl" href="'+url+'" download="'+esc(fname)+'">Download the PDF</a>':'')+'</div><main>'+
+   '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below.</p>'+
+   '<div class="card"><h2>1. Paste this into Typeform</h2><button class="cp" id="cp">Copy the paste block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so trim a statement or paste it in two rounds.':'. Typeform\'s box takes up to 6,000.')+'</p></div>'+
+   '<div class="card"><h2>2. How to turn it into your form</h2><ol><li>Log in to <a href="https://www.typeform.com" target="_blank" rel="noopener">Typeform</a> &amp; click <b>+ Create a new form</b>.</li><li>Choose <b>Import questions</b>.</li><li>Paste the block above into the box. Click <b>Import questions</b> &amp; give the AI a moment.</li><li>Check each question\'s type &amp; answer choices. Fix anything it guessed wrong (the type is in brackets after each question).</li><li>Add the kick-out logic below, then your two endings &amp; your booking link.</li><li>Fill it out yourself as a fake client, start to finish, before you put it on your website.</li></ol><p class="tip">Typeform help: <a href="https://help.typeform.com/hc/en-us/articles/19585703741332" target="_blank" rel="noopener">Import questions from another tool</a> · <a href="https://help.typeform.com/hc/en-us/articles/360029116392" target="_blank" rel="noopener">What is Logic</a> · <a href="https://help.typeform.com/hc/en-us/articles/5514792640916" target="_blank" rel="noopener">Use the Logic Map to add logic</a>. The same paste block works as a build sheet for Google Forms, Tally or Jotform if you\'d rather not use Typeform.</p></div>';
+  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in Typeform</h2><p class="tip">Open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues.</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so Typeform\'s default ending shows. You can write one later.</p>')+'</div>'; }
+  html+='<div class="card"><p class="k">I have found once I set up the screening tool &amp; then this onboarding course that all of my clients I\'ve been getting in my pipeline have been far, far more aligned, &amp; they are really understanding of what\'s involved with the process. Bring any questions you have to the community space.</p></div>'+
+   '<script>document.getElementById("cp").onclick=function(){var t=document.getElementById("pb").textContent;var done=function(){document.getElementById("ok").textContent="Copied!"};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel()})}else{sel()}function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById("pb"));var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand("copy");done()}catch(e){document.getElementById("ok").textContent="Select the block & copy it"}}};<\/script></main></body></html>';
+  if(tab){ tab.document.open(); tab.document.write(html); tab.document.close(); }
+  msg.innerHTML='Your screening tool opened in a new tab. '+(tab?'':'(If it did not, allow pop-ups for this page & try again.) ')+(url?'<a href="'+url+'" download="'+esc(fname)+'">Download the PDF</a> to keep it. ':'')+'Your edits stay on this page too.';
+};
+</script>
+</body>
+</html>
