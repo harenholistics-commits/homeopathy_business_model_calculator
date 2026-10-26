@@ -51,6 +51,16 @@ button.ghost{background:transparent;color:var(--gray);border:1px solid var(--bor
 #count{font-size:.76rem;color:var(--gray)}
 #count.over{color:var(--clay);font-weight:600}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+#results .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:0 0 1.2rem}
+#results .dl{background:var(--gold);color:var(--black);text-decoration:none;font-weight:600;padding:.55rem 1.1rem;border-radius:999px;font-size:.85rem}
+#results .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.9rem}
+#results h2{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;margin:0 0 .5rem}
+#results ol,#results ul{margin:.2rem 0 0 1.1rem;padding:0;font-size:.92rem}#results li{margin:.3rem 0}
+#results pre{white-space:pre-wrap;font-family:Menlo,Consolas,monospace;font-size:.8rem;line-height:1.45;background:#faf7ef;border:1px solid var(--border);border-radius:6px;padding:.9rem;max-height:60vh;overflow:auto}
+#results button.cp{background:var(--black);color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:.6rem 1.2rem;font:inherit;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin:0 0 .6rem}
+#results .ok{color:var(--gold-dark);font-size:.85rem;margin-left:.6rem}
+#results .k{font-size:.9rem;margin:.3rem 0}#results .k b{color:var(--clay)}#results a{color:var(--gold-dark)}#results .tip{font-size:.8rem;color:var(--gray)}
+#results .sub{color:var(--gray);font-size:.9rem;margin:0 0 1.4rem}
 footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1rem;letter-spacing:.06em}
 @media(max-width:700px){.two{grid-template-columns:1fr}}
 </style>
@@ -58,6 +68,8 @@ footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1r
 <body>
 <header class="site-header"><span class="brand">HAREN HOLISTICS</span><span class="tag">The Practitioner Blueprint · Module 4</span></header>
 <main>
+<div id="results" hidden></div>
+<div id="editor">
 <h1>Build your own screening tool</h1>
 <p class="lead">This is Haren Holistics' exact screening tool, the one Lexie walks through in the Loom, laid out so you can make it yours. Keep the questions you want, reword any of them, switch off the ones that don't fit how you practice &amp; add your own. Hit the button at the bottom &amp; you'll get your questions as one copy-&amp;-paste block, plus the steps to turn it into a form in Typeform, Google Forms or whatever builder you use.</p>
 <div class="sheet">
@@ -124,6 +136,7 @@ Book your initial consultation below!</textarea></div>
 <div id="msg"></div>
 <p class="note">No matter which form builder you use, you can apply your results: the block you get is your questions, their types, what's required &amp; which answers end the form, so it builds the same screening tool in any of them.</p>
 <p class="note" id="bnote"></p>
+</div>
 </main>
 <footer>HAREN HOLISTICS</footer>
 
@@ -232,8 +245,6 @@ document.getElementById('go').onclick=()=>{
   const txt=pasteText(s);
   const kicks=s.qs.map((x,i)=>x.kick?{n:i+1,q:x.q,a:x.kick}:null).filter(Boolean);
   const title=(s.who?s.who+"'s":'My')+' screening tool';
-  const tab=window.open('','_blank');
-  if(tab){ tab.document.write('<title>'+esc(title)+'</title><p style="font-family:sans-serif;padding:2rem">Building your screening tool . . .</p>'); }
   // ---- PDF (plan + paste block) ----
   let url='';
   if(window.jspdf){
@@ -257,18 +268,16 @@ document.getElementById('go').onclick=()=>{
     url=URL.createObjectURL(doc.output('blob'));
   }
   const fname=title+'.pdf';
-  let html='<!doctype html><html><head><meta charset="utf-8"><title>'+esc(title)+'</title><meta name="viewport" content="width=device-width,initial-scale=1">'+
-   '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'+
-   '<style>body{margin:0;font-family:Inter,Helvetica,Arial,sans-serif;background:#efe9db;color:#0a0b09}.bar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.2rem;background:#0a0b09;color:#cfc1ab;font-size:14px;border-bottom:1px solid #c2a540}.brand{color:#c2a540;font-family:Georgia,serif;font-size:16px;letter-spacing:.06em}.dl{background:#c2a540;color:#0a0b09;text-decoration:none;font-weight:700;padding:.55rem 1.1rem;border-radius:999px}main{max-width:800px;margin:0 auto;padding:1.6rem 1.2rem 4rem}h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:2rem;font-weight:600;margin:0 0 .2rem}.sub{color:#6a6b65;font-size:.9rem;margin:0 0 1.4rem}.card{background:#fff;border:1px solid #cfc1ab;border-radius:8px;padding:1rem 1.2rem;margin-bottom:.9rem}h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;font-weight:600;margin:0 0 .5rem}ol,ul{margin:.2rem 0 0 1.1rem;padding:0;font-size:.92rem}li{margin:.3rem 0}pre{white-space:pre-wrap;font-family:Menlo,Consolas,monospace;font-size:.8rem;line-height:1.45;background:#faf7ef;border:1px solid #cfc1ab;border-radius:6px;padding:.9rem;max-height:60vh;overflow:auto}button.cp{background:#0a0b09;color:#c2a540;border:1px solid #c2a540;border-radius:999px;padding:.6rem 1.2rem;font:inherit;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin:0 0 .6rem}.ok{color:#9a8030;font-size:.85rem;margin-left:.6rem}.k{font-size:.9rem;margin:.3rem 0}.k b{color:#b26e42}a{color:#9a8030}.tip{font-size:.8rem;color:#6a6b65}</style></head><body>'+
-   '<div class="bar"><span class="brand">HAREN HOLISTICS</span>'+(url?'<a class="dl" href="'+url+'" download="'+esc(fname)+'">Download the PDF</a>':'')+'</div><main>'+
-   '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below.</p>'+
+  let html='<div class="bar"><button class="ghost" id="back">&larr; Back to editing</button>'+(url?'<a class="dl" href="'+url+'" download="'+esc(fname)+'">Download the PDF</a>':'')+'</div>'+
+    '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below. Your edits are still here, hit Back to change anything.</p>'+
    '<div class="card"><h2>1. '+esc(B[s.builder].pasteTitle)+'</h2><button class="cp" id="cp">Copy the paste block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(s.builder==='typeform'?(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so trim a statement or paste it in two rounds.':'. Typeform\'s box takes up to 6,000.'):'')+'</p></div>'+
    '<div class="card"><h2>2. How to turn it into your form in '+esc(B[s.builder].name)+'</h2><ol>'+B[s.builder].steps.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+(B[s.builder].links.length?'<p class="tip">Help: '+B[s.builder].links.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>':'')+(s.builder==='typeform'?'<p class="tip">The same block works as a build sheet for Google Forms, Tally or Jotform if you ever switch.</p>':'')+'</div>';
   if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so your form builder\'s default ending shows. You can write one later.</p>')+'</div>'; }
   html+='<div class="card"><p class="k">I have found once I set up the screening tool &amp; then this onboarding course that all of my clients I\'ve been getting in my pipeline have been far, far more aligned, &amp; they are really understanding of what\'s involved with the process. Bring any questions you have to the community space.</p></div>'+
-   '<script>document.getElementById("cp").onclick=function(){var t=document.getElementById("pb").textContent;var done=function(){document.getElementById("ok").textContent="Copied!"};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel()})}else{sel()}function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById("pb"));var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand("copy");done()}catch(e){document.getElementById("ok").textContent="Select the block & copy it"}}};<\/script></main></body></html>';
-  if(tab){ tab.document.open(); tab.document.write(html); tab.document.close(); }
-  msg.innerHTML='Your screening tool opened in a new tab. '+(tab?'':'(If it did not, allow pop-ups for this page & try again.) ')+(url?'<a href="'+url+'" download="'+esc(fname)+'">Download the PDF</a> to keep it. ':'')+'Your edits stay on this page too.';
+   '';
+  const R=document.getElementById('results'); R.innerHTML=html; R.hidden=false; document.getElementById('editor').hidden=true; window.scrollTo(0,0);
+  document.getElementById('back').onclick=()=>{ R.hidden=true; document.getElementById('editor').hidden=false; window.scrollTo(0,0); };
+  document.getElementById('cp').onclick=function(){ const t=document.getElementById('pb').textContent; const done=()=>{document.getElementById('ok').textContent='Copied!'}; const sel=()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('pb')); const s=window.getSelection(); s.removeAllRanges(); s.addRange(r); try{document.execCommand('copy'); done();}catch(e){document.getElementById('ok').textContent='Select the block & copy it';} }; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel);}else{sel();} };
 };
 </script>
 </body>
