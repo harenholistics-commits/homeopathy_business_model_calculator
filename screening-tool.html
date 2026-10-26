@@ -96,7 +96,7 @@ A first initial follow-up is required at the 6-8 week mark. Additional follow up
 
 <div class="sheet">
   <h2>3. Haren Holistics' screening questions</h2>
-  <p class="hint">Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the form before they can book (you add that one logic jump inside Typeform after the import, the steps are on your results page).</p>
+  <p class="hint">Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the form before they can book (you add that one logic rule inside your form builder afterward, the steps are on your results page).</p>
   <div id="mine"></div>
 </div>
 
@@ -113,7 +113,7 @@ A first initial follow-up is required at the 6-8 week mark. Additional follow up
   <div class="field"><label class="t">They passed</label><textarea id="pass">If you've made it this far, it seems like it will be great a fit for us to work together!
 
 Book your initial consultation below!</textarea></div>
-  <div class="field"><label class="t">Not a fit (shown when a "not a fit" answer is picked)</label><textarea id="fail" placeholder="What they see if they're not a fit right now. Leave blank &amp; Typeform's default ending is used."></textarea></div>
+  <div class="field"><label class="t">Not a fit (shown when a "not a fit" answer is picked)</label><textarea id="fail" placeholder="What they see if they're not a fit right now. Leave blank &amp; your form builder's default ending is used."></textarea></div>
 </div>
 
 <div class="submit-row">
@@ -263,7 +263,7 @@ document.getElementById('go').onclick=()=>{
    '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below.</p>'+
    '<div class="card"><h2>1. '+esc(B[s.builder].pasteTitle)+'</h2><button class="cp" id="cp">Copy the paste block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(s.builder==='typeform'?(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so trim a statement or paste it in two rounds.':'. Typeform\'s box takes up to 6,000.'):'')+'</p></div>'+
    '<div class="card"><h2>2. How to turn it into your form in '+esc(B[s.builder].name)+'</h2><ol>'+B[s.builder].steps.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+(B[s.builder].links.length?'<p class="tip">Help: '+B[s.builder].links.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>':'')+(s.builder==='typeform'?'<p class="tip">The same block works as a build sheet for Google Forms, Tally or Jotform if you ever switch.</p>':'')+'</div>';
-  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so Typeform\'s default ending shows. You can write one later.</p>')+'</div>'; }
+  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so your form builder\'s default ending shows. You can write one later.</p>')+'</div>'; }
   html+='<div class="card"><p class="k">I have found once I set up the screening tool &amp; then this onboarding course that all of my clients I\'ve been getting in my pipeline have been far, far more aligned, &amp; they are really understanding of what\'s involved with the process. Bring any questions you have to the community space.</p></div>'+
    '<script>document.getElementById("cp").onclick=function(){var t=document.getElementById("pb").textContent;var done=function(){document.getElementById("ok").textContent="Copied!"};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel()})}else{sel()}function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById("pb"));var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand("copy");done()}catch(e){document.getElementById("ok").textContent="Select the block & copy it"}}};<\/script></main></body></html>';
   if(tab){ tab.document.open(); tab.document.write(html); tab.document.close(); }
