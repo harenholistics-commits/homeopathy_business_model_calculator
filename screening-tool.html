@@ -59,21 +59,22 @@ footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1r
 <header class="site-header"><span class="brand">HAREN HOLISTICS</span><span class="tag">The Practitioner Blueprint · Module 4</span></header>
 <main>
 <h1>Build your own screening tool</h1>
-<p class="lead">This is my exact screening form, the one you watched me walk through in the Loom, laid out so you can make it yours. Keep the questions you want, reword any of them, switch off the ones that don't fit how you practice &amp; add your own. Hit the button at the bottom &amp; you'll get a copy-&amp;-paste block that Typeform turns into a form for you, plus the steps to do it.</p>
+<p class="lead">This is Haren Holistics' exact screening tool, the one Lexie walks through in the Loom, laid out so you can make it yours. Keep the questions you want, reword any of them, switch off the ones that don't fit how you practice &amp; add your own. Hit the button at the bottom &amp; you'll get your questions as one copy-&amp;-paste block, plus the steps to turn it into a form in Typeform, Google Forms or whatever builder you use.</p>
 <div class="quote">This is my screening tool. This is to make sure that all the clients that apply to work with me are really in alignment with who I want to work with, that we're going to be a good fit for each other. I used to offer full-blown discovery calls. Here's the thing, people would not show up to these discovery calls. So I just had a lot of wasted time when I was doing discovery calls &amp; that's why I don't do that anymore. So I put this screening tool in here in place of it.</div>
 
 <div class="sheet">
   <h2>1. The basics</h2>
-  <p class="hint">Used for the form title &amp; the booking screen at the end. Both optional.</p>
+  <p class="hint">Name &amp; booking link are optional. The form builder decides which steps you get on your results page.</p>
   <div class="two">
     <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. Haren Holistics"></div>
     <div class="field"><label class="t">Your booking link (where they go after they pass)</label><input type="text" id="book" placeholder="e.g. your Practice Better booking page"></div>
   </div>
+  <div class="field"><label class="t">Which form builder will you use?</label><select id="builder" style="max-width:420px"><option value="typeform">Typeform (what Haren Holistics uses)</option><option value="google">Google Forms (free)</option><option value="other">Another form builder (Jotform, Tally, Practice Better forms, etc.)</option></select></div>
 </div>
 
 <div class="sheet">
   <h2>2. What they read before the questions</h2>
-  <p class="hint">Mine, with my numbers in [brackets] for you to swap. Say it your way. Delete anything you don't offer.</p>
+  <p class="hint">Haren Holistics' exact wording, with Lexie's numbers in [brackets] for you to swap. Say it your way. Delete anything you don't offer.</p>
   <div class="field"><label class="t">Welcome screen</label><textarea id="welcome">Hi there,
 
 Thank you for your interest in having your chronic case taken via homeopathy.</textarea></div>
@@ -96,7 +97,7 @@ A first initial follow-up is required at the 6-8 week mark. Additional follow up
 </div>
 
 <div class="sheet">
-  <h2>3. My screening questions</h2>
+  <h2>3. Haren Holistics' screening questions</h2>
   <p class="hint">Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the form before they can book (you add that one logic jump inside Typeform after the import, the steps are on your results page).</p>
   <div id="mine"></div>
 </div>
@@ -119,11 +120,11 @@ Book your initial consultation below!</textarea></div>
 
 <div class="submit-row">
   <button class="go" id="go">Build my screening tool</button>
-  <button class="ghost" id="clear">Reset to my original</button>
+  <button class="ghost" id="clear">Reset to Haren Holistics' original</button>
   <span id="count"></span>
 </div>
 <div id="msg"></div>
-<p class="note">Typeform's "Import questions" box takes up to 6,000 characters. The counter above tells you where you're at. A free Typeform account allows 10 questions per form &amp; 10 responses a month, so if you keep every question &amp; add your own, you may need a paid plan (or trim).</p>
+<p class="note" id="bnote"></p>
 </main>
 <footer>HAREN HOLISTICS</footer>
 
@@ -142,6 +143,20 @@ const MINE=[
 ];
 // =====
 
+const B={
+ typeform:{name:'Typeform',pasteTitle:'Paste this into Typeform',note:'Typeform\'s "Import questions" box takes up to 6,000 characters. The counter above tells you where you\'re at. A free Typeform account allows 10 questions per form &amp; 10 responses a month, so if you keep every question &amp; add your own, you may need a paid plan (or trim).',
+  steps:['Log in to Typeform & click + Create a new form.','Choose Import questions.','Paste the block above into the box. Click Import questions & give the AI a moment.','Check each question\'s type & answer choices. Fix anything it guessed wrong (the type is in brackets after each question).','Add the kick-out logic below, then your two endings & your booking link.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'Open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues.',
+  links:[['Import questions from another tool','https://help.typeform.com/hc/en-us/articles/19585703741332'],['What is Logic','https://help.typeform.com/hc/en-us/articles/360029116392'],['Use the Logic Map to add logic','https://help.typeform.com/hc/en-us/articles/5514792640916']]},
+ google:{name:'Google Forms',pasteTitle:'Your build sheet (work down it in Google Forms)',note:'Google Forms has no paste-in import, so your results page is a build sheet: every question with its Google Forms type next to it, for you to add one at a time. Free, with no question or response limits.',
+  steps:['Go to forms.google.com & start a blank form. Paste in your title.','Add your welcome text & each statement as a "Title and description" block (the Tт button on the right-hand toolbar).','Add each question from the sheet with the type shown in brackets. Switch on Required where it says required.','For each kick-out question: make it Multiple choice, click the three dots & choose "Go to section based on answer". Send the not-a-fit answer to a final section with your not-a-fit text, set to Submit form.','Put your passed ending & booking link in the confirmation message (Settings > Presentation) or on the last section.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'In Google Forms the kick-out works through sections: make the question Multiple choice, then "Go to section based on answer". The not-a-fit answer goes to a short final section that submits the form.',
+  links:[['Google Forms help: Create a form','https://support.google.com/docs/answer/6281888'],['Google Forms help: Show questions based on answers','https://support.google.com/docs/answer/141062']]},
+ other:{name:'your form builder',pasteTitle:'Your build sheet (or paste it in, if your builder has an import or AI option)',note:'Your results page is a build sheet: every question with its type &amp; whether it is required. Most builders have a paste or AI import option, so try that first. Otherwise add the questions one at a time.',
+  steps:['Open your form builder & create a new form.','If it has an "import", "paste questions" or "create with AI" option, paste the whole block in. If not, add each question from the sheet with the type in brackets.','Mark the required questions as required.','Add a branching or logic rule for each kick-out question below, pointing the not-a-fit answer to an ending that stops the form.','Add your passed ending & your booking link.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'Look for "logic", "branching", "conditions" or "jump to" in your builder. For each question below, send the not-a-fit answer to an ending that stops the form.',
+  links:[]}
+};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 function qRow(d,own,idx){
   const el=document.createElement('div'); el.className='q'+(d.on===false?' off':'');
@@ -156,7 +171,7 @@ function qRow(d,own,idx){
       ${own?'<button class="del" type="button">remove</button>':''}
     </div>
     <div class="choices" style="display:${d.t==='mc'?'block':'none'}"><textarea class="ch" placeholder="One answer choice per line">${esc(d.choices||'')}</textarea></div>
-    ${d.why?`<div class="why"><b>Why I ask this</b>${esc(d.why)}</div>`:''}
+    ${d.why?`<div class="why"><b>Why Lexie asks this</b>${esc(d.why)}</div>`:''}
   </div>`;
   const on=el.querySelector('.on'); on.onchange=()=>el.classList.toggle('off',!on.checked);
   const type=el.querySelector('.type'); const ch=el.querySelector('.choices'); const kw=el.querySelector('.kickwrap');
@@ -171,7 +186,7 @@ function build(){
   const own=document.getElementById('own'); own.innerHTML=''; own.appendChild(qRow({t:'yn',q:''},true)); own.appendChild(qRow({t:'short',q:''},true));
 }
 document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
-document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to my original form?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('book').value=''; build(); update(); } };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the Haren Holistics original?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('book').value=''; build(); update(); } };
 
 function collect(){
   const v=id=>document.getElementById(id).value.trim();
@@ -184,7 +199,7 @@ function collect(){
     const choices=t==='mc'?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
     qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
   });
-  return {who:v('who'),book:v('book'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+  return {builder:document.getElementById('builder').value,who:v('who'),book:v('book'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
 }
 function pasteText(s){
   const title=(s.who?s.who+' ':'')+'Homeopathic Case Taking Application';
@@ -194,7 +209,7 @@ function pasteText(s){
   if(s.intro2) out+='Statement (no answer needed):\n'+s.intro2+'\n\n';
   s.qs.forEach((x,i)=>{
     let line=(i+1)+'. '+x.q;
-    const tl=x.t==='contact'?'Contact info: phone number & email':TYPES[x.t];
+    let tl=x.t==='contact'?'Contact info: phone number & email':TYPES[x.t]; if(s.builder==='google'){ tl={yn:'Multiple choice: Yes / No',short:'Short answer',long:'Paragraph',mc:'Multiple choice',contact:'Two short-answer questions: phone number & email',email:'Short answer (email)',number:'Short answer (number)',date:'Date'}[x.t]; }
     line+='  ['+tl+(x.req?', required':'')+']';
     out+=line+'\n';
     if(x.t==='yn') out+='- Yes\n- No\n';
@@ -206,9 +221,9 @@ function pasteText(s){
   return out.replace(/&amp;/g,'&');
 }
 function update(){
-  const txt=pasteText(collect()); const c=document.getElementById('count'); c.textContent=txt.length.toLocaleString()+' / 6,000 characters'; c.classList.toggle('over',txt.length>6000);
+  const txt=pasteText(collect()); const c=document.getElementById('count'); const b=document.getElementById('builder').value; c.textContent=b==='typeform'?txt.length.toLocaleString()+' / 6,000 characters':txt.length.toLocaleString()+' characters'; c.classList.toggle('over',b==='typeform'&&txt.length>6000); document.getElementById('bnote').innerHTML=B[b].note;
 }
-['who','book','welcome','intro1','intro2','pass','fail'].forEach(id=>document.getElementById(id).addEventListener('input',update));
+['who','book','welcome','intro1','intro2','pass','fail','builder'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
 build(); update();
 
 document.getElementById('go').onclick=()=>{
@@ -232,10 +247,10 @@ document.getElementById('go').onclick=()=>{
     const line=()=>{doc.setDrawColor(207,193,171); doc.line(M,y,W-M,y); y+=14;};
     const H=t=>{need(40); line(); doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text(t,M,y); y+=16;};
     const P=(t,sz,col)=>{ doc.setFont('helvetica','normal'); doc.setFontSize(sz||10); doc.setTextColor.apply(doc,col||[10,11,9]); const ls=doc.splitTextToSize(t,W-2*M); ls.forEach(l=>{need(14); doc.text(l,M,y); y+=(sz||10)*1.3;}); y+=4; };
-    H('How to turn this into your Typeform');
-    ['1. Log in to Typeform & click + Create a new form.','2. Choose Import questions.','3. Copy everything in the "paste block" below & paste it into the box. Click Import questions & give the AI a moment.','4. Check each question\'s type & answer choices. Fix anything it guessed wrong.','5. Add the kick-out logic (next section), then your two endings & your booking link.','6. Fill it out yourself as a fake client, start to finish, before you put it on your website.'].forEach(t=>P(t,10));
-    if(kicks.length){ H('Kick-out logic to add in Typeform'); P('In Typeform, open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues to the next question.',9.5,[106,107,101]); kicks.forEach(k=>P('Q'+k.n+'  if they answer "'+k.a+'"  ->  not a fit ending.   '+k.q,10)); }
-    H('Paste block (copy all of this into Typeform\'s Import questions box)');
+    const BB=B[s.builder]; H('How to turn this into your form in '+BB.name);
+    BB.steps.forEach((t,i)=>P((i+1)+'. '+t.replace('the block above','the paste block below'),10));
+    if(kicks.length){ H('Kick-out logic to add in '+BB.name); P(BB.logic,9.5,[106,107,101]); kicks.forEach(k=>P('Q'+k.n+'  if they answer "'+k.a+'"  ->  not a fit ending.   '+k.q,10)); }
+    H(s.builder==='typeform'?'Paste block (copy all of this into Typeform\'s Import questions box)':'Build sheet');
     doc.setFont('courier','normal'); doc.setFontSize(8.5); doc.setTextColor(10,11,9);
     txt.split('\n').forEach(raw=>{ const ls=raw===''?['']:doc.splitTextToSize(raw,W-2*M); ls.forEach(l=>{need(12); doc.text(l,M,y); y+=11;}); });
     y+=10; need(60); line(); doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(10,11,9);
@@ -248,9 +263,9 @@ document.getElementById('go').onclick=()=>{
    '<style>body{margin:0;font-family:Inter,Helvetica,Arial,sans-serif;background:#efe9db;color:#0a0b09}.bar{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.2rem;background:#0a0b09;color:#cfc1ab;font-size:14px;border-bottom:1px solid #c2a540}.brand{color:#c2a540;font-family:Georgia,serif;font-size:16px;letter-spacing:.06em}.dl{background:#c2a540;color:#0a0b09;text-decoration:none;font-weight:700;padding:.55rem 1.1rem;border-radius:999px}main{max-width:800px;margin:0 auto;padding:1.6rem 1.2rem 4rem}h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:2rem;font-weight:600;margin:0 0 .2rem}.sub{color:#6a6b65;font-size:.9rem;margin:0 0 1.4rem}.card{background:#fff;border:1px solid #cfc1ab;border-radius:8px;padding:1rem 1.2rem;margin-bottom:.9rem}h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;font-weight:600;margin:0 0 .5rem}ol,ul{margin:.2rem 0 0 1.1rem;padding:0;font-size:.92rem}li{margin:.3rem 0}pre{white-space:pre-wrap;font-family:Menlo,Consolas,monospace;font-size:.8rem;line-height:1.45;background:#faf7ef;border:1px solid #cfc1ab;border-radius:6px;padding:.9rem;max-height:60vh;overflow:auto}button.cp{background:#0a0b09;color:#c2a540;border:1px solid #c2a540;border-radius:999px;padding:.6rem 1.2rem;font:inherit;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin:0 0 .6rem}.ok{color:#9a8030;font-size:.85rem;margin-left:.6rem}.k{font-size:.9rem;margin:.3rem 0}.k b{color:#b26e42}a{color:#9a8030}.tip{font-size:.8rem;color:#6a6b65}</style></head><body>'+
    '<div class="bar"><span class="brand">HAREN HOLISTICS</span>'+(url?'<a class="dl" href="'+url+'" download="'+esc(fname)+'">Download the PDF</a>':'')+'</div><main>'+
    '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below.</p>'+
-   '<div class="card"><h2>1. Paste this into Typeform</h2><button class="cp" id="cp">Copy the paste block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so trim a statement or paste it in two rounds.':'. Typeform\'s box takes up to 6,000.')+'</p></div>'+
-   '<div class="card"><h2>2. How to turn it into your form</h2><ol><li>Log in to <a href="https://www.typeform.com" target="_blank" rel="noopener">Typeform</a> &amp; click <b>+ Create a new form</b>.</li><li>Choose <b>Import questions</b>.</li><li>Paste the block above into the box. Click <b>Import questions</b> &amp; give the AI a moment.</li><li>Check each question\'s type &amp; answer choices. Fix anything it guessed wrong (the type is in brackets after each question).</li><li>Add the kick-out logic below, then your two endings &amp; your booking link.</li><li>Fill it out yourself as a fake client, start to finish, before you put it on your website.</li></ol><p class="tip">Typeform help: <a href="https://help.typeform.com/hc/en-us/articles/19585703741332" target="_blank" rel="noopener">Import questions from another tool</a> · <a href="https://help.typeform.com/hc/en-us/articles/360029116392" target="_blank" rel="noopener">What is Logic</a> · <a href="https://help.typeform.com/hc/en-us/articles/5514792640916" target="_blank" rel="noopener">Use the Logic Map to add logic</a>. The same paste block works as a build sheet for Google Forms, Tally or Jotform if you\'d rather not use Typeform.</p></div>';
-  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in Typeform</h2><p class="tip">Open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues.</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so Typeform\'s default ending shows. You can write one later.</p>')+'</div>'; }
+   '<div class="card"><h2>1. '+esc(B[s.builder].pasteTitle)+'</h2><button class="cp" id="cp">Copy the paste block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(s.builder==='typeform'?(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so trim a statement or paste it in two rounds.':'. Typeform\'s box takes up to 6,000.'):'')+'</p></div>'+
+   '<div class="card"><h2>2. How to turn it into your form in '+esc(B[s.builder].name)+'</h2><ol>'+B[s.builder].steps.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+(B[s.builder].links.length?'<p class="tip">Help: '+B[s.builder].links.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>':'')+(s.builder==='typeform'?'<p class="tip">The same block works as a build sheet for Google Forms, Tally or Jotform if you ever switch.</p>':'')+'</div>';
+  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so Typeform\'s default ending shows. You can write one later.</p>')+'</div>'; }
   html+='<div class="card"><p class="k">I have found once I set up the screening tool &amp; then this onboarding course that all of my clients I\'ve been getting in my pipeline have been far, far more aligned, &amp; they are really understanding of what\'s involved with the process. Bring any questions you have to the community space.</p></div>'+
    '<script>document.getElementById("cp").onclick=function(){var t=document.getElementById("pb").textContent;var done=function(){document.getElementById("ok").textContent="Copied!"};if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){sel()})}else{sel()}function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById("pb"));var s=window.getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand("copy");done()}catch(e){document.getElementById("ok").textContent="Select the block & copy it"}}};<\/script></main></body></html>';
   if(tab){ tab.document.open(); tab.document.write(html); tab.document.close(); }
