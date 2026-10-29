@@ -78,7 +78,7 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
 @media(max-width:860px){.toggle.three{grid-template-columns:1fr}}
 @media(max-width:560px){.toggle{grid-template-columns:1fr}}
 
-.srow{display:grid;grid-template-columns:1fr 170px 84px 110px 92px 90px 24px;gap:.45rem;align-items:center;margin:.35rem 0}
+.srow{display:grid;grid-template-columns:1fr 160px 112px 104px 96px 90px 24px;gap:.45rem;align-items:center;margin:.35rem 0}
 .srow .dollars{font-size:.84rem;font-weight:600;color:var(--gold-dark)}
 table.rank .tip{font-size:.72rem;color:var(--gray)}
 .srow.head span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark)}
@@ -103,7 +103,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 
 <div class="sheet">
   <h2>1. Your starred streams</h2>
-  <p class="hint">Add the two to five streams you starred in activity two. "How much of ME" is the honest one: 1 = barely costs me anything, 5 = drains me. Then two easy numbers: what you'd charge for one (one blend, one kit, one seat, one month of membership) &amp; how many of those you'd realistically do in a month. The dollars a month works itself out. Hours a month is your rough guess of the time it takes. Same math as Module 2: real time, real costs.</p>
+  <p class="hint">Add the two to five streams you starred in activity two. "How much of ME" is the honest one: 1 = barely costs me anything, 5 = drains me. Then two easy numbers. Price of one sale: what one customer pays you one time for this stream, so one custom blend, one kit, one seat in a class, one month of a membership, one wholesale order. Sales a month: how many of those you'd realistically do in a month. The dollars a month works itself out from those two. Hours a month is your rough guess of the time it takes. Same math as Module 2: real time, real costs.</p>
   <div class="rows" id="rows"></div>
   <button class="add" id="addrow">+ Add a stream</button>
   <datalist id="streams">
@@ -157,16 +157,16 @@ function row(d={}){
   const el=document.createElement('div'); el.className='srow';
   el.innerHTML=`<input type="text" class="name" list="streams" placeholder="Stream (pick from the list or type your own)" value="${esc(d.name||'')}">
   <select class="energy">${ENERGY.map((e,i)=>i?`<option value="${i}"${(d.energy||3)==i?' selected':''}>${e}</option>`:'').join('')}</select>
-  <input type="number" class="price" min="0" step="1" placeholder="$ each" value="${d.price||''}">
-  <input type="number" class="count" min="0" step="1" placeholder="# a month" value="${d.count||''}">
-  <input type="number" class="hours" min="0" step="1" placeholder="hrs / mo" value="${d.hours||''}">
+  <input type="number" class="price" min="0" step="1" placeholder="e.g. 32" value="${d.price||''}">
+  <input type="number" class="count" min="0" step="1" placeholder="e.g. 10" value="${d.count||''}">
+  <input type="number" class="hours" min="0" step="1" placeholder="e.g. 4" value="${d.hours||''}">
   <span class="dollars">$0 / mo</span>
   <button class="del" type="button" title="remove">&times;</button>`;
   el.querySelector('.del').onclick=()=>{ el.remove(); update(); };
   el.addEventListener('input',update); el.addEventListener('change',update);
   return el;
 }
-function build(){ const r=document.getElementById('rows'); r.innerHTML='<div class="srow head"><span>Stream</span><span>How much of ME</span><span>$ for one</span><span>How many a month</span><span>Hours a month</span><span>= $ / month</span><span></span></div>'; for(let i=0;i<3;i++) r.appendChild(row()); }
+function build(){ const r=document.getElementById('rows'); r.innerHTML='<div class="srow head"><span>Stream</span><span>How much of ME</span><span>Price of one sale ($)</span><span>Sales a month (#)</span><span>Hours a month</span><span>= $ / month</span><span></span></div>'; for(let i=0;i<3;i++) r.appendChild(row()); }
 document.getElementById('addrow').onclick=()=>{ document.getElementById('rows').appendChild(row()); update(); };
 document.getElementById('clear').onclick=()=>{ if(confirm('Clear everything & start over?')){ build(); ['why','s1','s2','s3','need','who','worth','pause'].forEach(id=>document.getElementById(id).value=''); setDate(); update(); } };
 function setDate(){ const d=new Date(); d.setDate(d.getDate()+90); document.getElementById('date').value=d.toISOString().slice(0,10); }
@@ -193,7 +193,7 @@ function update(){
   const list=ranked(); const t=document.getElementById('ranktable');
   if(!list.length){ t.innerHTML='<p class="hint">Add a stream above to see the ranking.</p>'; document.getElementById('grid').innerHTML=''; }
   else {
-    t.innerHTML='<table class="rank"><tr><th>#</th><th>Stream</th><th>$ / month</th><th>$ per point of ME</th><th>$ / hour</th></tr>'+list.map((s,i)=>`<tr${i===0?' class="top"':''}><td>${i+1}</td><td>${esc(s.name)}<br><span class="tip">${money(s.price)} × ${s.count} a month</span></td><td>${money(s.dollars)}</td><td>${money(s.perEnergy)}</td><td>${s.hours?money(s.perHour):'–'}</td></tr>`).join('')+'</table>';
+    t.innerHTML='<table class="rank"><tr><th>#</th><th>Stream</th><th>$ / month</th><th>$ per point of ME</th><th>$ / hour</th></tr>'+list.map((s,i)=>`<tr${i===0?' class="top"':''}><td>${i+1}</td><td>${esc(s.name)}<br><span class="tip">${money(s.price)} per sale × ${s.count} sales a month</span></td><td>${money(s.dollars)}</td><td>${money(s.perEnergy)}</td><td>${s.hours?money(s.perHour):'–'}</td></tr>`).join('')+'</table>';
     document.getElementById('grid').innerHTML=gridSVG(list,440,260);
   }
   const pick=document.getElementById('pick'); const cur=pick.value; pick.innerHTML='<option value="">Choose one</option>'+streams().map(s=>`<option${s.name===cur?' selected':''}>${esc(s.name)}</option>`).join('');
