@@ -202,6 +202,49 @@ const DURATION=[
  ['Months','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma'],
  ['Years, it\'s just how my body is','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma; consider a full consult']
 ];
+const BETTER=[
+ ['Warmth, a heating pad, a hot drink','#8 Mag Phos'],
+ ['Cool, open air','#7 Kali Sulph'],
+ ['Something cold on it','#4 Ferrum Phos'],
+ ['Lying still & resting','#4 Ferrum Phos'],
+ ['Pressure or rubbing it','#8 Mag Phos'],
+ ['Nothing in particular','no pointer']
+];
+const WORSE=[
+ ['A warm room, or in the evening','#7 Kali Sulph'],
+ ['Damp weather, damp places','#11 Nat Sulph'],
+ ['Cold & drafts','#8 Mag Phos / #12 Silicea'],
+ ['Moving, jarring, bending','#4 Ferrum Phos'],
+ ['Mental effort, overwork, noise','#6 Kali Phos'],
+ ['Sun, heat, or after crying','#9 Nat Mur'],
+ ['Nothing in particular','no pointer']
+];
+const TIMEOFDAY=[
+ ['Morning','#9 Nat Mur'],
+ ['Afternoon or evening','#7 Kali Sulph'],
+ ['Night','#8 Mag Phos / #12 Silicea'],
+ ['No pattern','no pointer']
+];
+const DISCHARGE=[
+ ['Clear & watery','#9 Nat Mur'],
+ ['Thick & white','#5 Kali Mur'],
+ ['Yellow & slimy','#7 Kali Sulph'],
+ ['Thick yellow, like pus','#3 Calc Sulph'],
+ ['Greenish','#11 Nat Sulph'],
+ ['No discharge or mucus','no pointer']
+];
+const ENERGY=[
+ ['Wired but tired, can\'t switch off, worn out from stress','#6 Kali Phos'],
+ ['Chilly, tire easily, slow to heal','#12 Silicea'],
+ ['Run down after being sick, a growth spurt, or pregnancy','#2 Calc Phos'],
+ ['Flushed & feverish, everything feels hot','#4 Ferrum Phos'],
+ ['Energy is fine','no pointer']
+];
+const COMBO=[
+ ['Match me to the one or two that fit best','single salts from the pointers'],
+ ['Give me the all-in-one (all 12 cell salts in one bottle)','Bioplasma (all 12)'],
+ ['Your call','your call: single if one pointer is strong, Bioplasma if it\'s spread out']
+];
 const CRAVE=[
  ['Salt','#9 Nat Mur'],
  ['Sweets & sugar','#10 Nat Phos / #8 Mag Phos'],
@@ -238,6 +281,7 @@ const bodyChoices=SALTS.map(s=>s[0]).join('\n');
 const tongueChoices=TONGUE.map(s=>s[0]).join('\n');
 const craveChoices=CRAVE.map(s=>s[0]).join('\n');
 const durationChoices=DURATION.map(s=>s[0]).join('\n');
+const betterChoices=BETTER.map(s=>s[0]).join('\n'), worseChoices=WORSE.map(s=>s[0]).join('\n'), timeChoices=TIMEOFDAY.map(s=>s[0]).join('\n'), dischargeChoices=DISCHARGE.map(s=>s[0]).join('\n'), energyChoices=ENERGY.map(s=>s[0]).join('\n'), comboChoices=COMBO.map(s=>s[0]).join('\n');
 const moodChoices=BACH.map(g=>g[1].map(e=>e[1]).join('\n')).join('\n');
 
 const WHY_DETAIL='The more info you can give me, you could literally write a whole freaking paragraph here and I would be stoked because I need to know what\'s making your symptoms better. What\'s making them worse? What time of day are they worse at? If you eat food, does it make it worse or better? Are you noticing any other symptoms with your main symptoms? This is all gold to a homeopath.';
@@ -245,7 +289,7 @@ const WHY_DETAIL='The more info you can give me, you could literally write a who
 const MODES={
  cell:{
   label:'cell salt', h1:'Build your own cell salt quiz',
-  qhint:'Cell salts are about mineralization, so these questions are physical: what\'s going on, how long, what changes it, the tongue, cravings. They work for a sudden thing & for a long-standing mineral pattern, so there is no time limit on this quiz. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
+  qhint:'Cell salts are about mineralization, so these questions are physical & mostly multiple choice: how long, what makes it better or worse, time of day, discharge, energy, tongue, cravings, & whether they want one salt or the all-12-in-one bottle (Bioplasma). They work for a sudden thing & for a long-standing mineral pattern, so there is no time limit on this quiz. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
   welcome:'Get a cell salt matched to you.\n\nNo appointment needed. Cell salts are the 12 mineral salts your cells run on. Fill this in with as much detail as you can & I\'ll match you to the one (or two) your body is asking for right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is a quick match, not a full case. Cell salts can support something that came on last week or a pattern you\'ve had for years. If a lot is going on & you want the whole picture looked at, book a consultation instead.\n\nCell salts are over-the-counter products with their own label & instructions.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your cell salt match & how to take it.',
@@ -258,27 +302,30 @@ const MODES={
    {t:'yn',q:'Is this one specific thing you\'d like matched? (If a lot is going on & you\'d rather we look at everything, answer No & I\'ll send my booking link instead.)',req:true,kick:'No',lbl:'Why this is here',why:'Cell salts can support a quick thing or a long-standing mineral pattern, so there is no time limit. This question just routes the people who really need a full case to your booking link instead of a quick match.'},
    {t:'long',q:'Describe what\'s going on in your own words. The more detail the better. A whole paragraph is great.',req:true,why:WHY_DETAIL},
    {t:'mc',q:'How long has this been going on?',req:true,choices:durationChoices,lbl:'How it matches',why:'Sudden & recent leans toward the stage salts (Ferrum Phos first, Kali Mur second, Kali Sulph third, per Boericke & Dewey). Months or years leans toward the deeper nutrition salts (Calc Phos, Nat Mur, Silicea) or Bioplasma. The key has the map.'},
-   {t:'short',q:'What makes it better?',req:true},
-   {t:'short',q:'What makes it worse?',req:true},
-   {t:'short',q:'Any time of day it\'s worse? Does eating or drinking change it?'},
+   {t:'ms',q:'What makes it better? (check any)',req:true,choices:betterChoices,lbl:'How it matches',why:'Modalities are classic cell salt pointers (Boericke & Dewey): warmth & pressure lean Mag Phos, cool open air leans Kali Sulph, cold applications & lying still lean Ferrum Phos. The key has the map.'},
+   {t:'ms',q:'What makes it worse? (check any)',req:true,choices:worseChoices,lbl:'How it matches',why:'Warm room & evening lean Kali Sulph, damp leans Nat Sulph, cold & drafts lean Mag Phos or Silicea, motion leans Ferrum Phos, mental effort leans Kali Phos, sun & heat lean Nat Mur.'},
+   {t:'mc',q:'Is there a time of day it\'s worse?',choices:timeChoices,lbl:'How it matches',why:'Morning leans Nat Mur, evening leans Kali Sulph, night leans Mag Phos or Silicea.'},
+   {t:'mc',q:'If there\'s any discharge or mucus, what does it look like?',choices:dischargeChoices,lbl:'How it matches',why:'Discharge color is the clearest stage pointer: clear & watery Nat Mur, thick white Kali Mur, yellow slimy Kali Sulph, thick yellow pus Calc Sulph, greenish Nat Sulph.'},
+   {t:'mc',q:'How\'s your energy lately?',req:true,choices:energyChoices,lbl:'How it matches',why:'Nerve exhaustion leans Kali Phos, chilly & slow to heal leans Silicea, run down after illness or growth leans Calc Phos, hot & flushed leans Ferrum Phos.'},
    {t:'ms',q:'Check anything that\'s true for you right now (body).',req:true,choices:bodyChoices,lbl:'How it matches',why:'Every line here points to one of the 12 cell salts (or Bioplasma, which is all 12). The key is at the bottom of this page.'},
    {t:'mc',q:'Look at your tongue in the mirror. Which is closest?',choices:tongueChoices,lbl:'How it matches',why:'The tongue coating is one of the classic cell salt pointers (Boericke & Dewey). Each answer maps to a salt in the key.'},
    {t:'mc',q:'Anything you\'ve been craving lately?',choices:craveChoices,lbl:'How it matches',why:'Cravings are a second pointer. Salt leans Nat Mur, sweets & sour lean Nat Phos.'},
+   {t:'mc',q:'Would you rather start with one targeted cell salt, or the all-in-one?',req:true,choices:comboChoices,lbl:'How it matches',why:'Bioplasma is Hyland\'s combination of all 12 cell salts in one bottle. It is the right answer when the pointers are spread out, when they are not sure, or when they just want one bottle. Keep it stocked (or in your Fullscript recommendations) alongside the singles.'},
    {t:'mc',q:'How would you like to receive it?',req:true,choices:'Order it through my practitioner\'s Fullscript link\nShip it to me\nLocal pickup\nJust tell me what to buy & where'}
   ],
   routes:[
    {key:'fullscript',title:'Service fee + Fullscript',sub:'They pay me the service fee. They order the cell salt through my Fullscript link & Fullscript pays me the margin.',charge:'split',pricelabel:'Your service fee',
     intro2:'The service fee is $[price]. Once I\'ve matched you, I\'ll send a link to order your cell salt (it ships straight to you).\n\nAfter you submit this quiz I\'ll send you an invoice for the service fee. Once it\'s paid, your match, your order link & how to take it arrive within [X] business days.',
-    lines:['Open a free Fullscript practitioner account & search their catalog for the cell salt brand you want (if it\'s not there, use the next option & buy from Hyland\'s wholesale).','Invoice the client for your service fee. Then send your Fullscript dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it, & you earn the difference between the wholesale price & MSRP on every order.','Two income lines per client: your fee + the Fullscript margin. Nothing to stock, nothing to ship.']},
+    lines:['Open a free Fullscript practitioner account & search their catalog for the cell salt brand you want, singles & the all-12-in-one (if it\'s not there, use the next option & buy from Hyland\'s wholesale).','Invoice the client for your service fee. Then send your Fullscript dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it, & you earn the difference between the wholesale price & MSRP on every order.','Two income lines per client: your fee + the Fullscript margin. Nothing to stock, nothing to ship.']},
    {key:'flat',title:'One flat fee, I supply the bottle',sub:'I buy cell salts wholesale from Hyland\'s. One price covers the match & the bottle, shipped or picked up.',charge:'flat',pricelabel:'Your flat fee (match + the bottle)',
     intro2:'One flat fee of $[price] covers the service & your cell salt, shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your cell salt & how to take it are on the way within [X] business days.',
-    lines:['Buy cell salts from Hyland\'s wholesale site (or another brand\'s wholesale program) & keep a small stock of the 12.','Set the flat fee above what a bottle costs you plus your time. One invoice, one payment, you ship or hand it over.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
+    lines:['Buy cell salts from Hyland\'s wholesale site (or another brand\'s wholesale program) & keep a small stock of the 12 singles plus Bioplasma, the all-12-in-one bottle.','Set the flat fee above what a bottle costs you plus your time. One invoice, one payment, you ship or hand it over.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
    {key:'send',title:'Service fee only',sub:'They pay me the service fee. I tell them exactly what to buy & where.',charge:'split',pricelabel:'Your service fee',
     intro2:'The service fee is $[price]. The cell salt itself you\'ll pick up or order where I point you (usually under $15).\n\nAfter you submit this quiz I\'ll send you an invoice for the service fee. Once it\'s paid, I\'ll send your match, where to get it & how to take it within [X] business days.',
     lines:['Your service fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start, nothing to stock. Switch to Fullscript once it\'s busy & the margin is worth it.']}
   ],
   paylinks:[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog','https://fullscript.com/catalog'],['Hyland\'s wholesale: cell salts','https://hylandswholesale.com/collections/cell-salts'],['Hyland\'s cell salts on Amazon (affiliate link)','https://www.amazon.com/s?k=hylands+cell+salts&tag=lexieharen-20'],['Fullscript inside Practice Better','https://practicebetter.io/integrations/fullscript']],
-  keyhint:'Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. Recent & sudden: think stage salts. Months or years: think the deeper nutrition salts or Bioplasma. Bioplasma (all 12) is the default when nothing stands out.'
+  keyhint:'Count the pointers across the answers. One salt showing up again & again is your lead; two close together, send both. Pointers spread out, or they asked for the all-in-one, send Bioplasma (all 12 cell salts in one bottle). Follow the dosing on the label.'
  },
  flower:{
   label:'flower essence', h1:'Build your own flower essence quiz',
@@ -340,8 +387,14 @@ function keyHTML(){
   if(MODE==='cell'){
     h+='<h3>Body checkboxes &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+SALTS.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>How long &rarr; where to look</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+DURATION.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>Better &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+BETTER.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>Worse &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+WORSE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>Time of day &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+TIMEOFDAY.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>Discharge &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+DISCHARGE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>Energy &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+ENERGY.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Tongue &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+TONGUE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Cravings &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+CRAVE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>One salt or the all-in-one</h3><table><tr><th>Client picked</th><th>What to send</th></tr>'+COMBO.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table><p class="src">How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send Bioplasma (all 12 in one bottle).</p>';
     h+='<h3>The 12 cell salts at a glance</h3><table><tr><th>Salt</th><th>Keynotes</th><th>Hyland\'s label uses</th></tr>'+SALT_INFO.map(s=>'<tr><td><b>'+esc(s[0])+'</b><br><span class="src">'+esc(s[1])+'</span></td><td>'+esc(s[2])+'</td><td>'+esc(s[3])+'</td></tr>').join('')+'</table>';
   } else {
     h+='<h3>Mood checkboxes &rarr; Bach flower essence (by Dr Bach\'s seven groups)</h3>';
@@ -487,8 +540,15 @@ document.getElementById('go').onclick=()=>{
     if(MODE==='cell'){
       H2('Body checkboxes -> cell salt'); SALTS.forEach(x=>KV(x[1],x[0]));
       H2('How long -> where to look'); DURATION.forEach(x=>KV(x[0],x[1]));
+      H2('Better -> cell salt'); BETTER.forEach(x=>KV(x[1],x[0]));
+      H2('Worse -> cell salt'); WORSE.forEach(x=>KV(x[1],x[0]));
+      H2('Time of day -> cell salt'); TIMEOFDAY.forEach(x=>KV(x[1],x[0]));
+      H2('Discharge -> cell salt'); DISCHARGE.forEach(x=>KV(x[1],x[0]));
+      H2('Energy -> cell salt'); ENERGY.forEach(x=>KV(x[1],x[0]));
       H2('Tongue -> cell salt'); TONGUE.forEach(x=>KV(x[1],x[0]));
       H2('Cravings -> cell salt'); CRAVE.forEach(x=>KV(x[1],x[0]));
+      H2('One salt or the all-in-one'); COMBO.forEach(x=>KV(x[1],x[0]));
+      P('How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send Bioplasma (all 12 in one bottle).',9.5);
       H2('The 12 cell salts at a glance'); SALT_INFO.forEach(x=>KV(x[0],x[2]+'  Label: '+x[3]));
     } else {
       H2('Mood checkboxes -> Bach flower essence'); BACH.forEach(g=>{ need(30); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(10,11,9); doc.text(g[0],Mg,y); y+=13; g[1].forEach(e=>KV(e[0],e[1])); });
