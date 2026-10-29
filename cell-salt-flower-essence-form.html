@@ -186,7 +186,7 @@ const SALTS=[
  ['Pimples or spots that keep oozing & are slow to clear','#3 Calc Sulph'],
  ['Brittle nails or hair, splinters, slow-healing skin, cold sweaty feet','#12 Silicea'],
  ['Worse in damp weather, bitter taste, sluggish digestion','#11 Nat Sulph'],
- ['A bit of everything, or not sure','Bioplasma (all 12)']
+ ['A bit of everything, or not sure','the all-12 combination']
 ];
 const TONGUE=[
  ['White or gray coating','#5 Kali Mur'],
@@ -199,8 +199,8 @@ const TONGUE=[
 const DURATION=[
  ['A few days, it came on fast','#4 Ferrum Phos (first stage), then #5 Kali Mur if it settles in'],
  ['A few weeks','#5 Kali Mur or #7 Kali Sulph (second & third stage), by the discharge'],
- ['Months','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma'],
- ['Years, it\'s just how my body is','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma; consider a full consult']
+ ['Months','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or the all-12 combination'],
+ ['Years, it\'s just how my body is','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or the all-12 combination; consider a full consult']
 ];
 const BETTER=[
  ['Warmth, a heating pad, a hot drink','#8 Mag Phos'],
@@ -242,8 +242,8 @@ const ENERGY=[
 ];
 const COMBO=[
  ['Match me to the one or two that fit best','single salts from the pointers'],
- ['Give me the all-in-one (all 12 cell salts in one bottle)','the all-12 combo: Hyland\'s Bioplasma, or Professional Formulas Cell Salt Combo on Fullscript'],
- ['Your call','your call: single if one pointer is strong, Bioplasma if it\'s spread out']
+ ['Give me the all-in-one (all 12 cell salts in one bottle)','the all-12 combination (most makers sell one)'],
+ ['Your call','your call: a single if one pointer is strong, the all-12 combination if it\'s spread out']
 ];
 const CRAVE=[
  ['Salt','#9 Nat Mur'],
@@ -265,7 +265,7 @@ const SALT_INFO=[
  ['#10 Nat Phos','Natrum phosphoricum','Acidity: sour burps, heartburn, indigestion, gas, creamy yellow coating at the back of the tongue.','Indigestion, gas, hyperacidity'],
  ['#11 Nat Sulph','Natrum sulphuricum','Bilious & damp: worse in damp weather or damp houses, bitter taste, sluggish liver, greenish-gray tongue, headache with gastric upset.','(no uses line on the Hyland\'s page)'],
  ['#12 Silicea','Silicea','Skin, hair & nails: brittle nails, hair falling out, splinters, slow-healing pus spots, chilly, sweaty feet, tires easily.','Skin eruptions, brittle hair & nails'],
- ['All-12 combo','Bioplasma (Hyland\'s) / Cell Salt Combo (Professional Formulas, on Fullscript)','All twelve in one bottle. Hyland\'s page on Bioplasma: "can help relieve symptoms of colds, simple nervous tension, fatigue, and headaches."','Colds, nervous tension, fatigue, headaches (Hyland\'s)']
+ ['All-12 combination','All twelve salts in one bottle','Most cell salt makers sell a combination of all twelve. Use it when the pointers are spread out, when they are not sure, or when they just want one bottle.','(see the maker\'s label)']
 ];
 // Bach's seven groups (The Twelve Healers & Other Remedies, 1936). Descriptions follow the Bach Centre wording, shortened to second person.
 const BACH=[
@@ -289,7 +289,7 @@ const WHY_DETAIL='The more info you can give me, you could literally write a who
 const MODES={
  cell:{
   label:'cell salt', h1:'Build your own cell salt quiz',
-  qhint:'Cell salts are about mineralization, so these questions are physical & mostly multiple choice: how long, what makes it better or worse, time of day, discharge, energy, tongue, cravings, & whether they want one salt or the all-12-in-one bottle (Bioplasma). They work for a sudden thing & for a long-standing mineral pattern, so there is no time limit on this quiz. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
+  qhint:'Cell salts are about mineralization, so these questions are physical & mostly multiple choice: how long, what makes it better or worse, time of day, discharge, energy, tongue, cravings, & whether they want one salt or the all-12 combination. They work for a sudden thing & for a long-standing mineral pattern, so there is no time limit on this quiz. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
   welcome:'Get a cell salt matched to you.\n\nNo appointment needed. Cell salts are the 12 mineral salts your cells run on. Fill this in with as much detail as you can & I\'ll match you to the one (or two) your body is asking for right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is a quick match, not a full case. Cell salts can support something that came on last week or a pattern you\'ve had for years. If a lot is going on & you want the whole picture looked at, book a consultation instead.\n\nCell salts are over-the-counter products with their own label & instructions.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your cell salt match & how to take it.',
@@ -310,22 +310,22 @@ const MODES={
    {t:'ms',q:'Check anything that\'s true for you right now (body).',req:true,choices:bodyChoices,lbl:'How it matches',why:'Every line here points to one of the 12 cell salts (or Bioplasma, which is all 12). The key is at the bottom of this page.'},
    {t:'mc',q:'Look at your tongue in the mirror. Which is closest?',choices:tongueChoices,lbl:'How it matches',why:'The tongue coating is one of the classic cell salt pointers (Boericke & Dewey). Each answer maps to a salt in the key.'},
    {t:'mc',q:'Anything you\'ve been craving lately?',choices:craveChoices,lbl:'How it matches',why:'Cravings are a second pointer. Salt leans Nat Mur, sweets & sour lean Nat Phos.'},
-   {t:'mc',q:'Would you rather start with one targeted cell salt, or the all-in-one?',req:true,choices:comboChoices,lbl:'How it matches',why:'The all-12-in-one bottle: Hyland\'s calls theirs Bioplasma, & on Fullscript one example is Professional Formulas\' Cell Salt Combo. It is the right answer when the pointers are spread out, when they are not sure, or when they just want one bottle. Keep it stocked, or in your Fullscript recommendations, alongside the singles.'},
+   {t:'mc',q:'Would you rather start with one targeted cell salt, or the all-in-one?',req:true,choices:comboChoices,lbl:'How it matches',why:'Most cell salt makers sell a combination of all 12 in one bottle. It is the right answer when the pointers are spread out, when they are not sure, or when they just want one bottle. Keep one stocked, or in your Fullscript recommendations, alongside the singles.'},
    {t:'mc',q:'How would you like to receive it?',req:true,choices:'Order it through my practitioner\'s Fullscript link\nShip it to me\nLocal pickup\nJust tell me what to buy & where'}
   ],
   routes:[
    {key:'fullscript',title:'Service fee + Fullscript',sub:'They pay me the service fee. They order the cell salt through my Fullscript link & Fullscript pays me the margin.',charge:'split',pricelabel:'Your service fee',
     intro2:'The service fee is $[price]. Once I\'ve matched you, I\'ll send a link to order your cell salt (it ships straight to you).\n\nAfter you submit this quiz I\'ll send you an invoice for the service fee. Once it\'s paid, your match, your order link & how to take it arrive within [X] business days.',
-    lines:['Open a free Fullscript practitioner account & search their catalog for cell salts. One example already there: Professional Formulas\' Cell Salt Combo, all 12 in one bottle. Add the singles brand you like (if a brand isn\'t there, use the next option & buy wholesale from the maker).','Invoice the client for your service fee. Then send your Fullscript dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it, & you earn the difference between the wholesale price & MSRP on every order.','Two income lines per client: your fee + the Fullscript margin. Nothing to stock, nothing to ship.']},
+    lines:['Open a free Fullscript practitioner account & search their catalog for cell salts: singles & an all-12 combination are both there. Pick the brand you like (if a brand isn\'t there, use the next option & buy wholesale from the maker).','Invoice the client for your service fee. Then send your Fullscript dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it, & you earn the difference between the wholesale price & MSRP on every order.','Two income lines per client: your fee + the Fullscript margin. Nothing to stock, nothing to ship.']},
    {key:'flat',title:'One flat fee, I supply the bottle',sub:'I buy cell salts wholesale from a brand I trust. One price covers the match & the bottle, shipped or picked up.',charge:'flat',pricelabel:'Your flat fee (match + the bottle)',
     intro2:'One flat fee of $[price] covers the service & your cell salt, shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your cell salt & how to take it are on the way within [X] business days.',
-    lines:['Open a wholesale account with a cell salt maker you trust. There are many well-regarded ones; Hyland\'s has a wholesale site, & most practitioner brands take wholesale accounts directly. Keep a small stock of the 12 singles plus an all-12 combo bottle.','Set the flat fee above what a bottle costs you plus your time. One invoice, one payment, you ship or hand it over.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
+    lines:['Open a wholesale account with a cell salt maker you trust. There are many well-regarded ones; Hyland\'s has a wholesale site, & most practitioner brands take wholesale accounts directly. Keep a small stock of the 12 singles plus an all-12 combination bottle.','Set the flat fee above what a bottle costs you plus your time. One invoice, one payment, you ship or hand it over.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
    {key:'send',title:'Service fee only',sub:'They pay me the service fee. I tell them exactly what to buy & where.',charge:'split',pricelabel:'Your service fee',
     intro2:'The service fee is $[price]. The cell salt itself you\'ll pick up or order where I point you (usually under $15).\n\nAfter you submit this quiz I\'ll send you an invoice for the service fee. Once it\'s paid, I\'ll send your match, where to get it & how to take it within [X] business days.',
     lines:['Your service fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start, nothing to stock. Switch to Fullscript once it\'s busy & the margin is worth it.']}
   ],
-  paylinks:[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog (search: cell salt)','https://fullscript.com/catalog'],['Professional Formulas (Cell Salt Combo)','https://www.professionalformulas.com'],['Hyland\'s wholesale: cell salts (one example of a maker with a wholesale program)','https://hylandswholesale.com/collections/cell-salts'],['Hyland\'s cell salts on Amazon (affiliate link)','https://www.amazon.com/s?k=hylands+cell+salts&tag=lexieharen-20'],['Fullscript inside Practice Better','https://practicebetter.io/integrations/fullscript']],
-  keyhint:'Count the pointers across the answers. One salt showing up again & again is your lead; two close together, send both. Pointers spread out, or they asked for the all-in-one, send the all-12 combo: Hyland\'s Bioplasma, or Professional Formulas Cell Salt Combo on Fullscript. Follow the dosing on the label.'
+  paylinks:[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog (search: cell salt)','https://fullscript.com/catalog'],['Hyland\'s wholesale: cell salts (one example of a maker with a wholesale program)','https://hylandswholesale.com/collections/cell-salts'],['Hyland\'s cell salts on Amazon (affiliate link)','https://www.amazon.com/s?k=hylands+cell+salts&tag=lexieharen-20'],['Fullscript inside Practice Better','https://practicebetter.io/integrations/fullscript']],
+  keyhint:'Count the pointers across the answers. One salt showing up again & again is your lead; two close together, send both. Pointers spread out, or they asked for the all-in-one, send the all-12 combination. Follow the dosing on the label.'
  },
  flower:{
   label:'flower essence', h1:'Build your own flower essence quiz',
@@ -394,7 +394,7 @@ function keyHTML(){
     h+='<h3>Energy &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+ENERGY.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Tongue &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+TONGUE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Cravings &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+CRAVE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
-    h+='<h3>One salt or the all-in-one</h3><table><tr><th>Client picked</th><th>What to send</th></tr>'+COMBO.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table><p class="src">How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send the all-12 combo (Hyland\'s Bioplasma, or Professional Formulas Cell Salt Combo on Fullscript).</p>';
+    h+='<h3>One salt or the all-in-one</h3><table><tr><th>Client picked</th><th>What to send</th></tr>'+COMBO.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table><p class="src">How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send the all-12 combination.</p>';
     h+='<h3>The 12 cell salts at a glance</h3><table><tr><th>Salt</th><th>Keynotes</th><th>Hyland\'s label uses</th></tr>'+SALT_INFO.map(s=>'<tr><td><b>'+esc(s[0])+'</b><br><span class="src">'+esc(s[1])+'</span></td><td>'+esc(s[2])+'</td><td>'+esc(s[3])+'</td></tr>').join('')+'</table>';
   } else {
     h+='<h3>Mood checkboxes &rarr; Bach flower essence (by Dr Bach\'s seven groups)</h3>';
@@ -548,7 +548,7 @@ document.getElementById('go').onclick=()=>{
       H2('Tongue -> cell salt'); TONGUE.forEach(x=>KV(x[1],x[0]));
       H2('Cravings -> cell salt'); CRAVE.forEach(x=>KV(x[1],x[0]));
       H2('One salt or the all-in-one'); COMBO.forEach(x=>KV(x[1],x[0]));
-      P('How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send the all-12 combo (Hyland\'s Bioplasma, or Professional Formulas Cell Salt Combo on Fullscript).',9.5);
+      P('How to read it all: count the pointers. One salt showing up three or more times is your lead. Two salts close together, send both. Pointers all over the place, or "not sure", send the all-12 combination.',9.5);
       H2('The 12 cell salts at a glance'); SALT_INFO.forEach(x=>KV(x[0],x[2]+'  Label: '+x[3]));
     } else {
       H2('Mood checkboxes -> Bach flower essence'); BACH.forEach(g=>{ need(30); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(10,11,9); doc.text(g[0],Mg,y); y+=13; g[1].forEach(e=>KV(e[0],e[1])); });
