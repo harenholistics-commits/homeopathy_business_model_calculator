@@ -99,7 +99,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 <div id="results" hidden></div>
 <div id="editor">
 <h1>Pick your ONE stream &amp; plan the season</h1>
-<p class="lead">Which stream takes the least of ME per dollar? Put in the streams you starred, rate how much of you each one takes, add a rough hours &amp; dollars a month &amp; it ranks them &amp; plots them on a grid. Top-right corner is the one to build first. Then pick your ONE &amp; write your brief game plan for the season. Hit the button &amp; you get a one-page PDF plus a ready-to-paste post for the community space.</p>
+<p class="lead">Which stream takes the least of ME per dollar? Put in the streams you starred, rate how much of you each one takes, add what you&#39;d charge for one &amp; how many you&#39;d do a month &amp; it ranks them &amp; plots them on a grid. Top-right corner is the one to build first. Then pick your ONE &amp; write your brief game plan for the season. Hit the button &amp; you get a one-page PDF plus a ready-to-paste post for the community space.</p>
 
 <div class="sheet">
   <h2>1. Your starred streams</h2>
@@ -158,7 +158,7 @@ function row(d={}){
   el.innerHTML=`<input type="text" class="name" list="streams" placeholder="Stream (pick from the list or type your own)" value="${esc(d.name||'')}">
   <select class="energy">${ENERGY.map((e,i)=>i?`<option value="${i}"${(d.energy||3)==i?' selected':''}>${e}</option>`:'').join('')}</select>
   <input type="number" class="price" min="0" step="1" placeholder="$ each" value="${d.price||''}">
-  <input type="number" class="count" min="0" step="1" placeholder="how many / mo" value="${d.count||''}">
+  <input type="number" class="count" min="0" step="1" placeholder="# a month" value="${d.count||''}">
   <input type="number" class="hours" min="0" step="1" placeholder="hrs / mo" value="${d.hours||''}">
   <span class="dollars">$0 / mo</span>
   <button class="del" type="button" title="remove">&times;</button>`;
