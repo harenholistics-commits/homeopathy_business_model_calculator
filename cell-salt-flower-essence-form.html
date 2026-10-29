@@ -78,7 +78,7 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
 <div id="results" hidden></div>
 <div id="editor">
 <h1>Build your own cell salt &amp; flower essence form</h1>
-<p class="lead">The custom remedy service from the Module 5 video, scaled down to products you can recommend over the counter right now: cell salts (Hyland's or another brand) &amp; Bach flower essences. No appointment. The client fills in a form, you match what they checked to the key at the bottom of this page, &amp; you either sell them the bottle, tell them exactly which one to pick up, or send it through a Fullscript dispensary so it ships straight to them. Keep the questions you want, reword any of them, switch off the ones that don't fit &amp; add your own. Hit the button &amp; you'll get your questions as one copy-&amp;-paste block, the steps to build it in your form builder, &amp; your matching key.</p>
+<p class="lead">The custom remedy service from the Module 5 video, scaled down to products you can recommend right now, before you have your own remedies or dispensary: cell salts &amp; Bach flower essences. No appointment. The client fills in your quiz, you match what they checked to the key at the bottom of this page, &amp; you get paid on each one: flower essences bought wholesale (Faire or Bach's own wholesale) &amp; sold at retail, cell salts through a Fullscript dispensary that ships straight to the client &amp; pays you the difference between wholesale &amp; MSRP. Keep the questions you want, reword any of them, switch off the ones that don't fit &amp; add your own. Hit the button &amp; you'll get your quiz as one copy-&amp;-paste block, the steps to build it in your form builder, your matching key &amp; how you get paid.</p>
 
 <div class="sheet">
   <h2>1. The basics</h2>
@@ -87,6 +87,7 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
     <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. your practice name"></div>
     <div class="field"><label class="t">Your price per match (the bottle is extra)</label><input type="text" id="price" placeholder="e.g. $20"></div>
   </div>
+  <div class="field"><label class="t">How will you supply the product?</label><select id="supply" style="max-width:520px"><option value="both">Flower essences from my wholesale stock, cell salts through my Fullscript dispensary</option><option value="fullscript">Everything through my Fullscript dispensary (ships direct, I never stock)</option><option value="stock">I stock both &amp; ship or hand them over myself</option><option value="send">I just tell them what to buy &amp; where</option></select></div>
   <div class="field"><label class="t">Which form builder will you use?</label><select id="builder" style="max-width:420px"><option value="typeform">Typeform (what Haren Holistics uses)</option><option value="google">Google Forms (free)</option><option value="other">Another form builder (Jotform, Tally, Practice Better forms, etc.)</option></select></div>
 </div>
 
@@ -134,11 +135,21 @@ After you submit this form I'll send you an invoice. Once it's paid, I'll send y
   <details open><summary>Show the key</summary><div id="keybody"></div></details>
 </div>
 
+<div class="sheet key" id="paysheet">
+  <h2>7. How you get paid on each one</h2>
+  <p class="hint">Two routes, one for each product. Both are free to set up &amp; neither needs your own dispensary.</p>
+  <h3>Cell salts: a Fullscript dispensary</h3>
+  <p class="src">Open a free Fullscript practitioner account, search their catalog for the cell salt brand you want &amp; send the client your dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it to them &amp; you earn the difference between the wholesale price &amp; MSRP on every order. If Fullscript doesn't carry the brand you want, Hyland's has its own wholesale site you can buy from &amp; resell.</p>
+  <h3>Flower essences: buy wholesale, sell retail</h3>
+  <p class="src">Bach Original Flower Remedies (the brand in most US shops) sells wholesale through Faire &amp; through its own wholesale program. Buy the 38-remedy set or singles at wholesale, charge retail for the bottle you hand over or ship, or mix up to six or seven into a treatment bottle. That margin plus your matching fee is the income.</p>
+  <p class="src">Links: <a href="https://fullscript.com/practitioners" target="_blank" rel="noopener">Fullscript for practitioners</a> &middot; <a href="https://fullscript.com/catalog" target="_blank" rel="noopener">Fullscript catalog</a> &middot; <a href="https://hylandswholesale.com/collections/cell-salts" target="_blank" rel="noopener">Hyland's wholesale: cell salts</a> &middot; <a href="https://www.faire.com/search?q=bach%20original%20flower%20remedies" target="_blank" rel="noopener">Bach on Faire</a> &middot; <a href="https://www.bachremedies.com/en-us/wholesale" target="_blank" rel="noopener">Bach Original Flower Remedies wholesale</a> &middot; <a href="https://practicebetter.io/integrations/fullscript" target="_blank" rel="noopener">Fullscript inside Practice Better</a></p>
+</div>
+
 <div class="sheet">
-  <h2>7. Before you offer this</h2>
+  <h2>8. Before you offer this</h2>
   <ul style="font-size:.85rem;line-height:1.55;color:var(--black);margin:.2rem 0 .4rem 1.1rem;padding:0">
     <li>Cell salts &amp; Bach essences are sold over the counter with the manufacturer's label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it's for.</li>
-    <li>If you sell the bottles yourself, your state will likely want a sales tax or reseller permit. That's state by state, so check your own state &amp; your Module 1 notes.</li>
+    <li>If you stock &amp; sell the bottles yourself, your state will likely want a sales tax or reseller permit, &amp; wholesalers like Faire will ask for it. That's state by state, so check your own state &amp; your Module 1 notes. Fullscript orders are Fullscript's sale, not yours.</li>
     <li>If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.</li>
     <li>Keep it to short-term situations. Anything chronic or anything that worries you gets a full consult or a referral.</li>
     <li>No claims to diagnose, treat, cure or prevent on your form, your site or your reply. Say what the product is labeled for.</li>
@@ -217,7 +228,7 @@ const MINE=[
  {t:'ms',q:'Check anything that\'s true for you right now (body).',req:true,choices:bodyChoices,lbl:'How it matches',why:'Every line here points to one of the 12 cell salts (or Bioplasma, which is all 12). The key is at the bottom of this page.'},
  {t:'ms',q:'Check up to three that sound like you lately (mood & mind).',choices:moodChoices,lbl:'How it matches',why:'Every line here is one of the 38 Bach flower essences, in Dr Bach\'s seven groups. The key is at the bottom of this page.'},
  {t:'short',q:'If you could feel one way instead, what would it be?'},
- {t:'mc',q:'How would you like to receive it?',req:true,choices:'Ship it to me\nLocal pickup\nJust tell me what to buy & where'}
+ {t:'mc',q:'How would you like to receive it?',req:true,choices:'Ship it to me\nLocal pickup\nOrder it through my practitioner\'s Fullscript link\nJust tell me what to buy & where'}
 ];
 // =====
 
@@ -236,6 +247,13 @@ const B={
   links:[]}
 };
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const PAY={
+ both:{title:'Flower essences from your wholesale stock, cell salts through Fullscript',lines:['Cell salts: open a free Fullscript practitioner account, find the brand you want in their catalog & send the client your dispensary link or a recommendation with the salt picked. They order, Fullscript ships it, you earn the wholesale-to-MSRP difference on every order.','Flower essences: buy Bach Original Flower Remedies wholesale (Faire or Bach\'s own wholesale program), charge retail for the bottle you hand over or ship, or mix up to six or seven into a treatment bottle.','Your matching fee on top of both.']},
+ fullscript:{title:'Everything through your Fullscript dispensary',lines:['Open a free Fullscript practitioner account & check their catalog for the cell salt & flower essence brands you want. Send the client your dispensary link or a recommendation with the products picked. They order, Fullscript ships it, you earn the wholesale-to-MSRP difference on every order.','If a brand you want isn\'t in Fullscript, Hyland\'s and Bach both sell wholesale directly, so you can stock that one yourself.','Your matching fee on top.']},
+ stock:{title:'You stock both & ship or hand them over',lines:['Buy cell salts from Hyland\'s wholesale & Bach Original Flower Remedies from Faire or Bach\'s wholesale program. Charge retail for every bottle plus your matching fee.','Your state will likely want a sales tax or reseller permit for this, & Faire will ask for it. Check your Module 1 notes & Lesson 1.4 for product liability.']},
+ send:{title:'You tell them what to buy & where',lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start. You can switch to Fullscript or wholesale stock once it\'s busy.']}
+};
+const PAYLINKS=[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog','https://fullscript.com/catalog'],['Hyland\'s wholesale: cell salts','https://hylandswholesale.com/collections/cell-salts'],['Bach on Faire','https://www.faire.com/search?q=bach%20original%20flower%20remedies'],['Bach Original Flower Remedies wholesale','https://www.bachremedies.com/en-us/wholesale']];
 function keyHTML(){
   let h='<h3>Body checkboxes &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+SALTS.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
   h+='<h3>The 12 cell salts at a glance</h3><table><tr><th>Salt</th><th>Keynotes</th><th>Hyland\'s label uses</th></tr>'+SALT_INFO.map(s=>'<tr><td><b>'+esc(s[0])+'</b><br><span class="src">'+esc(s[1])+'</span></td><td>'+esc(s[2])+'</td><td>'+esc(s[3])+'</td></tr>').join('')+'</table>';
@@ -274,7 +292,7 @@ function build(){
   document.getElementById('keybody').innerHTML=keyHTML();
 }
 document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
-document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('price').value=''; build(); update(); } };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('price').value=''; document.getElementById('supply').value='both'; build(); update(); } };
 
 function collect(){
   const v=id=>document.getElementById(id).value.trim();
@@ -287,7 +305,7 @@ function collect(){
     const choices=(t==='mc'||t==='ms')?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
     qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
   });
-  return {builder:document.getElementById('builder').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+  return {builder:document.getElementById('builder').value,supply:document.getElementById('supply').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
 }
 function pasteText(s){
   const title=(s.who?s.who+': ':'')+'Cell Salt & Flower Essence Match';
@@ -313,7 +331,7 @@ function pasteText(s){
 function update(){
   const txt=pasteText(collect()); const c=document.getElementById('count'); const b=document.getElementById('builder').value; c.textContent=b==='typeform'?txt.length.toLocaleString()+' / 6,000 characters':txt.length.toLocaleString()+' characters'; c.classList.toggle('over',b==='typeform'&&txt.length>6000); document.getElementById('bnote').innerHTML=B[b].note;
 }
-['who','price','welcome','intro1','intro2','pass','fail','builder'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
+['who','price','welcome','intro1','intro2','pass','fail','builder','supply'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
 build(); update();
 
 document.getElementById('go').onclick=()=>{
@@ -343,6 +361,7 @@ document.getElementById('go').onclick=()=>{
     H(s.builder==='typeform'?'Paste block (copy all of this into Typeform\'s Import questions box)':'Build sheet');
     doc.setFont('courier','normal'); doc.setFontSize(8.5); doc.setTextColor(10,11,9);
     txt.split('\n').forEach(raw=>{ const ls=raw===''?['']:doc.splitTextToSize(raw,W-2*M); ls.forEach(l=>{need(12); doc.text(l,M,y); y+=11;}); });
+    const PP=PAY[s.supply]||PAY.both; H('How you get paid: '+PP.title); PP.lines.forEach(l=>P('- '+l,9.5)); PAYLINKS.forEach(([t,u])=>{ need(14); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(154,128,48); doc.textWithLink(t+'  '+u,M,y,{url:u}); y+=13; });
     doc.addPage(); y=M;
     H('Your matching key (for you, not the client)'); P('Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time.',9.5,[106,107,101]);
     H2('Body checkboxes -> cell salt'); SALTS.forEach(x=>KV(x[1],x[0]));
@@ -360,7 +379,8 @@ document.getElementById('go').onclick=()=>{
    '<div class="card"><h2>1. '+esc(B[s.builder].pasteTitle)+'</h2><button class="cp" id="cp">Copy the text in the block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(s.builder==='typeform'?(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so paste the two checkbox questions in a second round or add them by hand.':'. Typeform\'s box takes up to 6,000.'):'')+'</p></div>'+
    '<div class="card"><h2>2. How to turn it into your form in '+esc(B[s.builder].name)+'</h2><ol>'+B[s.builder].steps.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+(B[s.builder].links.length?'<p class="tip">Help: '+B[s.builder].links.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>':'')+(s.builder==='typeform'?'<p class="tip">The same block works as a build sheet for Google Forms, Tally or Jotform if you ever switch.</p>':'')+'</div>';
   if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so your form builder\'s default ending shows. You can write one later.</p>')+'</div>'; }
-  html+='<div class="card key"><h2>'+(kicks.length?'4':'3')+'. Your matching key (for you, not the client)</h2><p class="tip">Pick one to three cell salts, lead with the strongest checkbox &amp; follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time.</p>'+keyHTML()+'</div>';
+  const pn=kicks.length?4:3; const PP=PAY[s.supply]||PAY.both; html+='<div class="card"><h2>'+pn+'. How you get paid: '+esc(PP.title)+'</h2><ul>'+PP.lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul><p class="tip">'+PAYLINKS.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p></div>';
+  html+='<div class="card key"><h2>'+(pn+1)+'. Your matching key (for you, not the client)</h2><p class="tip">Pick one to three cell salts, lead with the strongest checkbox &amp; follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time.</p>'+keyHTML()+'</div>';
   const R=document.getElementById('results'); R.innerHTML=html; R.hidden=false; document.getElementById('editor').hidden=true; window.scrollTo(0,0);
   document.getElementById('back').onclick=()=>{ R.hidden=true; document.getElementById('editor').hidden=false; window.scrollTo(0,0); };
   document.getElementById('cp').onclick=function(){ const t=document.getElementById('pb').textContent; const done=()=>{document.getElementById('ok').textContent='Copied!'}; const sel=()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('pb')); const s=window.getSelection(); s.removeAllRanges(); s.addRange(r); try{document.execCommand('copy'); done();}catch(e){document.getElementById('ok').textContent='Select the block & copy it';} }; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel);}else{sel();} };
