@@ -290,13 +290,12 @@ const MODES={
    {t:'short',q:'If you could feel one way instead, what would it be?',req:true},
    {t:'mc',q:'How would you like to receive it?',req:true,choices:'Ship it to me\nLocal pickup\nJust tell me what to buy & where'}
   ],
-  supply:[['stock','I buy Bach flower essences wholesale (Faire or Bach\'s wholesale program) & sell them at retail'],['fullscript','Through my Fullscript dispensary, if they carry the brand I want'],['send','I just tell them what to buy & where']],
+  supply:[['stock','I buy Bach flower essences wholesale (Faire or Bach\'s wholesale program) & sell them at retail'],['send','I just tell them what to buy & where']],
   pay:{
    stock:{title:'You buy flower essences wholesale & sell at retail',lines:['Bach Original Flower Remedies (the brand in most US shops) sells wholesale through Faire & through its own wholesale program. Buy the 38-remedy set or singles at wholesale.','Charge retail for the single bottle you hand over or ship, or mix up to six or seven essences into a treatment bottle & charge for the blend. That margin plus your matching fee is the income.','Your state will likely want a sales tax or reseller permit, & Faire will ask for it. Check your Module 1 notes & Lesson 1.4.']},
-   fullscript:{title:'Flower essences through your Fullscript dispensary',lines:['Open a free Fullscript practitioner account & search their catalog for the flower essence brand you want. If it\'s there, send the client your dispensary link or a recommendation with the essences picked. They order, Fullscript ships, you earn the wholesale-to-MSRP difference.','If the brand isn\'t in Fullscript, buy wholesale from Faire or Bach directly instead (see the first option).','Your matching fee on top.']},
    send:{title:'You tell them what to buy & where',lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start. You can switch to wholesale stock once it\'s busy.']}
   },
-  paylinks:[['Bach on Faire','https://www.faire.com/search?q=bach%20original%20flower%20remedies'],['Bach Original Flower Remedies wholesale','https://www.bachremedies.com/en-us/wholesale'],['Fullscript for practitioners','https://fullscript.com/practitioners'],['Bach flower remedies on Amazon (affiliate link)','https://www.amazon.com/s?k=bach+flower+remedies&tag=lexieharen-20'],['Bach Centre: how to take the remedies','https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/']],
+  paylinks:[['Bach on Faire','https://www.faire.com/search?q=bach%20original%20flower%20remedies'],['Bach Original Flower Remedies wholesale','https://www.bachremedies.com/en-us/wholesale'],['Bach flower remedies on Amazon (affiliate link)','https://www.amazon.com/s?k=bach+flower+remedies&tag=lexieharen-20'],['Bach Centre: how to take the remedies','https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/']],
   keyhint:'The Bach Centre says you can mix up to six or seven essences at a time, & past seven or eight you probably have some you don\'t need. One "type" essence plus the moods they ticked is a good shape.'
  }
 };
@@ -335,7 +334,7 @@ function keyHTML(){
   return h+SRC;
 }
 function payHTML(){
-  const m=M(); let h='<p class="hint">Pick your route in section 1. Both are free to set up &amp; neither needs your own dispensary.</p>';
+  const m=M(); let h='<p class="hint">Pick your route in section 1. Neither route needs your own dispensary.'+(MODE==='flower'?' Fullscript does not carry flower essences, so these go wholesale.':'')+'</p>';
   m.supply.forEach(([k,label])=>{ const P=m.pay[k]; h+='<h3>'+esc(P.title)+'</h3><ul style="font-size:.82rem;line-height:1.5;margin:.2rem 0 .6rem 1.1rem;padding:0">'+P.lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul>'; });
   h+='<p class="src">Links: '+m.paylinks.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>';
   return h;
