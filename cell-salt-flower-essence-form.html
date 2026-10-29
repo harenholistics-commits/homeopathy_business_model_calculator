@@ -152,7 +152,7 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
     <li>Cell salts &amp; Bach essences are sold over the counter with the manufacturer's label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it's for.</li>
     <li>If you stock &amp; sell the bottles yourself, your state will likely want a sales tax or reseller permit, &amp; wholesalers like Faire will ask for it. That's state by state, so check your own state &amp; your Module 1 notes. Fullscript orders are Fullscript's sale, not yours.</li>
     <li>If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.</li>
-    <li>Keep it to short-term situations. Anything chronic, anything that worries you, or anyone in crisis gets a full consult or a referral.</li>
+    <li>Keep it a quick match. Anything that worries you, anything complicated, or anyone in crisis gets a full consult or a referral.</li>
     <li>No claims to diagnose, treat, cure or prevent on your form, your site or your reply. Say what the product is labeled for.</li>
   </ul>
 </div>
@@ -196,6 +196,12 @@ const TONGUE=[
  ['Clean, or frothy bubbles along the edges','#9 Nat Mur'],
  ['Didn\'t look / nothing stood out','no pointer']
 ];
+const DURATION=[
+ ['A few days, it came on fast','#4 Ferrum Phos (first stage), then #5 Kali Mur if it settles in'],
+ ['A few weeks','#5 Kali Mur or #7 Kali Sulph (second & third stage), by the discharge'],
+ ['Months','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma'],
+ ['Years, it\'s just how my body is','the deeper salts: #2 Calc Phos, #9 Nat Mur, #12 Silicea, or Bioplasma; consider a full consult']
+];
 const CRAVE=[
  ['Salt','#9 Nat Mur'],
  ['Sweets & sugar','#10 Nat Phos / #8 Mag Phos'],
@@ -231,26 +237,27 @@ const BACH=[
 const bodyChoices=SALTS.map(s=>s[0]).join('\n');
 const tongueChoices=TONGUE.map(s=>s[0]).join('\n');
 const craveChoices=CRAVE.map(s=>s[0]).join('\n');
+const durationChoices=DURATION.map(s=>s[0]).join('\n');
 const moodChoices=BACH.map(g=>g[1].map(e=>e[1]).join('\n')).join('\n');
 
 const WHY_DETAIL='The more info you can give me, you could literally write a whole freaking paragraph here and I would be stoked because I need to know what\'s making your symptoms better. What\'s making them worse? What time of day are they worse at? If you eat food, does it make it worse or better? Are you noticing any other symptoms with your main symptoms? This is all gold to a homeopath.';
-const WHY_ACUTE='These remedy blends are only for acute situations. So something that has been occurring for a short amount of time that is only going to need to be taking a remedy for two to three weeks max, ideally. Think post-op support, postpartum, a flu, a virus, something that you\'re needing immediate support for. And you aren\'t going to be taking this every day for like a year. That\'s a chronic case.';
 
 const MODES={
  cell:{
   label:'cell salt', h1:'Build your own cell salt quiz',
-  qhint:'Cell salts are about mineralization, so these questions are physical: what\'s going on, what changes it, the tongue, cravings. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
+  qhint:'Cell salts are about mineralization, so these questions are physical: what\'s going on, how long, what changes it, the tongue, cravings. They work for a sudden thing & for a long-standing mineral pattern, so there is no time limit on this quiz. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
   welcome:'Get a cell salt matched to you.\n\nNo appointment needed. Cell salts are the 12 mineral salts your cells run on. Fill this in with as much detail as you can & I\'ll match you to the one (or two) your body is asking for right now.',
-  intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is for short-term support only. Anything that\'s been going on for a long time is a chronic case & needs a full consultation.\n\nCell salts are over-the-counter products with their own label & instructions.',
+  intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is a quick match, not a full case. Cell salts can support something that came on last week or a pattern you\'ve had for years. If a lot is going on & you want the whole picture looked at, book a consultation instead.\n\nCell salts are over-the-counter products with their own label & instructions.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your cell salt match & how to take it.',
-  fail:'This sounds like it\'s been going on a while, so a quick match isn\'t the right tool. Book a full consultation & we\'ll look at the whole picture together.',
+  fail:'Sounds like there\'s more going on than a quick match covers. Book a full consultation & we\'ll look at the whole picture together.',
   mine:[
    {t:'short',q:'Your full name. If this is for a child or a pet, include both your name & theirs (& pet type, i.e. dog or horse).',req:true},
    {t:'contact',q:'Your phone number & email.',req:true},
    {t:'short',q:'Their age. Pregnant or nursing?',req:true},
    {t:'short',q:'Anything taken daily (medications, supplements)?'},
-   {t:'yn',q:'Has this been going on for less than about three weeks?',req:true,kick:'No',why:WHY_ACUTE},
+   {t:'yn',q:'Is this one specific thing you\'d like matched? (If a lot is going on & you\'d rather we look at everything, answer No & I\'ll send my booking link instead.)',req:true,kick:'No',lbl:'Why this is here',why:'Cell salts can support a quick thing or a long-standing mineral pattern, so there is no time limit. This question just routes the people who really need a full case to your booking link instead of a quick match.'},
    {t:'long',q:'Describe what\'s going on in your own words. The more detail the better. A whole paragraph is great.',req:true,why:WHY_DETAIL},
+   {t:'mc',q:'How long has this been going on?',req:true,choices:durationChoices,lbl:'How it matches',why:'Sudden & recent leans toward the stage salts (Ferrum Phos first, Kali Mur second, Kali Sulph third, per Boericke & Dewey). Months or years leans toward the deeper nutrition salts (Calc Phos, Nat Mur, Silicea) or Bioplasma. The key has the map.'},
    {t:'short',q:'What makes it better?',req:true},
    {t:'short',q:'What makes it worse?',req:true},
    {t:'short',q:'Any time of day it\'s worse? Does eating or drinking change it?'},
@@ -271,7 +278,7 @@ const MODES={
     lines:['Your service fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start, nothing to stock. Switch to Fullscript once it\'s busy & the margin is worth it.']}
   ],
   paylinks:[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog','https://fullscript.com/catalog'],['Hyland\'s wholesale: cell salts','https://hylandswholesale.com/collections/cell-salts'],['Hyland\'s cell salts on Amazon (affiliate link)','https://www.amazon.com/s?k=hylands+cell+salts&tag=lexieharen-20'],['Fullscript inside Practice Better','https://practicebetter.io/integrations/fullscript']],
-  keyhint:'Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. Bioplasma (all 12) is the default when nothing stands out.'
+  keyhint:'Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. Recent & sudden: think stage salts. Months or years: think the deeper nutrition salts or Bioplasma. Bioplasma (all 12) is the default when nothing stands out.'
  },
  flower:{
   label:'flower essence', h1:'Build your own flower essence quiz',
@@ -332,6 +339,7 @@ function keyHTML(){
   let h='';
   if(MODE==='cell'){
     h+='<h3>Body checkboxes &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+SALTS.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+    h+='<h3>How long &rarr; where to look</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+DURATION.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Tongue &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+TONGUE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>Cravings &rarr; cell salt</h3><table><tr><th>Client picked</th><th>Points to</th></tr>'+CRAVE.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
     h+='<h3>The 12 cell salts at a glance</h3><table><tr><th>Salt</th><th>Keynotes</th><th>Hyland\'s label uses</th></tr>'+SALT_INFO.map(s=>'<tr><td><b>'+esc(s[0])+'</b><br><span class="src">'+esc(s[1])+'</span></td><td>'+esc(s[2])+'</td><td>'+esc(s[3])+'</td></tr>').join('')+'</table>';
@@ -478,6 +486,7 @@ document.getElementById('go').onclick=()=>{
     H('Your matching key (for you, not the client)'); P(m.keyhint,9.5,[106,107,101]);
     if(MODE==='cell'){
       H2('Body checkboxes -> cell salt'); SALTS.forEach(x=>KV(x[1],x[0]));
+      H2('How long -> where to look'); DURATION.forEach(x=>KV(x[0],x[1]));
       H2('Tongue -> cell salt'); TONGUE.forEach(x=>KV(x[1],x[0]));
       H2('Cravings -> cell salt'); CRAVE.forEach(x=>KV(x[1],x[0]));
       H2('The 12 cell salts at a glance'); SALT_INFO.forEach(x=>KV(x[0],x[2]+'  Label: '+x[3]));
@@ -486,7 +495,7 @@ document.getElementById('go').onclick=()=>{
       P('Treatment bottle (Bach Centre): 2 drops of each chosen essence in a 30 ml dropper bottle of water, 4 drops at least 4 times a day. Rescue Remedy is the pre-mixed crisis formula.',9.5);
     }
     H('Before you offer this');
-    ['Cell salts & Bach essences are sold over the counter with the manufacturer\'s label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it\'s for.','If you stock & sell the bottles yourself, your state will likely want a sales tax or reseller permit, & wholesalers like Faire will ask for it. Check your own state & your Module 1 notes. Fullscript orders are Fullscript\'s sale, not yours.','If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.','Keep it to short-term situations. Anything chronic, anything that worries you, or anyone in crisis gets a full consult or a referral.','No claims to diagnose, treat, cure or prevent on your quiz, your site or your reply. Say what the product is labeled for.'].forEach(t=>P('- '+t,9.5));
+    ['Cell salts & Bach essences are sold over the counter with the manufacturer\'s label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it\'s for.','If you stock & sell the bottles yourself, your state will likely want a sales tax or reseller permit, & wholesalers like Faire will ask for it. Check your own state & your Module 1 notes. Fullscript orders are Fullscript\'s sale, not yours.','If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.','Keep it a quick match. Anything that worries you, anything complicated, or anyone in crisis gets a full consult or a referral.','No claims to diagnose, treat, cure or prevent on your quiz, your site or your reply. Say what the product is labeled for.'].forEach(t=>P('- '+t,9.5));
     H2('Sources');
     [['Boericke & Dewey, The Twelve Tissue Remedies (free)','https://archive.org/details/twelvetissuerem00boer'],['Hyland\'s cell salts','https://www.hylands.com/pages/cell-salts'],['Bach Centre: the 38 remedies','https://www.bachcentre.com/en/remedies/the-38-remedies/'],['Bach Centre: selecting & combining','https://www.bachcentre.com/en/remedies/selecting-remedies/'],['Bach Centre: how to take them','https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/'],['FDA: homeopathic products','https://www.fda.gov/drugs/information-drug-class/homeopathic-products']].forEach(([t,u])=>LINK(t,u));
     url=URL.createObjectURL(doc.output('blob'));
