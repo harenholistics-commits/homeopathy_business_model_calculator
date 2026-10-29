@@ -74,6 +74,8 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
 .toggle .mode span{display:block;font-weight:400;font-size:.76rem;color:var(--gray);margin-top:.25rem}
 .toggle .mode.on{border-color:var(--gold-dark);background:var(--gold-lite);box-shadow:0 0 0 2px var(--gold-lite)}
 .toggle .mode:hover{border-color:var(--gold-dark)}
+.toggle.three{grid-template-columns:1fr 1fr 1fr;max-width:none}
+@media(max-width:860px){.toggle.three{grid-template-columns:1fr}}
 @media(max-width:560px){.toggle{grid-template-columns:1fr}}
 
 @media(max-width:700px){.two{grid-template-columns:1fr}}
@@ -98,14 +100,10 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
 
 <div class="sheet">
   <h2>1. The basics</h2>
-  <p class="hint">Name &amp; price are optional. The supply choice decides your "how you get paid" card. The form builder decides which steps you get on your results page.</p>
-  <div class="two">
-    <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. your practice name"></div>
-    <div class="field"><label class="t">How do you want to charge?</label><select id="charge"><option value="split">Two charges: my matching fee + the product billed separately</option><option value="flat">One flat fee that covers the match & the bottle</option></select></div>
-  </div>
-  <div class="field"><label class="t" id="pricelabel">Your price per match (the bottle is extra)</label><input type="text" id="price" placeholder="e.g. $20" style="max-width:260px"></div>
-  <p class="hint" id="chargenote"></p>
-  <div class="field"><label class="t">How will you supply the product?</label><select id="supply" style="max-width:560px"></select></div>
+  <p class="hint">Name &amp; price are optional. Pick how the money works &amp; the client wording, your results page &amp; your PDF follow it. The form builder decides which build steps you get.</p>
+  <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. your practice name" style="max-width:420px"></div>
+  <div class="field"><label class="t">How the money works</label><div class="toggle three" id="paybar"></div></div>
+  <div class="field"><label class="t" id="pricelabel">Your price</label><input type="text" id="price" placeholder="e.g. $20" style="max-width:260px"></div>
   <div class="field"><label class="t">Which form builder will you use?</label><select id="builder" style="max-width:420px"><option value="typeform">Typeform (what Haren Holistics uses)</option><option value="google">Google Forms (free)</option><option value="other">Another form builder (Jotform, Tally, Practice Better forms, etc.)</option></select></div>
 </div>
 
@@ -244,8 +242,6 @@ const MODES={
   qhint:'Cell salts are about mineralization, so these questions are physical: what\'s going on, what changes it, the tongue, cravings. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
   welcome:'Get a cell salt matched to you.\n\nNo appointment needed. Cell salts are the 12 mineral salts your cells run on. Fill this in with as much detail as you can & I\'ll match you to the one (or two) your body is asking for right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is for short-term support only. Anything that\'s been going on for a long time is a chronic case & needs a full consultation.\n\nCell salts are over-the-counter products with their own label & instructions.',
-  intro2:'Each match is $[price]. The cell salt itself is separate: you\'ll order it through my link or buy it where I point you.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
-  intro2flat:'One flat fee of $[price] covers your match & your cell salt, shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your cell salt & how to take it are on the way within [X] business days.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your cell salt match & how to take it.',
   fail:'This sounds like it\'s been going on a while, so a quick match isn\'t the right tool. Book a full consultation & we\'ll look at the whole picture together.',
   mine:[
@@ -263,12 +259,17 @@ const MODES={
    {t:'mc',q:'Anything you\'ve been craving lately?',choices:craveChoices,lbl:'How it matches',why:'Cravings are a second pointer. Salt leans Nat Mur, sweets & sour lean Nat Phos.'},
    {t:'mc',q:'How would you like to receive it?',req:true,choices:'Order it through my practitioner\'s Fullscript link\nShip it to me\nLocal pickup\nJust tell me what to buy & where'}
   ],
-  supply:[['fullscript','Cell salts through my Fullscript dispensary (ships direct, I never stock)'],['stock','I buy cell salts wholesale from Hyland\'s & ship or hand them over myself'],['send','I just tell them what to buy & where']],
-  pay:{
-   fullscript:{title:'Cell salts through your Fullscript dispensary',lines:['Open a free Fullscript practitioner account & search their catalog for the cell salt brand you want (if it\'s not there, Hyland\'s has its own wholesale site, see the next option).','Send the client your dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it to them & you earn the difference between the wholesale price & MSRP on every order.','Your matching fee on top.']},
-   stock:{title:'You stock cell salts & ship or hand them over',lines:['Buy from Hyland\'s wholesale site (or another brand\'s wholesale program). Charge retail for every bottle plus your matching fee.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
-   send:{title:'You tell them what to buy & where',lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start. You can switch to Fullscript once it\'s busy.']}
-  },
+  routes:[
+   {key:'fullscript',title:'Matching fee + Fullscript',sub:'They pay me for the match. They order the cell salt through my Fullscript link & Fullscript pays me the margin.',charge:'split',pricelabel:'Your matching fee',
+    intro2:'Each match is $[price]. Once I\'ve matched you, I\'ll send a link to order your cell salt (it ships straight to you).\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, your match, your order link & how to take it arrive within [X] business days.',
+    lines:['Open a free Fullscript practitioner account & search their catalog for the cell salt brand you want (if it\'s not there, use the next option & buy from Hyland\'s wholesale).','Invoice the client for your matching fee. Then send your Fullscript dispensary link or a "recommendation" with the salt picked. They order, Fullscript ships it, & you earn the difference between the wholesale price & MSRP on every order.','Two income lines per client: your fee + the Fullscript margin. Nothing to stock, nothing to ship.']},
+   {key:'flat',title:'One flat fee, I supply the bottle',sub:'I buy cell salts wholesale from Hyland\'s. One price covers the match & the bottle, shipped or picked up.',charge:'flat',pricelabel:'Your flat fee (match + the bottle)',
+    intro2:'One flat fee of $[price] covers your match & your cell salt, shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your cell salt & how to take it are on the way within [X] business days.',
+    lines:['Buy cell salts from Hyland\'s wholesale site (or another brand\'s wholesale program) & keep a small stock of the 12.','Set the flat fee above what a bottle costs you plus your time. One invoice, one payment, you ship or hand it over.','Your state will likely want a sales tax or reseller permit for this. Check your Module 1 notes & Lesson 1.4 for product liability.']},
+   {key:'send',title:'Matching fee only',sub:'They pay me for the match. I tell them exactly what to buy & where.',charge:'split',pricelabel:'Your matching fee',
+    intro2:'Each match is $[price]. The cell salt itself you\'ll pick up or order where I point you (usually under $15).\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match, where to get it & how to take it within [X] business days.',
+    lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start, nothing to stock. Switch to Fullscript once it\'s busy & the margin is worth it.']}
+  ],
   paylinks:[['Fullscript for practitioners','https://fullscript.com/practitioners'],['Fullscript catalog','https://fullscript.com/catalog'],['Hyland\'s wholesale: cell salts','https://hylandswholesale.com/collections/cell-salts'],['Hyland\'s cell salts on Amazon (affiliate link)','https://www.amazon.com/s?k=hylands+cell+salts&tag=lexieharen-20'],['Fullscript inside Practice Better','https://practicebetter.io/integrations/fullscript']],
   keyhint:'Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. Bioplasma (all 12) is the default when nothing stands out.'
  },
@@ -277,8 +278,6 @@ const MODES={
   qhint:'Flower essences are about emotional terrain, so these questions are about how someone\'s feeling: what\'s going on inside, when it started, whether it\'s a mood or how they\'ve always been. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz. The checkbox question is the matching question: every line is one of Dr Bach\'s 38 essences.',
   welcome:'Get a flower essence matched to you.\n\nNo appointment needed. Flower essences are gentle & work on how you\'re feeling, not on physical symptoms. Tell me honestly how things are & I\'ll match you to the essences (up to six or seven) that fit right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical or mental health care. If you are in crisis, please reach out to local emergency services or a crisis line right now.\n\nFlower essences are over-the-counter products with their own label & instructions.',
-  intro2:'Each match is $[price]. The essences themselves are separate: buy the bottle(s) from me at retail, or where I point you.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
-  intro2flat:'One flat fee of $[price] covers your match & your essence bottle (or a custom treatment bottle), shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your essences & how to take them are on the way within [X] business days.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your flower essence match & how to take it.',
   fail:'Thank you for being honest. A flower essence isn\'t the right support for where you are right now. Please reach out to someone today: in the US you can call or text 988 any time. I\'m here when you\'re ready for a full conversation.',
   mine:[
@@ -294,11 +293,17 @@ const MODES={
    {t:'short',q:'If you could feel one way instead, what would it be?',req:true},
    {t:'mc',q:'How would you like to receive it?',req:true,choices:'Ship it to me\nLocal pickup\nJust tell me what to buy & where'}
   ],
-  supply:[['stock','I buy Bach flower essences wholesale (Faire or Bach\'s wholesale program) & sell them at retail'],['send','I just tell them what to buy & where']],
-  pay:{
-   stock:{title:'You buy flower essences wholesale & sell at retail',lines:['Bach Original Flower Remedies (the brand in most US shops) sells wholesale through Faire & through its own wholesale program. Buy the 38-remedy set or singles at wholesale.','Charge retail for the single bottle you hand over or ship, or mix up to six or seven essences into a treatment bottle & charge for the blend. That margin plus your matching fee is the income.','Your state will likely want a sales tax or reseller permit, & Faire will ask for it. Check your Module 1 notes & Lesson 1.4.']},
-   send:{title:'You tell them what to buy & where',lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start. You can switch to wholesale stock once it\'s busy.']}
-  },
+  routes:[
+   {key:'flat',title:'One flat fee, I supply the bottle',sub:'I buy Bach essences wholesale (Faire or Bach\'s program). One price covers the match & the bottle, or a custom treatment bottle.',charge:'flat',pricelabel:'Your flat fee (match + the bottle)',
+    intro2:'One flat fee of $[price] covers your match & your essence bottle (or a custom treatment bottle), shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your essences & how to take them are on the way within [X] business days.',
+    lines:['Bach Original Flower Remedies (the brand in most US shops) sells wholesale through Faire & through its own wholesale program. Buy the 38-remedy set or singles at wholesale.','Set the flat fee above what the bottle costs you plus your time. Hand over a single, or mix up to six or seven essences into a 30 ml treatment bottle & charge for the blend.','Your state will likely want a sales tax or reseller permit, & Faire will ask for it. Check your Module 1 notes & Lesson 1.4.']},
+   {key:'retail',title:'Matching fee + the bottle at retail',sub:'Two charges: my matching fee, then they buy the bottle(s) from my stock at retail.',charge:'split',pricelabel:'Your matching fee',
+    intro2:'Each match is $[price]. The essence bottle(s) are separate, at retail, from my stock.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match, the bottle price & how to take it within [X] business days.',
+    lines:['Buy Bach essences wholesale (Faire or Bach\'s wholesale program) & sell each bottle at retail. The margin on the bottle plus your matching fee is the income.','Invoice the fee first, then the bottle(s) once they say yes. Or put the essences in your shop & send the link.','Your state will likely want a sales tax or reseller permit, & Faire will ask for it. Check your Module 1 notes & Lesson 1.4.']},
+   {key:'send',title:'Matching fee only',sub:'They pay me for the match. I tell them exactly which essences to buy & where.',charge:'split',pricelabel:'Your matching fee',
+    intro2:'Each match is $[price]. The essences themselves you\'ll buy where I point you.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match, where to get them & how to take them within [X] business days.',
+    lines:['Your matching fee is the income. Send them to a shop or an online link (your Amazon affiliate links count here).','Easiest start, nothing to stock. Move to wholesale stock once it\'s busy.']}
+  ],
   paylinks:[['Bach on Faire','https://www.faire.com/search?q=bach%20original%20flower%20remedies'],['Bach Original Flower Remedies wholesale','https://www.bachremedies.com/en-us/wholesale'],['Bach flower remedies on Amazon (affiliate link)','https://www.amazon.com/s?k=bach+flower+remedies&tag=lexieharen-20'],['Bach Centre: how to take the remedies','https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/']],
   keyhint:'The Bach Centre says you can mix up to six or seven essences at a time, & past seven or eight you probably have some you don\'t need. One "type" essence plus the moods they ticked is a good shape.'
  }
@@ -338,8 +343,8 @@ function keyHTML(){
   return h+SRC;
 }
 function payHTML(){
-  const m=M(); let h='<p class="hint">Pick your route in section 1. Neither route needs your own dispensary.'+(MODE==='flower'?' Fullscript does not carry flower essences, so these go wholesale.':'')+'</p>';
-  m.supply.forEach(([k,label])=>{ const P=m.pay[k]; h+='<h3>'+esc(P.title)+'</h3><ul style="font-size:.82rem;line-height:1.5;margin:.2rem 0 .6rem 1.1rem;padding:0">'+P.lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul>'; });
+  const m=M(); let h='<p class="hint">The three ways the money can work for this quiz. You picked one in section 1; the others are here so you can compare. None of them needs your own dispensary.'+(MODE==='flower'?' Fullscript does not carry flower essences, so these go wholesale.':'')+'</p>';
+  m.routes.forEach(r=>{ h+='<h3>'+esc(r.title)+(r.key===ROUTE?' <span class="src">(your pick)</span>':'')+'</h3><ul style="font-size:.82rem;line-height:1.5;margin:.2rem 0 .6rem 1.1rem;padding:0">'+r.lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul>'; });
   h+='<p class="src">Links: '+m.paylinks.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>';
   return h;
 }
@@ -366,14 +371,18 @@ function qRow(d,own,idx){
   el.addEventListener('input',update); el.addEventListener('change',update);
   return el;
 }
-function applyCharge(){
-  const m=M(); const c=document.getElementById('charge').value; const sup=document.getElementById('supply').value;
-  const t=document.getElementById('intro2'); const txt=c==='flat'?m.intro2flat:m.intro2; t.value=txt; t.defaultValue=txt;
-  document.getElementById('pricelabel').textContent=c==='flat'?'Your flat fee (match + the bottle)':'Your price per match (the bottle is extra)';
-  let note=c==='flat'?'Flat fee: set it above what the bottle costs you plus your time. You buy or stock the product & send it, so the client pays you once.':'Two charges: the client pays you for the match & pays for the product separately (through your Fullscript link, your shop, or wherever you point them).';
-  if(c==='flat'&&sup==='fullscript') note+=' Heads up: with Fullscript the client pays Fullscript for the bottle, so a flat fee only works if you stock the product yourself. Switch the supply choice or go with two charges.';
-  if(c==='flat'&&sup==='send') note+=' Heads up: a flat fee means you supply the bottle, so "I just tell them what to buy" doesn\'t fit. Pick a stock option or go with two charges.';
-  document.getElementById('chargenote').textContent=note;
+let ROUTE='';
+const R_=()=>M().routes.find(r=>r.key===ROUTE)||M().routes[0];
+function renderRoutes(){
+  const bar=document.getElementById('paybar'); bar.innerHTML=M().routes.map(r=>'<button type="button" class="mode'+(r.key===ROUTE?' on':'')+'" data-route="'+r.key+'">'+esc(r.title)+'<span>'+esc(r.sub)+'</span></button>').join('');
+  bar.querySelectorAll('.mode').forEach(b=>{ b.onclick=()=>{ setRoute(b.dataset.route); }; });
+}
+function setRoute(key){
+  ROUTE=key; const r=R_();
+  document.querySelectorAll('#paybar .mode').forEach(b=>b.classList.toggle('on',b.dataset.route===key));
+  const t=document.getElementById('intro2'); t.value=r.intro2; t.defaultValue=r.intro2;
+  document.getElementById('pricelabel').textContent=r.pricelabel;
+  update();
 }
 function setMode(mode,keepOwn){
   MODE=mode; const m=M();
@@ -382,8 +391,7 @@ function setMode(mode,keepOwn){
   document.getElementById('qhint').textContent=m.qhint;
   document.getElementById('keyhint').textContent=m.keyhint;
   ['welcome','intro1','pass','fail'].forEach(id=>{ const t=document.getElementById(id); t.value=m[id]; t.defaultValue=m[id]; });
-  applyCharge();
-  const sup=document.getElementById('supply'); sup.innerHTML=m.supply.map(([k,l])=>'<option value="'+k+'">'+esc(l)+'</option>').join('');
+  ROUTE=m.routes[0].key; renderRoutes(); setRoute(ROUTE);
   const mine=document.getElementById('mine'); mine.innerHTML=''; m.mine.forEach((d,i)=>mine.appendChild(qRow(d,false,i)));
   if(!keepOwn){ const own=document.getElementById('own'); own.innerHTML=''; own.appendChild(qRow({t:'short',q:''},true)); }
   document.getElementById('keybody').innerHTML=keyHTML();
@@ -392,7 +400,7 @@ function setMode(mode,keepOwn){
 }
 document.querySelectorAll('#modebar .mode').forEach(b=>{ b.onclick=()=>{ if(b.dataset.mode===MODE) return; setMode(b.dataset.mode,true); document.getElementById('msg').textContent='Switched to the '+M().label+' quiz. Your own questions in section 4 were kept.'; }; });
 document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
-document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original for this quiz?')){ document.getElementById('who').value=''; document.getElementById('price').value=''; document.getElementById('charge').value='split'; setMode(MODE,false); } };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original for this quiz?')){ document.getElementById('who').value=''; document.getElementById('price').value=''; setMode(MODE,false); } };
 
 function collect(){
   const v=id=>document.getElementById(id).value.trim();
@@ -405,7 +413,7 @@ function collect(){
     const choices=(t==='mc'||t==='ms')?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
     qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
   });
-  return {mode:MODE,builder:document.getElementById('builder').value,supply:document.getElementById('supply').value,charge:document.getElementById('charge').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+  return {mode:MODE,builder:document.getElementById('builder').value,route:ROUTE,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
 }
 function pasteText(s){
   const title=(s.who?s.who+': ':'')+(MODE==='cell'?'Cell Salt Match':'Flower Essence Match');
@@ -431,10 +439,7 @@ function pasteText(s){
 function update(){
   const txt=pasteText(collect()); const c=document.getElementById('count'); const b=document.getElementById('builder').value; c.textContent=b==='typeform'?txt.length.toLocaleString()+' / 6,000 characters':txt.length.toLocaleString()+' characters'; c.classList.toggle('over',b==='typeform'&&txt.length>6000); document.getElementById('bnote').innerHTML=B[b].note;
 }
-['who','price','welcome','intro1','intro2','pass','fail','builder','supply','charge'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
-document.getElementById('charge').addEventListener('change',applyCharge);
-document.getElementById('supply').addEventListener('change',()=>{ const c=document.getElementById('charge').value; const m=M(); const t=document.getElementById('intro2'); if(t.value===t.defaultValue){ applyCharge(); } else { applyChargeNoteOnly(); } });
-function applyChargeNoteOnly(){ const v=document.getElementById('intro2').value; applyCharge(); document.getElementById('intro2').value=v; }
+['who','price','welcome','intro1','intro2','pass','fail','builder'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
 setMode('cell',false);
 
 document.getElementById('go').onclick=()=>{
@@ -444,10 +449,9 @@ document.getElementById('go').onclick=()=>{
   const txt=pasteText(s);
   const kicks=s.qs.map((x,i)=>x.kick?{n:i+1,q:x.q,a:x.kick}:null).filter(Boolean);
   const title=(s.who?s.who+"'s":'My')+' '+m.label+' quiz';
-  const PP0=m.pay[s.supply]||m.pay[m.supply[0][0]];
-  const priceTxt=s.price?(s.price.startsWith('$')?s.price:'$'+s.price):'[your price]';
-  const chargeLine=s.charge==='flat'?'One flat fee of '+priceTxt+' covers the match & the bottle. Set it above what the bottle costs you plus your time, & you supply the product.':'Two charges: '+priceTxt+' for the match, & the client pays for the product separately.';
-  const PP={title:PP0.title,lines:[chargeLine].concat(PP0.lines)};
+  const r=R_(); const priceTxt=s.price?(s.price.startsWith('$')?s.price:'$'+s.price):'[your price]';
+  const chargeLine=r.charge==='flat'?'One flat fee of '+priceTxt+' covers the match & the bottle. You supply the product.':'Your matching fee is '+priceTxt+'. The product is a separate charge.';
+  const PP={title:r.title,lines:[chargeLine].concat(r.lines)};
   // ---- PDF ----
   let url='';
   if(window.jspdf){
