@@ -78,7 +78,9 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
 @media(max-width:860px){.toggle.three{grid-template-columns:1fr}}
 @media(max-width:560px){.toggle{grid-template-columns:1fr}}
 
-.srow{display:grid;grid-template-columns:1fr 190px 100px 100px 28px;gap:.5rem;align-items:center;margin:.35rem 0}
+.srow{display:grid;grid-template-columns:1fr 170px 84px 110px 92px 90px 24px;gap:.45rem;align-items:center;margin:.35rem 0}
+.srow .dollars{font-size:.84rem;font-weight:600;color:var(--gold-dark)}
+table.rank .tip{font-size:.72rem;color:var(--gray)}
 .srow.head span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark)}
 .srow input,.srow select{font-size:.84rem;padding:.45rem .55rem}
 .srow .del{background:none;border:0;color:var(--clay);font-size:1.1rem;cursor:pointer}
@@ -87,7 +89,7 @@ table.rank th{text-align:left;font-size:.66rem;letter-spacing:.1em;text-transfor
 table.rank td{padding:.4rem .4rem;border-bottom:1px solid var(--border);vertical-align:top}
 table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 #grid{display:flex;align-items:flex-start}
-@media(max-width:760px){.srow{grid-template-columns:1fr 1fr;}.srow.head{display:none}}
+@media(max-width:900px){.srow{grid-template-columns:1fr 1fr 1fr;}.srow.head{display:none}}
 @media(max-width:700px){.two{grid-template-columns:1fr}}
 </style>
 </head>
@@ -101,7 +103,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 
 <div class="sheet">
   <h2>1. Your starred streams</h2>
-  <p class="hint">Add the two to five streams you starred in activity two. "How much of ME" is the honest one: 1 = barely costs me anything, 5 = drains me. Hours &amp; dollars a month are rough guesses, same math as Module 2: real time, real costs. Use the business model calculator if you want tighter numbers.</p>
+  <p class="hint">Add the two to five streams you starred in activity two. "How much of ME" is the honest one: 1 = barely costs me anything, 5 = drains me. Then two easy numbers: what you'd charge for one (one blend, one kit, one seat, one month of membership) &amp; how many of those you'd realistically do in a month. The dollars a month works itself out. Hours a month is your rough guess of the time it takes. Same math as Module 2: real time, real costs.</p>
   <div class="rows" id="rows"></div>
   <button class="add" id="addrow">+ Add a stream</button>
   <datalist id="streams">
@@ -111,7 +113,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 
 <div class="sheet">
   <h2>2. Which takes the least of ME per dollar?</h2>
-  <p class="hint">This updates as you type. Dollars per point of energy is the ranking. The grid puts "least of me" on the right &amp; "most dollars" at the top, so top-right is the one to build first. Then choose your ONE below. It doesn't have to be the top of the list, it has to be the one you'll actually do.</p>
+  <p class="hint">This updates as you type. Dollars a month divided by how much of ME it takes is the ranking. The grid puts "least of me" on the right &amp; "most dollars" at the top, so top-right is the one to build first. Then choose your ONE below. It doesn't have to be the top of the list, it has to be the one you'll actually do.</p>
   <div class="two">
     <div id="ranktable"></div>
     <div id="grid"></div>
@@ -155,24 +157,26 @@ function row(d={}){
   const el=document.createElement('div'); el.className='srow';
   el.innerHTML=`<input type="text" class="name" list="streams" placeholder="Stream (pick from the list or type your own)" value="${esc(d.name||'')}">
   <select class="energy">${ENERGY.map((e,i)=>i?`<option value="${i}"${(d.energy||3)==i?' selected':''}>${e}</option>`:'').join('')}</select>
+  <input type="number" class="price" min="0" step="1" placeholder="$ each" value="${d.price||''}">
+  <input type="number" class="count" min="0" step="1" placeholder="how many / mo" value="${d.count||''}">
   <input type="number" class="hours" min="0" step="1" placeholder="hrs / mo" value="${d.hours||''}">
-  <input type="number" class="dollars" min="0" step="10" placeholder="$ / mo" value="${d.dollars||''}">
+  <span class="dollars">$0 / mo</span>
   <button class="del" type="button" title="remove">&times;</button>`;
   el.querySelector('.del').onclick=()=>{ el.remove(); update(); };
   el.addEventListener('input',update); el.addEventListener('change',update);
   return el;
 }
-function build(){ const r=document.getElementById('rows'); r.innerHTML='<div class="srow head"><span>Stream</span><span>How much of ME</span><span>Hours / month</span><span>$ / month</span><span></span></div>'; for(let i=0;i<3;i++) r.appendChild(row()); }
+function build(){ const r=document.getElementById('rows'); r.innerHTML='<div class="srow head"><span>Stream</span><span>How much of ME</span><span>$ for one</span><span>How many a month</span><span>Hours a month</span><span>= $ / month</span><span></span></div>'; for(let i=0;i<3;i++) r.appendChild(row()); }
 document.getElementById('addrow').onclick=()=>{ document.getElementById('rows').appendChild(row()); update(); };
 document.getElementById('clear').onclick=()=>{ if(confirm('Clear everything & start over?')){ build(); ['why','s1','s2','s3','need','who','worth','pause'].forEach(id=>document.getElementById(id).value=''); setDate(); update(); } };
 function setDate(){ const d=new Date(); d.setDate(d.getDate()+90); document.getElementById('date').value=d.toISOString().slice(0,10); }
+const money=n=>'$'+Math.round(n).toLocaleString();
 function streams(){
-  return [...document.querySelectorAll('#rows .srow:not(.head)')].map(el=>({name:el.querySelector('.name').value.trim(),energy:+el.querySelector('.energy').value,hours:+el.querySelector('.hours').value||0,dollars:+el.querySelector('.dollars').value||0})).filter(s=>s.name);
+  return [...document.querySelectorAll('#rows .srow:not(.head)')].map(el=>{ const price=+el.querySelector('.price').value||0, count=+el.querySelector('.count').value||0, dollars=price*count; el.querySelector('.dollars').textContent=money(dollars)+' / mo'; return {name:el.querySelector('.name').value.trim(),energy:+el.querySelector('.energy').value,hours:+el.querySelector('.hours').value||0,price,count,dollars}; }).filter(s=>s.name);
 }
 function ranked(){
   return streams().map(s=>({...s,perEnergy:s.dollars/s.energy,perHour:s.hours?s.dollars/s.hours:0})).sort((a,b)=>b.perEnergy-a.perEnergy||b.perHour-a.perHour);
 }
-const money=n=>'$'+Math.round(n).toLocaleString();
 function gridSVG(list,w,h){
   const M={l:44,r:14,t:14,b:34}; const maxD=Math.max(100,...list.map(s=>s.dollars))*1.15;
   const x=e=>M.l+((5-e)/4)*(w-M.l-M.r); const y=d=>M.t+(1-d/maxD)*(h-M.t-M.b);
@@ -189,7 +193,7 @@ function update(){
   const list=ranked(); const t=document.getElementById('ranktable');
   if(!list.length){ t.innerHTML='<p class="hint">Add a stream above to see the ranking.</p>'; document.getElementById('grid').innerHTML=''; }
   else {
-    t.innerHTML='<table class="rank"><tr><th>#</th><th>Stream</th><th>$ per point of ME</th><th>$ / hour</th></tr>'+list.map((s,i)=>`<tr${i===0?' class="top"':''}><td>${i+1}</td><td>${esc(s.name)}</td><td>${money(s.perEnergy)}</td><td>${s.hours?money(s.perHour):'–'}</td></tr>`).join('')+'</table>';
+    t.innerHTML='<table class="rank"><tr><th>#</th><th>Stream</th><th>$ / month</th><th>$ per point of ME</th><th>$ / hour</th></tr>'+list.map((s,i)=>`<tr${i===0?' class="top"':''}><td>${i+1}</td><td>${esc(s.name)}<br><span class="tip">${money(s.price)} × ${s.count} a month</span></td><td>${money(s.dollars)}</td><td>${money(s.perEnergy)}</td><td>${s.hours?money(s.perHour):'–'}</td></tr>`).join('')+'</table>';
     document.getElementById('grid').innerHTML=gridSVG(list,440,260);
   }
   const pick=document.getElementById('pick'); const cur=pick.value; pick.innerHTML='<option value="">Choose one</option>'+streams().map(s=>`<option${s.name===cur?' selected':''}>${esc(s.name)}</option>`).join('');
