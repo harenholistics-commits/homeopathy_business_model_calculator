@@ -99,7 +99,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
 <div id="results" hidden></div>
 <div id="editor">
 <h1>Pick your ONE stream &amp; plan the season</h1>
-<p class="lead">Which stream takes the least of ME per dollar? Put in the streams you starred, rate how much of you each one takes, add what you&#39;d charge for one &amp; how many you&#39;d do a month &amp; it ranks them &amp; plots them on a grid. Top-right corner is the one to build first. Then pick your ONE &amp; write your brief game plan for the season. Hit the button &amp; you get a one-page PDF plus a ready-to-paste post for the community space.</p>
+<p class="lead">Which stream takes the least of ME per dollar? Put in the streams you starred, rate how much of you each one takes, add what you&#39;d charge for one &amp; how many you&#39;d do a month &amp; it ranks them &amp; plots them on a grid. Top-right corner is the one to build first. Then pick your ONE &amp; write your brief game plan for the season. Hit the button &amp; you get a one-page PDF plus a ready-to-paste post for the Blueprint community space.</p>
 
 <div class="sheet">
   <h2>1. Your starred streams</h2>
@@ -145,7 +145,7 @@ table.rank tr.top td{background:var(--gold-lite);font-weight:600}
   <button class="ghost" id="clear">Start over</button>
 </div>
 <div id="msg"></div>
-<p class="note">Nothing here is saved anywhere but your PDF, so download it. Bring the Hub post to the community space if you'd like input.</p>
+<p class="note">Nothing here is saved anywhere but your PDF, so download it. Bring the post to the Blueprint community space (not the public Hub) if you'd like input.</p>
 </div>
 </main>
 <footer>HAREN HOLISTICS</footer>
@@ -240,7 +240,7 @@ document.getElementById('go').onclick=()=>{
    '<h1>My ONE stream: '+esc(pick)+'</h1><p class="sub">Ranking, grid & your plan are all in the PDF. This page stays put, hit Back to change anything.</p>'+
    '<div class="card"><h2>1. Which takes the least of ME per dollar?</h2>'+document.getElementById('ranktable').innerHTML+'<div style="margin-top:.8rem">'+gridSVG(list,520,280)+'</div>'+(chosen&&chosen!==top?'<p class="tip">Your pick isn\'t the top of the list & that\'s fine. It has to be the one you\'ll actually do.</p>':'')+'</div>'+
    '<div class="card"><h2>2. My season plan</h2><p class="k"><b>Why this, why first</b><br>'+esc(d.why||'—')+'</p><p class="k"><b>First three steps</b><br>'+[d.s1,d.s2,d.s3].filter(Boolean).map((s,i)=>(i+1)+'. '+esc(s)).join('<br>')+'</p><p class="k"><b>What I need</b><br>'+esc(d.need||'—')+'</p><p class="k"><b>Who helps</b><br>'+esc(d.who||'—')+'</p><p class="k"><b>Check-in</b><br>'+esc(dateTxt)+'. "Worth it" by then = '+esc(d.worth||'—')+'</p>'+(d.pause?'<p class="k"><b>Making room by pausing</b><br>'+esc(d.pause)+'</p>':'')+'</div>'+
-   '<div class="card"><h2>3. Paste this in the community space</h2><button class="cp" id="cp">Copy the post</button><span class="ok" id="ok"></span><pre id="pb">'+esc(post)+'</pre><p class="tip">Post it in the Hub if you\'d like input, then put your check-in date on your calendar.</p></div>';
+   '<div class="card"><h2>3. Paste this in the community space</h2><button class="cp" id="cp">Copy the post</button><span class="ok" id="ok"></span><pre id="pb">'+esc(post)+'</pre><p class="tip">Post it in the Blueprint community space if you\'d like input, then put your check-in date on your calendar.</p></div>';
   const R=document.getElementById('results'); R.innerHTML=html; R.hidden=false; document.getElementById('editor').hidden=true; window.scrollTo(0,0);
   document.getElementById('back').onclick=()=>{ R.hidden=true; document.getElementById('editor').hidden=false; window.scrollTo(0,0); };
   document.getElementById('cp').onclick=function(){ const t=document.getElementById('pb').textContent; const done=()=>{document.getElementById('ok').textContent='Copied!'}; const sel=()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('pb')); const s=window.getSelection(); s.removeAllRanges(); s.addRange(r); try{document.execCommand('copy'); done();}catch(e){document.getElementById('ok').textContent='Select the block & copy it';} }; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel);}else{sel();} };
