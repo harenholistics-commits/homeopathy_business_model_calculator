@@ -101,8 +101,10 @@ details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weig
   <p class="hint">Name &amp; price are optional. The supply choice decides your "how you get paid" card. The form builder decides which steps you get on your results page.</p>
   <div class="two">
     <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. your practice name"></div>
-    <div class="field"><label class="t">Your price per match (the bottle is extra)</label><input type="text" id="price" placeholder="e.g. $20"></div>
+    <div class="field"><label class="t">How do you want to charge?</label><select id="charge"><option value="split">Two charges: my matching fee + the product billed separately</option><option value="flat">One flat fee that covers the match & the bottle</option></select></div>
   </div>
+  <div class="field"><label class="t" id="pricelabel">Your price per match (the bottle is extra)</label><input type="text" id="price" placeholder="e.g. $20" style="max-width:260px"></div>
+  <p class="hint" id="chargenote"></p>
   <div class="field"><label class="t">How will you supply the product?</label><select id="supply" style="max-width:560px"></select></div>
   <div class="field"><label class="t">Which form builder will you use?</label><select id="builder" style="max-width:420px"><option value="typeform">Typeform (what Haren Holistics uses)</option><option value="google">Google Forms (free)</option><option value="other">Another form builder (Jotform, Tally, Practice Better forms, etc.)</option></select></div>
 </div>
@@ -242,7 +244,8 @@ const MODES={
   qhint:'Cell salts are about mineralization, so these questions are physical: what\'s going on, what changes it, the tongue, cravings. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz before they can order. The checkbox questions are the matching questions: every line maps to a salt in the key below.',
   welcome:'Get a cell salt matched to you.\n\nNo appointment needed. Cell salts are the 12 mineral salts your cells run on. Fill this in with as much detail as you can & I\'ll match you to the one (or two) your body is asking for right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical advice. If this is an emergency, please seek local medical care.\n\nThis is for short-term support only. Anything that\'s been going on for a long time is a chronic case & needs a full consultation.\n\nCell salts are over-the-counter products with their own label & instructions.',
-  intro2:'Each match is $[price], plus the cost of the product if you\'re buying it from me.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
+  intro2:'Each match is $[price]. The cell salt itself is separate: you\'ll order it through my link or buy it where I point you.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
+  intro2flat:'One flat fee of $[price] covers your match & your cell salt, shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your cell salt & how to take it are on the way within [X] business days.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your cell salt match & how to take it.',
   fail:'This sounds like it\'s been going on a while, so a quick match isn\'t the right tool. Book a full consultation & we\'ll look at the whole picture together.',
   mine:[
@@ -274,7 +277,8 @@ const MODES={
   qhint:'Flower essences are about emotional terrain, so these questions are about how someone\'s feeling: what\'s going on inside, when it started, whether it\'s a mood or how they\'ve always been. Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the quiz. The checkbox question is the matching question: every line is one of Dr Bach\'s 38 essences.',
   welcome:'Get a flower essence matched to you.\n\nNo appointment needed. Flower essences are gentle & work on how you\'re feeling, not on physical symptoms. Tell me honestly how things are & I\'ll match you to the essences (up to six or seven) that fit right now.',
   intro1:'A few things before we get started:\n\nI understand this isn\'t a substitute for medical or mental health care. If you are in crisis, please reach out to local emergency services or a crisis line right now.\n\nFlower essences are over-the-counter products with their own label & instructions.',
-  intro2:'Each match is $[price], plus the cost of the product if you\'re buying it from me.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
+  intro2:'Each match is $[price]. The essences themselves are separate: buy the bottle(s) from me at retail, or where I point you.\n\nAfter you submit this quiz I\'ll send you an invoice for the match. Once it\'s paid, I\'ll send your match & how to take it within [X] business days.',
+  intro2flat:'One flat fee of $[price] covers your match & your essence bottle (or a custom treatment bottle), shipped or ready for pickup.\n\nAfter you submit this quiz I\'ll send you an invoice. Once it\'s paid, your essences & how to take them are on the way within [X] business days.',
   pass:'Thanks! Watch your email for the invoice. Once it\'s paid I\'ll send your flower essence match & how to take it.',
   fail:'Thank you for being honest. A flower essence isn\'t the right support for where you are right now. Please reach out to someone today: in the US you can call or text 988 any time. I\'m here when you\'re ready for a full conversation.',
   mine:[
@@ -362,13 +366,23 @@ function qRow(d,own,idx){
   el.addEventListener('input',update); el.addEventListener('change',update);
   return el;
 }
+function applyCharge(){
+  const m=M(); const c=document.getElementById('charge').value; const sup=document.getElementById('supply').value;
+  const t=document.getElementById('intro2'); const txt=c==='flat'?m.intro2flat:m.intro2; t.value=txt; t.defaultValue=txt;
+  document.getElementById('pricelabel').textContent=c==='flat'?'Your flat fee (match + the bottle)':'Your price per match (the bottle is extra)';
+  let note=c==='flat'?'Flat fee: set it above what the bottle costs you plus your time. You buy or stock the product & send it, so the client pays you once.':'Two charges: the client pays you for the match & pays for the product separately (through your Fullscript link, your shop, or wherever you point them).';
+  if(c==='flat'&&sup==='fullscript') note+=' Heads up: with Fullscript the client pays Fullscript for the bottle, so a flat fee only works if you stock the product yourself. Switch the supply choice or go with two charges.';
+  if(c==='flat'&&sup==='send') note+=' Heads up: a flat fee means you supply the bottle, so "I just tell them what to buy" doesn\'t fit. Pick a stock option or go with two charges.';
+  document.getElementById('chargenote').textContent=note;
+}
 function setMode(mode,keepOwn){
   MODE=mode; const m=M();
   document.querySelectorAll('#modebar .mode').forEach(b=>b.classList.toggle('on',b.dataset.mode===mode));
   document.getElementById('h1').textContent=m.h1;
   document.getElementById('qhint').textContent=m.qhint;
   document.getElementById('keyhint').textContent=m.keyhint;
-  ['welcome','intro1','intro2','pass','fail'].forEach(id=>{ const t=document.getElementById(id); t.value=m[id]; t.defaultValue=m[id]; });
+  ['welcome','intro1','pass','fail'].forEach(id=>{ const t=document.getElementById(id); t.value=m[id]; t.defaultValue=m[id]; });
+  applyCharge();
   const sup=document.getElementById('supply'); sup.innerHTML=m.supply.map(([k,l])=>'<option value="'+k+'">'+esc(l)+'</option>').join('');
   const mine=document.getElementById('mine'); mine.innerHTML=''; m.mine.forEach((d,i)=>mine.appendChild(qRow(d,false,i)));
   if(!keepOwn){ const own=document.getElementById('own'); own.innerHTML=''; own.appendChild(qRow({t:'short',q:''},true)); }
@@ -378,7 +392,7 @@ function setMode(mode,keepOwn){
 }
 document.querySelectorAll('#modebar .mode').forEach(b=>{ b.onclick=()=>{ if(b.dataset.mode===MODE) return; setMode(b.dataset.mode,true); document.getElementById('msg').textContent='Switched to the '+M().label+' quiz. Your own questions in section 4 were kept.'; }; });
 document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
-document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original for this quiz?')){ document.getElementById('who').value=''; document.getElementById('price').value=''; setMode(MODE,false); } };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original for this quiz?')){ document.getElementById('who').value=''; document.getElementById('price').value=''; document.getElementById('charge').value='split'; setMode(MODE,false); } };
 
 function collect(){
   const v=id=>document.getElementById(id).value.trim();
@@ -391,7 +405,7 @@ function collect(){
     const choices=(t==='mc'||t==='ms')?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
     qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
   });
-  return {mode:MODE,builder:document.getElementById('builder').value,supply:document.getElementById('supply').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+  return {mode:MODE,builder:document.getElementById('builder').value,supply:document.getElementById('supply').value,charge:document.getElementById('charge').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
 }
 function pasteText(s){
   const title=(s.who?s.who+': ':'')+(MODE==='cell'?'Cell Salt Match':'Flower Essence Match');
@@ -417,7 +431,10 @@ function pasteText(s){
 function update(){
   const txt=pasteText(collect()); const c=document.getElementById('count'); const b=document.getElementById('builder').value; c.textContent=b==='typeform'?txt.length.toLocaleString()+' / 6,000 characters':txt.length.toLocaleString()+' characters'; c.classList.toggle('over',b==='typeform'&&txt.length>6000); document.getElementById('bnote').innerHTML=B[b].note;
 }
-['who','price','welcome','intro1','intro2','pass','fail','builder','supply'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
+['who','price','welcome','intro1','intro2','pass','fail','builder','supply','charge'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
+document.getElementById('charge').addEventListener('change',applyCharge);
+document.getElementById('supply').addEventListener('change',()=>{ const c=document.getElementById('charge').value; const m=M(); const t=document.getElementById('intro2'); if(t.value===t.defaultValue){ applyCharge(); } else { applyChargeNoteOnly(); } });
+function applyChargeNoteOnly(){ const v=document.getElementById('intro2').value; applyCharge(); document.getElementById('intro2').value=v; }
 setMode('cell',false);
 
 document.getElementById('go').onclick=()=>{
@@ -427,7 +444,10 @@ document.getElementById('go').onclick=()=>{
   const txt=pasteText(s);
   const kicks=s.qs.map((x,i)=>x.kick?{n:i+1,q:x.q,a:x.kick}:null).filter(Boolean);
   const title=(s.who?s.who+"'s":'My')+' '+m.label+' quiz';
-  const PP=m.pay[s.supply]||m.pay[m.supply[0][0]];
+  const PP0=m.pay[s.supply]||m.pay[m.supply[0][0]];
+  const priceTxt=s.price?(s.price.startsWith('$')?s.price:'$'+s.price):'[your price]';
+  const chargeLine=s.charge==='flat'?'One flat fee of '+priceTxt+' covers the match & the bottle. Set it above what the bottle costs you plus your time, & you supply the product.':'Two charges: '+priceTxt+' for the match, & the client pays for the product separately.';
+  const PP={title:PP0.title,lines:[chargeLine].concat(PP0.lines)};
   // ---- PDF ----
   let url='';
   if(window.jspdf){
