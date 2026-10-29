@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Your Own Cell Salt &amp; Flower Essence Form — Haren Holistics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--black:#0a0b09;--white:#fff;--cream:#efe9db;--tan:#cfc1ab;--gray:#6a6b65;--slate:#354449;--warm-gray:#a89985;--gold:#c2a540;--gold-dark:#9a8030;--gold-lite:#f5edcf;--clay:#b26e42;--border:#cfc1ab;--radius:8px}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',sans-serif;background:var(--cream);color:var(--black)}
+.site-header{background:var(--black);padding:1.1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gold)}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;color:var(--gold);letter-spacing:.06em}
+.tag{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tan)}
+main{max-width:1040px;margin:0 auto;padding:2rem 1.25rem 4rem}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;margin:0 0 .4rem;line-height:1.15}
+.lead{color:var(--gray);font-size:.95rem;line-height:1.55;max-width:760px;margin:0 0 1.6rem}
+.quote{border-left:3px solid var(--gold);padding:.4rem .9rem;margin:0 0 1.6rem;font-size:.9rem;line-height:1.55;color:var(--black);max-width:760px;background:var(--white);border-radius:0 6px 6px 0}
+.sheet{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem 1rem;margin-bottom:1.2rem}
+.sheet h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;margin:0 0 .2rem;line-height:1.2}
+.sheet .hint{font-size:.8rem;color:var(--gray);line-height:1.5;margin:0 0 1rem;max-width:760px}
+.field{margin:0 0 .9rem}
+.field label.t{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem}
+input[type=text],textarea,select{font-family:'Inter',sans-serif;font-size:.88rem;padding:.5rem .65rem;border:1px solid var(--border);border-radius:6px;width:100%;background:#fff;color:var(--black)}
+textarea{min-height:78px;line-height:1.45;resize:vertical}
+.q{display:grid;grid-template-columns:28px 1fr;gap:.6rem;padding:.9rem 0;border-top:1px solid var(--border)}
+.q:first-of-type{border-top:0}
+.q.off .body{opacity:.45}
+.q input.on{appearance:none;width:20px;height:20px;min-width:20px;border:1.5px solid var(--gold-dark);border-radius:4px;background:#fff;margin-top:6px;display:grid;place-content:center;cursor:pointer}
+.q input.on:checked{background:var(--gold);border-color:var(--gold-dark)}
+.q input.on:checked::after{content:"";width:10px;height:6px;border-left:2.5px solid #0a0b09;border-bottom:2.5px solid #0a0b09;transform:rotate(-45deg) translate(1px,-1px)}
+.q textarea.qt{min-height:52px}
+.row{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;margin-top:.45rem;font-size:.8rem;color:var(--gray)}
+.row select{width:auto;font-size:.8rem;padding:.35rem .5rem}
+.row label{display:flex;align-items:center;gap:.35rem;cursor:pointer}
+.row input[type=checkbox]{accent-color:var(--gold-dark);width:15px;height:15px}
+.choices{margin-top:.45rem}
+.choices textarea{min-height:56px;font-size:.82rem}
+.why{font-size:.78rem;color:var(--gray);line-height:1.5;margin-top:.5rem;padding:.45rem .7rem;background:var(--gold-lite);border-radius:6px}
+.why b{color:var(--gold-dark);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.68rem;margin-right:.3rem}
+.q .del{background:none;border:0;color:var(--clay);font-size:.75rem;cursor:pointer;padding:0;margin-left:auto}
+button.add{background:transparent;color:var(--gold-dark);border:1px dashed var(--gold-dark);border-radius:6px;padding:.6rem 1rem;font-family:'Inter',sans-serif;font-size:.82rem;cursor:pointer;margin-top:.4rem}
+button.add:hover{background:var(--gold-lite)}
+.submit-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.2rem}
+button.go{background:var(--black);color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:.85rem 1.7rem;font-family:'Inter',sans-serif;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+button.go:hover{background:var(--slate)}
+button.ghost{background:transparent;color:var(--gray);border:1px solid var(--border);border-radius:999px;padding:.7rem 1.2rem;font-size:.78rem;cursor:pointer}
+.note{font-size:.76rem;color:var(--gray);line-height:1.5}
+#msg{font-size:.82rem;color:var(--clay);min-height:1.2em;margin-top:.6rem}
+#count{font-size:.76rem;color:var(--gray)}
+#count.over{color:var(--clay);font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+#results .bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:0 0 1.2rem}
+#results .dl{background:var(--gold);color:var(--black);text-decoration:none;font-weight:600;padding:.55rem 1.1rem;border-radius:999px;font-size:.85rem}
+#results .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:.9rem}
+#results h2{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;margin:0 0 .5rem}
+#results ol,#results ul{margin:.2rem 0 0 1.1rem;padding:0;font-size:.92rem}#results li{margin:.3rem 0}
+#results pre{white-space:pre-wrap;font-family:Menlo,Consolas,monospace;font-size:.8rem;line-height:1.45;background:#faf7ef;border:1px solid var(--border);border-radius:6px;padding:.9rem;max-height:60vh;overflow:auto}
+#results button.cp{background:var(--black);color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:.6rem 1.2rem;font:inherit;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin:0 0 .6rem}
+#results .ok{color:var(--gold-dark);font-size:.85rem;margin-left:.6rem}
+#results .k{font-size:.9rem;margin:.3rem 0}#results .k b{color:var(--clay)}#results a{color:var(--gold-dark)}#results .tip{font-size:.8rem;color:var(--gray)}
+#results .sub{color:var(--gray);font-size:.9rem;margin:0 0 1.4rem}
+footer{text-align:center;color:var(--warm-gray);font-size:.72rem;padding:2rem 1rem;letter-spacing:.06em}
+.key table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.4rem 0 1rem}
+.key th,.key td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--border);vertical-align:top}
+.key th{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark)}
+.key h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;margin:1rem 0 .2rem}
+.key .src{font-size:.74rem;color:var(--gray);line-height:1.5}.key .src a{color:var(--gold-dark)}
+details summary{cursor:pointer;font-size:.85rem;color:var(--gold-dark);font-weight:500;margin:.4rem 0 .6rem}
+#results .key table{font-size:.85rem}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header"><span class="brand">HAREN HOLISTICS</span><span class="tag">The Practitioner Blueprint · Module 5</span></header>
+<main>
+<div id="results" hidden></div>
+<div id="editor">
+<h1>Build your own cell salt &amp; flower essence form</h1>
+<p class="lead">The custom remedy service from the Module 5 video, scaled down to products you can recommend over the counter right now: cell salts (Hyland's or another brand) &amp; Bach flower essences. No appointment. The client fills in a form, you match what they checked to the key at the bottom of this page, &amp; you either sell them the bottle or tell them exactly which one to pick up. Keep the questions you want, reword any of them, switch off the ones that don't fit &amp; add your own. Hit the button &amp; you'll get your questions as one copy-&amp;-paste block, the steps to build it in your form builder, &amp; your matching key.</p>
+
+<div class="sheet">
+  <h2>1. The basics</h2>
+  <p class="hint">Name &amp; price are optional. The form builder decides which steps you get on your results page.</p>
+  <div class="two">
+    <div class="field"><label class="t">Your practice or your name</label><input type="text" id="who" placeholder="e.g. your practice name"></div>
+    <div class="field"><label class="t">Your price per match (the bottle is extra)</label><input type="text" id="price" placeholder="e.g. $20"></div>
+  </div>
+  <div class="field"><label class="t">Which form builder will you use?</label><select id="builder" style="max-width:420px"><option value="typeform">Typeform (what Haren Holistics uses)</option><option value="google">Google Forms (free)</option><option value="other">Another form builder (Jotform, Tally, Practice Better forms, etc.)</option></select></div>
+</div>
+
+<div class="sheet">
+  <h2>2. What they read before the questions</h2>
+  <p class="hint">Say it your way. The wording here follows the flow of Haren Holistics' custom acute remedy form (the Loom in this module), with your details in [brackets].</p>
+  <div class="field"><label class="t">Welcome screen</label><textarea id="welcome">Get a cell salt or flower essence matched to you.
+
+No appointment needed. Fill this in with as much detail as you can &amp; I'll match you to a cell salt, a flower essence or both.</textarea></div>
+  <div class="field"><label class="t">Statement 1: what this is &amp; isn't</label><textarea id="intro1" style="min-height:120px">A few things before we get started:
+
+I understand this isn't a substitute for medical advice. If this is an emergency, please seek local medical care.
+
+This is for short-term support only. Anything that's been going on for a long time is a chronic case &amp; needs a full consultation.
+
+Cell salts &amp; flower essences are over-the-counter products with their own labels &amp; instructions.</textarea></div>
+  <div class="field"><label class="t">Statement 2: the price &amp; how it works</label><textarea id="intro2" style="min-height:120px">Each match is $[price], plus the cost of the product if you're buying it from me.
+
+After you submit this form I'll send you an invoice. Once it's paid, I'll send your match &amp; how to take it within [X] business days.</textarea></div>
+</div>
+
+<div class="sheet">
+  <h2>3. The questions</h2>
+  <p class="hint">Tick the ones you want. Reword anything. "Not a fit if" marks the answer that should end the form before they can order (you add that one logic rule inside your form builder afterward, the steps are on your results page). The two checkbox questions are the matching questions: every line maps to a cell salt or an essence in the key below.</p>
+  <div id="mine"></div>
+</div>
+
+<div class="sheet">
+  <h2>4. Your own questions</h2>
+  <p class="hint">Anything else you need to know before you match someone. Add as many as you like. Nobody but you sees this page.</p>
+  <div id="own"></div>
+  <button class="add" id="addq">+ Add a question</button>
+</div>
+
+<div class="sheet">
+  <h2>5. What they see at the end</h2>
+  <p class="hint">Two endings: one for the people who can order &amp; one for the people who need a full consult instead.</p>
+  <div class="field"><label class="t">They can order</label><textarea id="pass">Thanks! Watch your email for the invoice. Once it's paid I'll send your match &amp; how to take it.</textarea></div>
+  <div class="field"><label class="t">Not a fit (shown when a "not a fit" answer is picked)</label><textarea id="fail">This sounds like it's been going on a while, so a quick match isn't the right tool. Book a full consultation &amp; we'll look at the whole picture together.</textarea></div>
+</div>
+
+<div class="sheet key" id="keysheet">
+  <h2>6. Your matching key (nobody but you sees this)</h2>
+  <p class="hint">What each checkbox points to. It prints on your results page &amp; in your PDF. Pick one to three cell salts, lead with the strongest checkbox, &amp; follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time, &amp; past seven or eight you probably have some you don't need.</p>
+  <details open><summary>Show the key</summary><div id="keybody"></div></details>
+</div>
+
+<div class="sheet">
+  <h2>7. Before you offer this</h2>
+  <ul style="font-size:.85rem;line-height:1.55;color:var(--black);margin:.2rem 0 .4rem 1.1rem;padding:0">
+    <li>Cell salts &amp; Bach essences are sold over the counter with the manufacturer's label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it's for.</li>
+    <li>If you sell the bottles yourself, your state will likely want a sales tax or reseller permit. That's state by state, so check your own state &amp; your Module 1 notes.</li>
+    <li>If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.</li>
+    <li>Keep it to short-term situations. Anything chronic or anything that worries you gets a full consult or a referral.</li>
+    <li>No claims to diagnose, treat, cure or prevent on your form, your site or your reply. Say what the product is labeled for.</li>
+  </ul>
+</div>
+
+<div class="submit-row">
+  <button class="go" id="go">Build my form</button>
+  <button class="ghost" id="clear">Reset to the original</button>
+  <span id="count"></span>
+</div>
+<div id="msg"></div>
+<p class="note">No matter which form builder you use, you can apply your results: the block you get is your questions, their types, what's required &amp; which answers end the form, so it builds the same form in any of them.</p>
+<p class="note" id="bnote"></p>
+</div>
+</main>
+<footer>HAREN HOLISTICS</footer>
+
+<script>
+// ===== EDIT HERE. Questions follow the flow of the Haren Holistics acute remedy form. why = Lexie's words from the Skool coffee chat where she walks through that form.
+const TYPES={yn:'Yes / No',short:'Short answer',long:'Long answer',mc:'Multiple choice (pick one)',ms:'Checkboxes (pick several)',contact:'Phone & email',email:'Email only',number:'Number',date:'Date'};
+
+const SALTS=[
+ ['Fever, flushed face, redness, the first day of a cold','#4 Ferrum Phos'],
+ ['Thick white mucus, white-coated tongue, swollen glands','#5 Kali Mur'],
+ ['Yellow slimy mucus, flaky skin or dandruff, worse in a warm room','#7 Kali Sulph'],
+ ['Cramps or shooting pains that feel better with heat & pressure','#8 Mag Phos'],
+ ['Wired but tired, stressed, can\'t switch off, headaches from overwork','#6 Kali Phos'],
+ ['Sour burps, heartburn, indigestion, gas','#10 Nat Phos'],
+ ['Dry lips & skin, cold sores, watery runny nose, headache in the sun','#9 Nat Mur'],
+ ['Varicose veins, hemorrhoids, cracked skin on hands or feet','#1 Calc Fluor'],
+ ['Teething, growth spurts, sensitive teeth or gums, slow to bounce back','#2 Calc Phos'],
+ ['Pimples or spots that keep oozing & are slow to clear','#3 Calc Sulph'],
+ ['Brittle nails or hair, splinters, slow-healing skin, cold sweaty feet','#12 Silicea'],
+ ['Worse in damp weather, bitter taste, sluggish digestion','#11 Nat Sulph'],
+ ['A bit of everything, or not sure','Bioplasma (all 12)']
+];
+const SALT_INFO=[
+ ['#1 Calc Fluor','Calcarea fluorica','Elastic tissue: varicose veins, hemorrhoids, cracked or chapped skin, hard lumps in glands, tooth enamel.','Colds, hemorrhoids, chapped skin'],
+ ['#2 Calc Phos','Calcarea phosphorica','Bones & teeth: teething, growth spurts, slow recovery after illness, poor nutrition, cold feeling in the head.','Gum or tooth sensitivity'],
+ ['#3 Calc Sulph','Calcarea sulphurica','Discharges that drag on: pimples & abscesses that keep oozing, thick yellow matter, slow-to-close skin.','(no uses line on the Hyland\'s page)'],
+ ['#4 Ferrum Phos','Ferrum phosphoricum','First stage of inflammation: fever, flushed face, redness, early cold, minor swelling, nosebleed, throbbing headache.','Fever, minor swelling, colds'],
+ ['#5 Kali Mur','Kali muriaticum','Second stage: thick white mucus, white or gray coated tongue, swollen glands, ear congestion with a cold.','(no uses line on the Hyland\'s page)'],
+ ['#6 Kali Phos','Kali phosphoricum','Nerve exhaustion: stress, nervous tension, brain-fag from overwork, poor sleep, irritability, sensitive to noise.','Stress, simple nervous tension, headaches'],
+ ['#7 Kali Sulph','Kali sulphuricum','Third stage & skin: yellow slimy discharge, flaky scaling skin, dandruff, worse in a warm room & in the evening, better in open air.','(no uses line on the Hyland\'s page)'],
+ ['#8 Mag Phos','Magnesia phosphorica','Cramps & spasms: darting shooting pains, menstrual cramps, muscle cramps, colic, better with warmth & pressure.','(check the label)'],
+ ['#9 Nat Mur','Natrum muriaticum','Fluid balance: dry lips & skin, cold sores, watery runny nose, headache from sun, heartburn, grief that lingers.','Headaches, colds, heartburn, gastric upset'],
+ ['#10 Nat Phos','Natrum phosphoricum','Acidity: sour burps, heartburn, indigestion, gas, creamy yellow coating at the back of the tongue.','Indigestion, gas, hyperacidity'],
+ ['#11 Nat Sulph','Natrum sulphuricum','Bilious & damp: worse in damp weather or damp houses, bitter taste, sluggish liver, greenish-gray tongue, headache with gastric upset.','(no uses line on the Hyland\'s page)'],
+ ['#12 Silicea','Silicea','Skin, hair & nails: brittle nails, hair falling out, splinters, slow-healing pus spots, chilly, sweaty feet, tires easily.','Skin eruptions, brittle hair & nails'],
+ ['Bioplasma','All 12 combined','Hyland\'s combination of all twelve. Their page: "can help relieve symptoms of colds, simple nervous tension, fatigue, and headaches."','Colds, nervous tension, fatigue, headaches']
+];
+// Bach's seven groups (The Twelve Healers & Other Remedies, 1936). Descriptions follow the Bach Centre wording, shortened to second person.
+const BACH=[
+ ['Fear',[['Rock Rose','terror, panic, a real fright'],['Mimulus','a fear you can name: the dentist, flying, spiders, speaking up'],['Cherry Plum','afraid you\'ll lose control of yourself'],['Aspen','a vague dread you can\'t put a name to'],['Red Chestnut','fear for the people you love, more than for yourself']]],
+ ['Uncertainty',[['Cerato','you don\'t trust your own judgement & keep asking others'],['Scleranthus','you can\'t make up your mind between two things'],['Gentian','discouraged when things go wrong, a setback knocks you down'],['Gorse','you\'ve given up hope'],['Hornbeam','tired before you even start, Monday-morning feeling'],['Wild Oat','you want to do something with your life but don\'t know what']]],
+ ['Not enough interest in the present',[['Clematis','daydreamy, drifting off, not quite here'],['Honeysuckle','living in the past'],['Wild Rose','resigned, you\'ve stopped trying to change anything'],['Olive','exhausted after a big effort, body & mind'],['White Chestnut','thoughts you can\'t switch off, mental arguments on repeat'],['Mustard','a gloom that comes & goes for no reason'],['Chestnut Bud','making the same mistake over & over']]],
+ ['Loneliness',[['Water Violet','private & reserved, you keep to yourself'],['Impatiens','impatient, frustrated, want everything done now'],['Heather','you need to talk about yourself & hate being alone']]],
+ ['Oversensitive to influences & ideas',[['Agrimony','cheerful on the outside, hiding worry on the inside'],['Centaury','you can\'t say no'],['Walnut','in a big life change & easily thrown off course'],['Holly','jealousy, suspicion, anger at others']]],
+ ['Despondency or despair',[['Larch','you feel less capable than everyone else so you don\'t try'],['Pine','guilt, blaming yourself'],['Elm','overwhelmed by responsibility right now'],['Sweet Chestnut','at the end of your rope'],['Star of Bethlehem','after a shock, bad news, grief, an accident'],['Willow','resentful & bitter about how things have gone'],['Oak','strong & steady, you keep going even when you need to rest'],['Crab Apple','you feel unclean or dislike something about yourself']]],
+ ['Over-care for others',[['Chicory','possessive love, you need to be needed'],['Vervain','over-enthusiastic, a cause you can\'t let go of'],['Vine','you know best & tend to take over'],['Beech','critical & intolerant of others'],['Rock Water','hard on yourself, rigid rules, self-denial']]]
+];
+const bodyChoices=SALTS.map(s=>s[0]).join('\n');
+const moodChoices=BACH.map(g=>g[1].map(e=>e[1]).join('\n')).join('\n');
+
+const MINE=[
+ {t:'short',q:'Your full name. If this is for a child or a pet, include both your name & theirs (& pet type, i.e. dog or horse).',req:true},
+ {t:'contact',q:'Your phone number & email.',req:true},
+ {t:'short',q:'Their age. Pregnant or nursing?',req:true},
+ {t:'short',q:'Anything taken daily (medications, supplements)?'},
+ {t:'yn',q:'Has this been going on for less than about three weeks?',req:true,kick:'No',why:'These remedy blends are only for acute situations. So something that has been occurring for a short amount of time that is only going to need to be taking a remedy for two to three weeks max, ideally. Think post-op support, postpartum, a flu, a virus, something that you\'re needing immediate support for. And you aren\'t going to be taking this every day for like a year. That\'s a chronic case.'},
+ {t:'long',q:'Describe what\'s going on in your own words. The more detail the better. A whole paragraph is great.',req:true,why:'The more info you can give me, you could literally write a whole freaking paragraph here and I would be stoked because I need to know what\'s making your symptoms better. What\'s making them worse? What time of day are they worse at? If you eat food, does it make it worse or better? Are you noticing any other symptoms with your main symptoms? This is all gold to a homeopath.'},
+ {t:'short',q:'What makes it better?',req:true},
+ {t:'short',q:'What makes it worse?',req:true},
+ {t:'short',q:'Any time of day it\'s worse? Does eating or drinking change it?'},
+ {t:'ms',q:'Check anything that\'s true for you right now (body).',req:true,choices:bodyChoices,why:'Every line here points to one of the 12 cell salts (or Bioplasma, which is all 12). The key is at the bottom of this page.'},
+ {t:'ms',q:'Check up to three that sound like you lately (mood & mind).',choices:moodChoices,why:'Every line here is one of the 38 Bach flower essences, in Dr Bach\'s seven groups. The key is at the bottom of this page.'},
+ {t:'short',q:'If you could feel one way instead, what would it be?'},
+ {t:'mc',q:'How would you like to receive it?',req:true,choices:'Ship it to me\nLocal pickup\nJust tell me what to buy & where'}
+];
+// =====
+
+const B={
+ typeform:{name:'Typeform',pasteTitle:'Paste this into Typeform',note:'Typeform\'s "Import questions" box takes up to 6,000 characters. The counter above tells you where you\'re at. The two checkbox questions are long, so you may need to paste in two rounds or add those two by hand. A free Typeform account allows 10 questions per form &amp; 10 responses a month, so you may need a paid plan (or trim).',
+  steps:['Log in to Typeform & click + Create a new form.','Choose Import questions.','Paste the block above into the box. Click Import questions. If it\'s over 6,000 characters, paste the two checkbox questions in a second round or add them by hand.','Check each question\'s type & answer choices. Fix anything it guessed wrong (the type is in brackets after each question). The two checkbox questions must be Multiple choice with "Multiple selection" switched on.','Add the kick-out logic below, then your two endings.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'Open the question, click Logic, add a rule: if the answer is the one below, jump to your "not a fit" ending. Everyone else continues.',
+  links:[['Import questions from another tool','https://help.typeform.com/hc/en-us/articles/19585703741332'],['What is Logic','https://help.typeform.com/hc/en-us/articles/360029116392'],['Use the Logic Map to add logic','https://help.typeform.com/hc/en-us/articles/5514792640916']]},
+ google:{name:'Google Forms',pasteTitle:'Your build sheet (work down it in Google Forms)',note:'Google Forms has no paste-in import, so your results page is a build sheet: every question with its Google Forms type next to it, for you to add one at a time. Free, with no question or response limits.',
+  steps:['Go to forms.google.com & start a blank form. Paste in your title.','Add your welcome text & each statement as a "Title and description" block (the Tт button on the right-hand toolbar).','Add each question from the sheet with the type shown in brackets. Switch on Required where it says required. The two checkbox questions use the Checkboxes type.','For the kick-out question: make it Multiple choice, click the three dots & choose "Go to section based on answer". Send the not-a-fit answer to a final section with your not-a-fit text, set to Submit form.','Put your ending in the confirmation message (Settings > Presentation) or on the last section.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'In Google Forms the kick-out works through sections: make the question Multiple choice, then "Go to section based on answer". The not-a-fit answer goes to a short final section that submits the form.',
+  links:[['Google Forms help: Create a form','https://support.google.com/docs/answer/6281888'],['Google Forms help: Show questions based on answers','https://support.google.com/docs/answer/141062']]},
+ other:{name:'your form builder',pasteTitle:'Your build sheet (or paste it in, if your builder has an import or AI option)',note:'Your results page is a build sheet: every question with its type &amp; whether it is required. Most builders have a paste or AI import option, so try that first. Otherwise add the questions one at a time.',
+  steps:['Open your form builder & create a new form.','If it has an "import", "paste questions" or "create with AI" option, paste the whole block in. If not, add each question from the sheet with the type in brackets.','Mark the required questions as required. The two checkbox questions need a "pick several" or checkbox type.','Add a branching or logic rule for the kick-out question below, pointing the not-a-fit answer to an ending that stops the form.','Add your ending.','Fill it out yourself as a fake client, start to finish, before you put it on your website.'],
+  logic:'Look for "logic", "branching", "conditions" or "jump to" in your builder. For each question below, send the not-a-fit answer to an ending that stops the form.',
+  links:[]}
+};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+function keyHTML(){
+  let h='<h3>Body checkboxes &rarr; cell salt</h3><table><tr><th>Client checked</th><th>Points to</th></tr>'+SALTS.map(s=>'<tr><td>'+esc(s[0])+'</td><td><b>'+esc(s[1])+'</b></td></tr>').join('')+'</table>';
+  h+='<h3>The 12 cell salts at a glance</h3><table><tr><th>Salt</th><th>Keynotes</th><th>Hyland\'s label uses</th></tr>'+SALT_INFO.map(s=>'<tr><td><b>'+esc(s[0])+'</b><br><span class="src">'+esc(s[1])+'</span></td><td>'+esc(s[2])+'</td><td>'+esc(s[3])+'</td></tr>').join('')+'</table>';
+  h+='<h3>Mood checkboxes &rarr; Bach flower essence (by Dr Bach\'s seven groups)</h3>';
+  BACH.forEach(g=>{ h+='<table><tr><th colspan="2">'+esc(g[0])+'</th></tr>'+g[1].map(e=>'<tr><td style="width:34%"><b>'+esc(e[0])+'</b></td><td>'+esc(e[1])+'</td></tr>').join('')+'</table>'; });
+  h+='<p class="src">Rescue Remedy (Dr Bach\'s crisis formula) is the pre-mixed combination most shops carry. The Bach Centre notes other pre-mixed combinations tend to be less effective because they aren\'t chosen individually.</p>';
+  h+='<p class="src">Sources: Boericke &amp; Dewey, <i>The Twelve Tissue Remedies of Sch&uuml;ssler</i> (1899, public domain, <a href="https://archive.org/details/twelvetissuerem00boer" target="_blank" rel="noopener">archive.org</a>) for the keynotes; <a href="https://www.hylands.com/pages/cell-salts" target="_blank" rel="noopener">Hyland\'s cell salts page</a> for the label uses; the <a href="https://www.bachcentre.com/en/remedies/the-38-remedies/" target="_blank" rel="noopener">Bach Centre</a> for the 38 essences &amp; <a href="https://www.bachcentre.com/en/remedies/selecting-remedies/" target="_blank" rel="noopener">how to combine them</a>; <a href="https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/" target="_blank" rel="noopener">how to take them</a>. Buy: <a href="https://www.hylands.com/collections/cell-salts" target="_blank" rel="noopener">Hyland\'s</a>, <a href="https://www.bachremedies.com" target="_blank" rel="noopener">Bach Original Flower Remedies</a>. Rules: <a href="https://www.fda.gov/drugs/information-drug-class/homeopathic-products" target="_blank" rel="noopener">FDA on homeopathic products</a>.</p>';
+  return h;
+}
+function qRow(d,own,idx){
+  const el=document.createElement('div'); el.className='q'+(d.on===false?' off':'');
+  const typeOpts=Object.entries(TYPES).map(([k,v])=>`<option value="${k}"${d.t===k?' selected':''}>${v}</option>`).join('');
+  el.innerHTML=`<input type="checkbox" class="on"${d.on===false?'':' checked'} title="Include this question">
+  <div class="body">
+    <textarea class="qt" placeholder="${own?'Type your question':''}">${esc(d.q||'')}</textarea>
+    <div class="row">
+      <label>Type <select class="type">${typeOpts}</select></label>
+      <label><input type="checkbox" class="req"${d.req?' checked':''}> Required</label>
+      <label class="kickwrap">Not a fit if they answer <select class="kick"><option value="">(no kick-out)</option><option${d.kick==='No'?' selected':''}>No</option><option${d.kick==='Yes'?' selected':''}>Yes</option></select></label>
+      ${own?'<button class="del" type="button">remove</button>':''}
+    </div>
+    <div class="choices" style="display:${(d.t==='mc'||d.t==='ms')?'block':'none'}"><textarea class="ch" placeholder="One answer choice per line" style="${d.t==='ms'?'min-height:140px':''}">${esc(d.choices||'')}</textarea></div>
+    ${d.why?`<div class="why"><b>${own?'':'Why Lexie asks this'}</b>${esc(d.why)}</div>`:''}
+  </div>`;
+  const on=el.querySelector('.on'); on.onchange=()=>el.classList.toggle('off',!on.checked);
+  const type=el.querySelector('.type'); const ch=el.querySelector('.choices'); const kw=el.querySelector('.kickwrap');
+  const sync=()=>{ ch.style.display=(type.value==='mc'||type.value==='ms')?'block':'none'; kw.style.display=(type.value==='yn'||type.value==='mc'||type.value==='short')?'flex':'none'; };
+  type.onchange=sync; sync();
+  if(own){ el.querySelector('.del').onclick=()=>{ el.remove(); update(); }; }
+  el.addEventListener('input',update); el.addEventListener('change',update);
+  return el;
+}
+function build(){
+  const mine=document.getElementById('mine'); mine.innerHTML=''; MINE.forEach((d,i)=>mine.appendChild(qRow(d,false,i)));
+  const own=document.getElementById('own'); own.innerHTML=''; own.appendChild(qRow({t:'short',q:''},true));
+  document.getElementById('keybody').innerHTML=keyHTML();
+}
+document.getElementById('addq').onclick=()=>{ document.getElementById('own').appendChild(qRow({t:'short',q:''},true)); update(); };
+document.getElementById('clear').onclick=()=>{ if(confirm('Reset every question & text box back to the original?')){ document.querySelectorAll('#welcome,#intro1,#intro2,#pass,#fail').forEach(t=>t.value=t.defaultValue); document.getElementById('who').value=''; document.getElementById('price').value=''; build(); update(); } };
+
+function collect(){
+  const v=id=>document.getElementById(id).value.trim();
+  const qs=[];
+  document.querySelectorAll('#mine .q, #own .q').forEach(el=>{
+    if(!el.querySelector('.on').checked) return;
+    const q=el.querySelector('.qt').value.trim(); if(!q) return;
+    const t=el.querySelector('.type').value;
+    const kick=(t==='yn'||t==='mc'||t==='short')?el.querySelector('.kick').value:'';
+    const choices=(t==='mc'||t==='ms')?el.querySelector('.ch').value.split('\n').map(s=>s.trim()).filter(Boolean):[];
+    qs.push({q,t,req:el.querySelector('.req').checked,kick,choices});
+  });
+  return {builder:document.getElementById('builder').value,who:v('who'),price:v('price'),welcome:v('welcome'),intro1:v('intro1'),intro2:v('intro2'),pass:v('pass'),fail:v('fail'),qs};
+}
+function pasteText(s){
+  const title=(s.who?s.who+': ':'')+'Cell Salt & Flower Essence Match';
+  const price=s.price||'[price]';
+  let out='Form title: '+title+'\n\n';
+  if(s.welcome) out+='Welcome screen:\n'+s.welcome+'\n\n';
+  if(s.intro1) out+='Statement (no answer needed):\n'+s.intro1+'\n\n';
+  if(s.intro2) out+='Statement (no answer needed):\n'+s.intro2.replace('$[price]',price.startsWith('$')?price:'$'+price)+'\n\n';
+  s.qs.forEach((x,i)=>{
+    let line=(i+1)+'. '+x.q;
+    let tl=x.t==='contact'?'Contact info: phone number & email':TYPES[x.t]; if(s.builder==='google'){ tl={yn:'Multiple choice: Yes / No',short:'Short answer',long:'Paragraph',mc:'Multiple choice',ms:'Checkboxes',contact:'Two short-answer questions: phone number & email',email:'Short answer (email)',number:'Short answer (number)',date:'Date'}[x.t]; }
+    if(s.builder==='typeform'&&x.t==='ms') tl='Multiple choice, multiple selection ON';
+    line+='  ['+tl+(x.req?', required':'')+']';
+    out+=line+'\n';
+    if(x.t==='yn') out+='- Yes\n- No\n';
+    if(x.t==='mc'||x.t==='ms') x.choices.forEach(c=>out+='- '+c+'\n');
+    out+='\n';
+  });
+  out+='Ending screen (they can order):\n'+(s.pass||'')+'\n';
+  if(s.fail) out+='\nEnding screen (not a fit):\n'+s.fail+'\n';
+  return out.replace(/&amp;/g,'&');
+}
+function update(){
+  const txt=pasteText(collect()); const c=document.getElementById('count'); const b=document.getElementById('builder').value; c.textContent=b==='typeform'?txt.length.toLocaleString()+' / 6,000 characters':txt.length.toLocaleString()+' characters'; c.classList.toggle('over',b==='typeform'&&txt.length>6000); document.getElementById('bnote').innerHTML=B[b].note;
+}
+['who','price','welcome','intro1','intro2','pass','fail','builder'].forEach(id=>{document.getElementById(id).addEventListener('input',update);document.getElementById(id).addEventListener('change',update);});
+build(); update();
+
+document.getElementById('go').onclick=()=>{
+  const s=collect(); const msg=document.getElementById('msg');
+  if(!s.qs.length){ msg.textContent='Keep or add at least one question first!'; return; }
+  msg.textContent='';
+  const txt=pasteText(s);
+  const kicks=s.qs.map((x,i)=>x.kick?{n:i+1,q:x.q,a:x.kick}:null).filter(Boolean);
+  const title=(s.who?s.who+"'s":'My')+' cell salt & flower essence form';
+  // ---- PDF (plan + paste block + key) ----
+  let url='';
+  if(window.jspdf){
+    const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'pt',format:'letter'}); const W=612,M=54; let y=M;
+    doc.setFillColor(10,11,9); doc.rect(0,0,W,70,'F'); doc.setTextColor(194,165,64); doc.setFont('times','normal'); doc.setFontSize(18); doc.text('HAREN HOLISTICS',M,42);
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(207,193,171); doc.text('THE PRACTITIONER BLUEPRINT  ·  MODULE 5',W-M,42,{align:'right'});
+    y=104; doc.setTextColor(10,11,9); doc.setFont('times','bold'); doc.setFontSize(20); doc.text(doc.splitTextToSize(title,W-2*M),M,y); y+=18;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(106,107,101); doc.text(new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})+'  ·  '+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s'),M,y); y+=22;
+    const need=h=>{ if(y+h>792-M){doc.addPage(); y=M;} };
+    const line=()=>{doc.setDrawColor(207,193,171); doc.line(M,y,W-M,y); y+=14;};
+    const H=t=>{need(40); line(); doc.setFont('times','bold'); doc.setFontSize(14); doc.setTextColor(10,11,9); doc.text(t,M,y); y+=16;};
+    const H2=t=>{need(30); doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(154,128,48); doc.text(t,M,y); y+=14;};
+    const P=(t,sz,col)=>{ doc.setFont('helvetica','normal'); doc.setFontSize(sz||10); doc.setTextColor.apply(doc,col||[10,11,9]); const ls=doc.splitTextToSize(t,W-2*M); ls.forEach(l=>{need(14); doc.text(l,M,y); y+=(sz||10)*1.3;}); y+=4; };
+    const KV=(k,v)=>{ doc.setFontSize(9.5); const ls=doc.splitTextToSize(v,W-2*M-150); need(ls.length*12+4); doc.setFont('helvetica','bold'); doc.setTextColor(178,110,66); doc.text(k,M,y); doc.setFont('helvetica','normal'); doc.setTextColor(10,11,9); ls.forEach((l,i)=>{ doc.text(l,M+150,y); y+=12; }); y+=2; };
+    const BB=B[s.builder]; H('How to turn this into your form in '+BB.name);
+    BB.steps.forEach((t,i)=>P((i+1)+'. '+t.replace('the block above','the paste block below'),10));
+    if(kicks.length){ H('Kick-out logic to add in '+BB.name); P(BB.logic,9.5,[106,107,101]); kicks.forEach(k=>P('Q'+k.n+'  if they answer "'+k.a+'"  ->  not a fit ending.   '+k.q,10)); }
+    H(s.builder==='typeform'?'Paste block (copy all of this into Typeform\'s Import questions box)':'Build sheet');
+    doc.setFont('courier','normal'); doc.setFontSize(8.5); doc.setTextColor(10,11,9);
+    txt.split('\n').forEach(raw=>{ const ls=raw===''?['']:doc.splitTextToSize(raw,W-2*M); ls.forEach(l=>{need(12); doc.text(l,M,y); y+=11;}); });
+    doc.addPage(); y=M;
+    H('Your matching key (for you, not the client)'); P('Pick one to three cell salts, lead with the strongest checkbox & follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time.',9.5,[106,107,101]);
+    H2('Body checkboxes -> cell salt'); SALTS.forEach(x=>KV(x[1],x[0]));
+    H2('The 12 cell salts at a glance'); SALT_INFO.forEach(x=>KV(x[0],x[2]+'  Label: '+x[3]));
+    H2('Mood checkboxes -> Bach flower essence'); BACH.forEach(g=>{ need(30); doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(10,11,9); doc.text(g[0],M,y); y+=13; g[1].forEach(e=>KV(e[0],e[1])); });
+    H('Before you offer this');
+    ['Cell salts & Bach essences are sold over the counter with the manufacturer\'s label. You are recommending a labeled product, not making a remedy. Use the label wording when you say what it\'s for.','If you sell the bottles yourself, your state will likely want a sales tax or reseller permit. That\'s state by state, so check your own state & your Module 1 notes.','If you sell any product you are dispensing. Check your product liability coverage from Lesson 1.4.','Keep it to short-term situations. Anything chronic or anything that worries you gets a full consult or a referral.','No claims to diagnose, treat, cure or prevent on your form, your site or your reply. Say what the product is labeled for.'].forEach(t=>P('- '+t,9.5));
+    H2('Sources & where to buy');
+    [['Boericke & Dewey, The Twelve Tissue Remedies (free)','https://archive.org/details/twelvetissuerem00boer'],['Hyland\'s cell salts','https://www.hylands.com/pages/cell-salts'],['Bach Centre: the 38 remedies','https://www.bachcentre.com/en/remedies/the-38-remedies/'],['Bach Centre: selecting & combining','https://www.bachcentre.com/en/remedies/selecting-remedies/'],['Bach Centre: how to take them','https://www.bachcentre.com/en/remedies/how-to-take-the-remedies/'],['Bach Original Flower Remedies','https://www.bachremedies.com'],['FDA: homeopathic products','https://www.fda.gov/drugs/information-drug-class/homeopathic-products']].forEach(([t,u])=>{ need(14); doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(154,128,48); doc.textWithLink(t+'  '+u,M,y,{url:u}); y+=13; });
+    url=URL.createObjectURL(doc.output('blob'));
+  }
+  const fname=title+'.pdf';
+  let html='<div class="bar"><button class="ghost" id="back">&larr; Back to editing</button>'+(url?'<a class="dl" href="'+url+'" download="'+esc(fname)+'">Download the PDF</a>':'')+'</div>'+
+    '<h1>'+esc(title)+'</h1><p class="sub">'+s.qs.length+' questions, '+kicks.length+' kick-out'+(kicks.length===1?'':'s')+'. This page stays put. Download the PDF to keep a copy of everything below, including your matching key. Your edits are still here, hit Back to change anything.</p>'+
+   '<div class="card"><h2>1. '+esc(B[s.builder].pasteTitle)+'</h2><button class="cp" id="cp">Copy the text in the block</button><span class="ok" id="ok"></span><pre id="pb">'+esc(txt)+'</pre><p class="tip">'+txt.length.toLocaleString()+' characters'+(s.builder==='typeform'?(txt.length>6000?'. That is over Typeform\'s 6,000 limit, so paste the two checkbox questions in a second round or add them by hand.':'. Typeform\'s box takes up to 6,000.'):'')+'</p></div>'+
+   '<div class="card"><h2>2. How to turn it into your form in '+esc(B[s.builder].name)+'</h2><ol>'+B[s.builder].steps.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+(B[s.builder].links.length?'<p class="tip">Help: '+B[s.builder].links.map(([t,u])=>'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(t)+'</a>').join(' &middot; ')+'</p>':'')+(s.builder==='typeform'?'<p class="tip">The same block works as a build sheet for Google Forms, Tally or Jotform if you ever switch.</p>':'')+'</div>';
+  if(kicks.length){ html+='<div class="card"><h2>3. Kick-out logic to add in '+esc(B[s.builder].name)+'</h2><p class="tip">'+esc(B[s.builder].logic)+'</p>'; kicks.forEach(k=>{ html+='<p class="k"><b>Q'+k.n+' &middot; if they answer "'+esc(k.a)+'"</b> &rarr; not a fit ending<br>'+esc(k.q)+'</p>'; }); html+=(s.fail?'<p class="tip">Your not-a-fit ending: '+esc(s.fail)+'</p>':'<p class="tip">You left the not-a-fit ending blank, so your form builder\'s default ending shows. You can write one later.</p>')+'</div>'; }
+  html+='<div class="card key"><h2>'+(kicks.length?'4':'3')+'. Your matching key (for you, not the client)</h2><p class="tip">Pick one to three cell salts, lead with the strongest checkbox &amp; follow the dosing on the label. The Bach Centre says you can mix up to six or seven essences at a time.</p>'+keyHTML()+'</div>';
+  const R=document.getElementById('results'); R.innerHTML=html; R.hidden=false; document.getElementById('editor').hidden=true; window.scrollTo(0,0);
+  document.getElementById('back').onclick=()=>{ R.hidden=true; document.getElementById('editor').hidden=false; window.scrollTo(0,0); };
+  document.getElementById('cp').onclick=function(){ const t=document.getElementById('pb').textContent; const done=()=>{document.getElementById('ok').textContent='Copied!'}; const sel=()=>{ const r=document.createRange(); r.selectNodeContents(document.getElementById('pb')); const s=window.getSelection(); s.removeAllRanges(); s.addRange(r); try{document.execCommand('copy'); done();}catch(e){document.getElementById('ok').textContent='Select the block & copy it';} }; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel);}else{sel();} };
+};
+</script>
+</body>
+</html>
